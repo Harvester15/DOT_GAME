@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://5sulucl7l1qb"]
+
+[ext_resource type="Script" path="res://scripts/BaseUnit.cs" id="1_nc6ol"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="1_tb1e7"]
+[ext_resource type="Texture2D" uid="uid://d15vtd85lskhu" path="res://resources/player/playerSun_yellow.png" id="2_e5qry"]
+[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/player/playerSun_red.png" id="4_lbpif"]
+[ext_resource type="Texture2D" uid="uid://n1ika0lfb03u" path="res://resources/player/playerSun_loose2.png" id="5_7cpxw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4fdf3"]
+radius = 132.004
+
+[node name="BaseUnit" type="Area2D" node_paths=PackedStringArray("_portrait", "_collisionShape")]
+script = ExtResource("1_nc6ol")
+_portrait = NodePath("Sprite2D")
+_collisionShape = NodePath("CollisionShape2D")
+NeutralSprite = ExtResource("2_e5qry")
+PlayerSprite = ExtResource("1_tb1e7")
+EnemySprite = ExtResource("4_lbpif")
+AllySprite = ExtResource("5_7cpxw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tb1e7")
+
+[node name="HealthBar" type="ProgressBar" parent="Sprite2D"]
+offset_left = -138.0
+offset_top = -141.0
+offset_right = 117.0
+offset_bottom = -114.0
+value = 100.0
+show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
+shape = SubResource("CircleShape2D_4fdf3")
+
+[node name="Movement" type="Node" parent="."]
+
+[node name="UnitMovement" type="Node2D" parent="."]
+rotation = 0.260748
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

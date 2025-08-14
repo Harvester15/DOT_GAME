@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://da6jg3kc6ks4h"]
+
+[ext_resource type="Script" path="res://scripts/GridManager.cs" id="1_wlwot"]
+[ext_resource type="Texture2D" uid="uid://bpqiu4coyh8yq" path="res://resources/dungeonMap2.jpg" id="1_yudmw"]
+[ext_resource type="PackedScene" uid="uid://5sulucl7l1qb" path="res://scenes/BaseUnit.tscn" id="3_32xmt"]
+[ext_resource type="Script" path="res://scripts/GridPathfinding.cs" id="4_af3rw"]
+[ext_resource type="Script" path="res://scripts/MovementRangeVisualizer.cs" id="5_u243p"]
+
+[node name="Main" type="Node2D"]
+
+[node name="GameWorld" type="Node2D" parent="."]
+
+[node name="Map" type="Node2D" parent="GameWorld" node_paths=PackedStringArray("MapSprite", "Areas")]
+script = ExtResource("1_wlwot")
+MapSprite = NodePath("Sprite2D")
+Areas = [NodePath("ColorRect"), NodePath("ColorRect2"), NodePath("ColorRect3"), NodePath("ColorRect4")]
+
+[node name="Sprite2D" type="Sprite2D" parent="GameWorld/Map"]
+z_index = -1
+position = Vector2(575.5, 322.5)
+rotation = 1.5708
+scale = Vector2(1.00469, 1.37861)
+texture = ExtResource("1_yudmw")
+
+[node name="ColorRect" type="ColorRect" parent="GameWorld/Map"]
+visible = false
+offset_left = 3.0
+offset_top = 295.0
+offset_right = 232.0
+offset_bottom = 359.0
+
+[node name="ColorRect2" type="ColorRect" parent="GameWorld/Map"]
+visible = false
+offset_left = 880.0
+offset_top = 297.0
+offset_right = 1105.0
+offset_bottom = 363.0
+
+[node name="ColorRect3" type="ColorRect" parent="GameWorld/Map"]
+visible = false
+offset_left = 227.0
+offset_top = 147.0
+offset_right = 888.0
+offset_bottom = 540.0
+
+[node name="ColorRect4" type="ColorRect" parent="GameWorld/Map"]
+visible = false
+offset_left = 581.0
+offset_top = 25.0
+offset_right = 624.0
+offset_bottom = 593.0
+
+[node name="Units" type="Node2D" parent="GameWorld"]
+
+[node name="BaseUnit" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
+UnitName = "Player"
+UnitTeam = 1
+AttackRange = 32
+
+[node name="BaseUnit2" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
+position = Vector2(6, 339)
+UnitName = "Player2"
+UnitTeam = 1
+AttackRange = 32
+
+[node name="BaseUnit3" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
+UnitName = "Enemy"
+UnitTeam = 2
+MaxHealth = 30
+
+[node name="GridPathfinding" type="Node2D" parent="GameWorld"]
+script = ExtResource("4_af3rw")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MovementRangeVisualizer" type="Node2D" parent="UI" node_paths=PackedStringArray("Areas")]
+script = ExtResource("5_u243p")
+Areas = []

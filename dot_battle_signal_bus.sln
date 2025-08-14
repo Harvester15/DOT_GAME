@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dot_battle_signal_bus", "dot_battle_signal_bus.csproj", "{EF71EE42-7C72-4076-B902-CDFD25356D5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF71EE42-7C72-4076-B902-CDFD25356D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF71EE42-7C72-4076-B902-CDFD25356D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF71EE42-7C72-4076-B902-CDFD25356D5D}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{EF71EE42-7C72-4076-B902-CDFD25356D5D}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{EF71EE42-7C72-4076-B902-CDFD25356D5D}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{EF71EE42-7C72-4076-B902-CDFD25356D5D}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal

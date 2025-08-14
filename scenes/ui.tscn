@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bmcndrjwodj8c"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HeroPanel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="UnitInfo" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
