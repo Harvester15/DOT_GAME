@@ -20,7 +20,7 @@ public partial class TurnManager : Node
     [Signal]
     public delegate void TurnPhaseChangedEventHandler(TurnPhase newPhase);
 
-    private TurnPhase _currentPhase;
+    public TurnPhase _currentPhase;
     private int _currentTurn = 0;
     private List<BaseUnit> _unitsInTurnOrder = new List<BaseUnit>();
     private int _currentUnitIndex = 0;

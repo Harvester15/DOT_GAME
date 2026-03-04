@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmcndrjwodj8c"]
+
+[ext_resource type="Script" path="res://scripts/UI/UnitInfo.cs" id="1_pkmnq"]
+[ext_resource type="Texture2D" uid="uid://c2uqyd04ks0fn" path="res://resources/unitinfo/nametag-removebg-preview.png" id="2_ra4c0"]
+[ext_resource type="Texture2D" uid="uid://cf4w6767impk6" path="res://resources/unitinfo/health.png" id="3_siicm"]
+[ext_resource type="Texture2D" uid="uid://b2yhn72sxkdc6" path="res://resources/unitinfo/movement.png" id="4_rr2v0"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HeroPanel" type="Panel" parent="."]
+offset_right = 55.0
+offset_bottom = 59.0
+
+[node name="UnitInfo" type="PanelContainer" parent="."]
+anchors_preset = -1
+anchor_left = 0.921
+anchor_top = 0.633
+anchor_right = 0.99
+anchor_bottom = 0.978
+offset_left = -14.9921
+offset_top = -14.184
+offset_right = 11.5199
+offset_bottom = 12.256
+script = ExtResource("1_pkmnq")
+
+[node name="MarginContainer" type="MarginContainer" parent="UnitInfo"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UnitInfo/MarginContainer"]
+layout_mode = 2
+
+[node name="Portrait" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+expand_mode = 4
+
+[node name="GridContainer" type="GridContainer" parent="UnitInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="NameTag" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("2_ra4c0")
+expand_mode = 2
+
+[node name="UnitName" type="Label" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HearthTag" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("3_siicm")
+expand_mode = 2
+
+[node name="HealthPoints" type="Label" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="MovementTag" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("4_rr2v0")
+expand_mode = 2
+
+[node name="MovementPoints" type="Label" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"

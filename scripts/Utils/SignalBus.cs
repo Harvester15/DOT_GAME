@@ -29,6 +29,7 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void UnitAttackedEventHandler(BaseUnit attacker, BaseUnit target);
         [Signal] public delegate void UnitDefendEventHandler(BaseUnit attacker, BaseUnit target);
         [Signal] public delegate void UnitDiedEventHandler(BaseUnit unit);
+        [Signal] public delegate void UnitHealthChangedEventHandler(BaseUnit unit, string status, bool isActive);
        // [Signal] public delegate void AbilityUsedEventHandler(Ability ability, player caster, player target);
 
         // UI signals

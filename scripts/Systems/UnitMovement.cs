@@ -1,4 +1,6 @@
 using dot_battle_signal_bus.scripts;
+using dot_battle_signal_bus.scripts.Systems;
+using dot_battle_signal_bus.scripts.Utils;
 using Godot;
 using System;
 using System.Linq;
@@ -21,12 +23,16 @@ public partial class UnitMovement : Node
     private bool _isAttacking = false;
 
     private GridManager _gridManager => GetNode<GridManager>("/root/Main/GameWorld/Map");
+    private Camera2D _camera => GetTree().Root.GetNode<Camera2D>("/root/Main/CameraRig/Camera2D");
+    private GridPathfinding _gridPathfinding => GetNode<GridPathfinding>("/root/Main/GameWorld/GridPathfinding");
+    // Add camera reference
 
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         SignalBus.Instance.Connect("UnitSelected", new Callable(this, nameof(OnUnitSelected)));
+        SignalBus.Instance.Connect("UnitDied", new Callable(this, nameof(OnUnitDied)));//TODO: this is a hack, fix this
         GD.Print("UnitMovement: Connected to UnitSelected signal.");
         _pathfinding = GetNode<GridPathfinding>("/root/Main/GameWorld/GridPathfinding");
         GD.Print($"ready called by: {this.GetPath()}");
@@ -59,10 +65,10 @@ public partial class UnitMovement : Node
                         return;
                     }
 
-                    _selectedUnit.Position = _selectedUnit.Position.MoveToward(_pathSelected[0], 6);
-                    GD.Print($"still moving, unit position {_selectedUnit.Position}");
+                    _selectedUnit.GlobalPosition = _selectedUnit.GlobalPosition.MoveToward(_pathSelected[0], 6);
+                    GD.Print($"still moving, unit position {_selectedUnit.GlobalPosition}");
                     GD.Print($"Moved to next point, movements left: {_selectedUnit.MovementsLeft}");
-                    if (_selectedUnit.Position == _pathSelected[0])
+                    if (_selectedUnit.GlobalPosition == _pathSelected[0])
                     {
                         GD.Print($"Reached next point: {_pathSelected[0]}");
                         var path = _pathSelected.ToList();
@@ -72,7 +78,7 @@ public partial class UnitMovement : Node
                         _selectedUnit.MovementsLeft--;
                         return;
                     }
-                    if (_selectedUnit.Position == _clickedPosition)
+                    if (_selectedUnit.GlobalPosition == _clickedPosition)
                     {
                         StoppedMoving($"Reached clicked position: {_clickedPosition}");
                     }
@@ -100,7 +106,7 @@ public partial class UnitMovement : Node
 
         //attack
         if (_pathSelected != null)
-            if (!_isMoving && _selectedUnit != null && _isAttacking)
+            if (!_isMoving && _selectedUnit != null && _isAttacking && _selectedUnit.MovementsLeft > 0)
                 if (IsClickedPointOnPath()
                 && _gridManager.IsCellOccupied(_clickedPosition) != null)
                 {
@@ -122,7 +128,7 @@ public partial class UnitMovement : Node
         _isMoving = false; // Stop moving if we reached the clicked position
         _movementRangeVisualizer.ShowMovement(new Vector2[0], _selectedUnit);
         _gridManager.UnregisterUnitFromCell(_selectedUnit);
-        _gridManager.RegisterUnitOnCell(Utils.WorldToGrid(_selectedUnit.Position, _gridManager.GetCellSize()), _selectedUnit);
+        _gridManager.RegisterUnitOnCell(Utils.WorldToGrid(_selectedUnit.GlobalPosition, _gridManager.GetCellSize()), _selectedUnit);
     }
 
     private bool IsClickedPointOnPath()
@@ -142,7 +148,10 @@ public partial class UnitMovement : Node
             {
                 if (_isSelected)
                 {
-                    _clickedPosition = GetViewport().GetMousePosition();
+                    //set the camera mouse position to clicked position
+                    _clickedPosition = _gridPathfinding.GetLocalMousePosition();
+                    GD.Print($"Left mouse button pressed, getting clicked position - global: {_gridPathfinding.GetGlobalMousePosition()}, local: {_gridPathfinding.GetLocalMousePosition()}");
+                    _camera.GlobalPosition = _gridPathfinding.GetGlobalMousePosition();
                 }
 
                 if ((_isSelected && _pathSelected == null) || (_isSelected && _pathSelected != null && !IsClickedPointOnPath()))
@@ -182,6 +191,8 @@ public partial class UnitMovement : Node
                 }
             }
         }
+
+
     }
 
     private void MoveAlongPath(Vector2[] pathSelected)
@@ -205,11 +216,28 @@ public partial class UnitMovement : Node
             _selectedUnit = selectUnit;
             MovementsLeft = _selectedUnit.MovementsLeft;
             _isSelected = true;
-            GD.Print($"unit now selected {_selectedUnit}, with {MovementsLeft} movementspoints left");
+            GD.Print($"unit now selected {_selectedUnit} - {_selectedUnit.Name}, position: {_selectedUnit.Position}, on grid: {Utils.WorldToGrid(_selectedUnit.Position, _gridManager.GetCellSize())}, with {MovementsLeft} movementspoints left");
+            GD.Print($"Setting camera position to selected unit position: {_selectedUnit.Position}");
+            _camera.GlobalPosition = _selectedUnit.GlobalPosition;
+            CameraManager.Instance.FocusOnUnit(_selectedUnit);
 
         }
 
 
+    }
+
+    public void OnUnitDied(BaseUnit unit)
+    {
+        GD.Print($"Unit died: {unit.Name}");
+        if (_selectedUnit == unit)
+        {
+            _isSelected = false;
+            _selectedUnit = null;
+            _pathSelected = null;
+            _isMoving = false;
+            _movementRangeVisualizer.ShowMovement(new Vector2[0], null);
+            GD.Print("Unit deselected due to death.");
+        }
     }
 
     public void MoveTo(Vector2 targetPosition)
@@ -219,7 +247,7 @@ public partial class UnitMovement : Node
             GD.Print("Unit has already moved this turn.");
             return;
         }
-
+        //TODO : validate move
         if (true)//(IsValidMove(targetPosition))
         {
             Owner.GridPosition = targetPosition;

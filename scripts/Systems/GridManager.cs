@@ -3,7 +3,7 @@ using Godot.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace dot_battle_signal_bus.scripts
+namespace dot_battle_signal_bus.scripts.Utils
 {
     public partial class GridManager : Node
     {
@@ -41,9 +41,10 @@ namespace dot_battle_signal_bus.scripts
         public override void _Ready()
         {
 
-            GD.Print($"map texture is {MapSprite}");
+            
             GridHeight = MapSprite.Texture.GetHeight();
             GridWidth = MapSprite.Texture.GetWidth();
+            GD.Print($"map texture is {MapSprite}, with dimensions: ({GridHeight}, {GridWidth})");
             SetupGrid();
             SetupWalkableAreas();
         }
@@ -127,9 +128,15 @@ namespace dot_battle_signal_bus.scripts
 
         }
 
-        public  void RegisterUnitOnCell(Vector2I gridPosition, Node2D unit)
+        //use BaseUnit instead of Node2D
+        public  void RegisterUnitOnCell(Vector2I gridPosition, Area2D unit)
         {
             GD.Print($"Registering unit {unit.Name} on cell {gridPosition}");
+            if (OccupiedCells.ContainsKey(unit))
+            {
+                GD.PrintErr($"Unit {unit.Name} is already registered on cell {OccupiedCells[unit]}");
+                return;
+            }
             OccupiedCells[unit] = gridPosition;
         }
 
@@ -151,5 +158,12 @@ namespace dot_battle_signal_bus.scripts
         {
             return _walkableGrid;
         }
+
+        //get a list of all units and which cells they occupy
+        public System.Collections.Generic.Dictionary<Node2D, Vector2I> GetOccupiedCells()
+        {
+            return OccupiedCells;
+        }
+
     }
 }

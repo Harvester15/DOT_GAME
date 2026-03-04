@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dot_battle_signal_bus.scripts
+namespace dot_battle_signal_bus.scripts.Utils
 {
     internal static class Utils
     {
-        public static Vector2I WorldToGrid(Vector2 worldPosition, int cellSize )
+        public static Vector2I WorldToGrid(Vector2 worldPosition, int cellSize)
         {
             return new Vector2I(
                 Mathf.FloorToInt(worldPosition.X / cellSize),
@@ -30,6 +30,11 @@ namespace dot_battle_signal_bus.scripts
         public static Vector2I[] WorldToGrid(Vector2[] gridPositions, int cellSize)
         {
             return gridPositions.Select(pos => WorldToGrid(pos, cellSize)).ToArray();
+        }
+
+        public static bool IsValidGridPosition(Vector2I gridPos, int gridWidth, int gridHeight)
+        {
+            return gridPos.X >= 0 && gridPos.X < gridWidth && gridPos.Y >= 0 && gridPos.Y < gridHeight;
         }
 
     }

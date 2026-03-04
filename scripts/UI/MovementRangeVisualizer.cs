@@ -1,4 +1,4 @@
-using dot_battle_signal_bus.scripts;
+using dot_battle_signal_bus.scripts.Utils;
 using Godot;
 using Godot.Collections;
 using System;
@@ -135,7 +135,12 @@ public partial class MovementRangeVisualizer : Node2D
 
     public override void _Input(InputEvent @event)
     {
-       
+        if (Input.IsActionJustPressed("grid"))
+        {
+            GD.Print($"Toggling grid visibility - {ShowGrid}");
+            ShowGrid = !ShowGrid; // Toggle grid visibility
+            QueueRedraw(); // Trigger _Draw to update grid visibility
+        }
 
         //if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
         //{
@@ -180,7 +185,7 @@ public partial class MovementRangeVisualizer : Node2D
 
     public void DisplayMovementRange(BaseUnit selectedUnit)
     {
-        Vector2I startGrid =  Utils.WorldToGrid(selectedUnit.Position, CellSize);
+        Vector2I startGrid = Utils.WorldToGrid(selectedUnit.GlobalPosition, CellSize);
         Vector2I endGrid = Utils.WorldToGrid(GetGlobalMousePosition(), CellSize);
 
         // Calculate path between grid positions
@@ -247,7 +252,7 @@ public partial class MovementRangeVisualizer : Node2D
     {
         _currentPath.Clear();
 
-        if (!IsValidGridPosition(start) || !IsValidGridPosition(end))
+        if (!Utils.IsValidGridPosition(start, _gridWidth, _gridHeight) || !Utils.IsValidGridPosition(end,_gridWidth,_gridHeight))
             return;
 
         if (!_walkableGrid[start.X, start.Y] || !_walkableGrid[end.X, end.Y])
@@ -270,11 +275,6 @@ public partial class MovementRangeVisualizer : Node2D
     }
 
   
-
-    private bool IsValidGridPosition(Vector2I gridPos)
-    {
-        return gridPos.X >= 0 && gridPos.X < _gridWidth && gridPos.Y >= 0 && gridPos.Y < _gridHeight;
-    }
 
     public override void _Draw()
     {
@@ -334,7 +334,9 @@ public partial class MovementRangeVisualizer : Node2D
     private void CreateGhostUnit(Vector2 position, Color color)
     {
         Sprite2D ghost = new Sprite2D();
-        AddChild(ghost);
+        // Parent ghosts to the world so they follow camera movement/zoom
+        var world = GetTree().Root.GetNode<Node2D>("/root/Main/GameWorld");
+        world.AddChild(ghost);
 
         // Copy the unit's sprite properties
         Sprite2D unitSprite = _player.GetSprite();

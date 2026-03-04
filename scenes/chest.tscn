@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://fut8jlete0wy"]
+
+[ext_resource type="Texture2D" uid="uid://bprmdegjnlwcw" path="res://resources/unitinfo/goldenchest.png" id="1_ec0bu"]
+[ext_resource type="Script" path="res://scripts/Chest.cs" id="1_hy8p3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u06jh"]
+size = Vector2(230, 161)
+
+[node name="Chest" type="Area2D"]
+script = ExtResource("1_hy8p3")
+GoldAmount = null
+ItemName = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ec0bu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -0.5)
+scale = Vector2(1.32, 1.32)
+shape = SubResource("RectangleShape2D_u06jh")
