@@ -9,91 +9,90 @@ namespace dot_battle_signal_bus.scripts;
 public partial class TurnManager : Node
 {
     // Turn phases
-    public enum TurnPhase
+    public enum GameState { Initializing, PlayerTurn, EnemyTurn, Transitioning }
+
+    [Signal] public delegate void StateChangedEventHandler(GameState newState);
+    [Signal] public delegate void TurnChangedEventHandler(int turnNumber);
+
+    private GameState _currentState = GameState.Initializing;
+    private int _turnCount = 1;
+
+    private static TurnManager _instance;
+    public static TurnManager Instance
     {
-        StartTurn,
-        PlayerTurn,
-        EnemyTurn,
-        EndTurn
-    }
-
-    [Signal]
-    public delegate void TurnPhaseChangedEventHandler(TurnPhase newPhase);
-
-    public TurnPhase _currentPhase;
-    private int _currentTurn = 0;
-    private List<BaseUnit> _unitsInTurnOrder = new List<BaseUnit>();
-    private int _currentUnitIndex = 0;
-
-    public TurnPhase CurrentPhase
-    {
-        get => _currentPhase;
-        private set
+        get
         {
-            _currentPhase = value;
-           //fix this
-            // SignalBus.Instance.EmitSignal(nameof(TurnPhaseChanged), _currentPhase);
+            if (_instance == null)
+            {
+                _instance = new TurnManager();
+            }
+            return _instance;
         }
     }
 
     public override void _Ready()
     {
-        // Initialize turn system
-        CurrentPhase = TurnPhase.StartTurn;
-    }
 
-    public void RegisterUnit(BaseUnit unit)
-    {
-        _unitsInTurnOrder.Add(unit);
-        // You might want to sort units by initiative/speed here
-    }
-
-    public void UnregisterUnit(BaseUnit unit)
-    {
-        _unitsInTurnOrder.Remove(unit);
-    }
-
-    public void StartNextTurn()
-    {
-        _currentTurn++;
-        CurrentPhase = TurnPhase.StartTurn;
-
-        // Reset all units for new turn
-        foreach (var unit in _unitsInTurnOrder)
+         // To register the singleton in Godot's autoload:
+        if (_instance == null)
         {
-            unit.OnNewTurn();
-        }
-
-        _currentUnitIndex = 0;
-        ProcessNextUnit();
-    }
-
-    private void ProcessNextUnit()
-    {
-        if (_currentUnitIndex >= _unitsInTurnOrder.Count)
-        {
-            // All units have acted, end turn
-            CurrentPhase = TurnPhase.EndTurn;
-            return;
-        }
-
-        var currentUnit = _unitsInTurnOrder[_currentUnitIndex];
-
-        if (currentUnit.UnitTeam == BaseUnit.Team.Player)
-        {
-            CurrentPhase = TurnPhase.PlayerTurn;
-            // Signal for player to control this unit
+            _instance = this;
         }
         else
         {
-            CurrentPhase = TurnPhase.EnemyTurn;
-            // Start AI processing for this unit
+            QueueFree(); // Ensure only one instance exists
+        }
+
+        GD.Print("TurnManager ready. Current state: " + _currentState);
+        // Give the world time to load units
+        CallDeferred(nameof(StartGame));
+    }
+
+    private void StartGame()
+    {
+        GD.Print("Game Starting...");
+        ChangeState(GameState.PlayerTurn);
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        _currentState = newState;
+        EmitSignal(SignalName.StateChanged, (int)newState);
+
+        switch (newState)
+        {
+            case GameState.PlayerTurn:
+                GD.Print("Player's move!");
+                break;
+            case GameState.EnemyTurn:
+                StartEnemyAI();
+                break;
         }
     }
 
-    public void UnitFinishedTurn()
+    private async void StartEnemyAI()
     {
-        _currentUnitIndex++;
-        ProcessNextUnit();
+        // HOMM style: wait a moment so the player sees the UI change
+        await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+        GD.Print("AI is thinking...");
+        // Logic for AI movement here...
+
+        // When AI is done:
+        EndTurn();
+    }
+
+    public void EndTurn()
+    {
+        if (_currentState == GameState.PlayerTurn)
+        {
+            ChangeState(GameState.EnemyTurn);
+        }
+        else
+        {
+            _turnCount++;
+            ChangeState(GameState.PlayerTurn);
+            EmitSignal(SignalName.TurnChanged, _turnCount);
+            
+        }
     }
 }

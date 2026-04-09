@@ -7,13 +7,13 @@ public partial class Chest : BaseGameObject
 {
     [Export] public int GoldAmount = 100;
     [Export] public string ItemName = "Health Potion";
-    public Sprite2D Portrait { get; set; }
-    public CollisionShape2D CollisionShape;
+    public new TextureRect Portrait { get; set; }
+    public new CollisionShape2D CollisionShape;
     private GridManager _gridManager;
     private AStarGrid2D _grid;
     private GridPathfinding _pathfinding;
     private bool _hasBeenPlaced = false;
-    private Sprite2D _portrait;
+    private TextureRect _portrait;
 
     public override void _Ready()
     {
@@ -22,7 +22,7 @@ public partial class Chest : BaseGameObject
         _gridManager = GetNode<GridManager>("/root/Main/GameWorld/Map");
         _grid = _gridManager.GetGrid();
         _pathfinding = GetNode<GridPathfinding>("/root/Main/GameWorld/GridPathfinding");
-        _portrait = Portrait ?? new Sprite2D();
+        _portrait = Portrait ?? new TextureRect();
         ScalePlayerToCellSize();
         PlacePlayerRandomly();
     }
@@ -84,5 +84,10 @@ public partial class Chest : BaseGameObject
             PlacePlayerRandomly();
         }
 
+    }
+
+    public override void OnPlayerInteract(BaseGameObject gameObject)
+    {
+        throw new NotImplementedException();
     }
 }

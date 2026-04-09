@@ -17,9 +17,12 @@ namespace dot_battle_signal_bus.scripts.Systems
         private BaseUnit _followTarget;
 
         private GridManager _gridManager;
+        private GridPathfinding _gridPathfinding => GetNode<GridPathfinding>("/root/Main/GameWorld/GridPathfinding");
 
         private static CameraManager _instance;
         private static Sprite2D _spriteMap;
+        private bool _isDragging = false;
+        private Rect2 _mapLimits;
 
         public static CameraManager Instance
         {
@@ -59,7 +62,7 @@ namespace dot_battle_signal_bus.scripts.Systems
             // Set initial position to center of the map or follow a default target
             _targetPosition = MainCamera.GlobalPosition; // Keep current position or set to map center
             _targetZoom = MainCamera.Zoom.X; // Sync with current zoom
-
+            _mapLimits = new Rect2(_spriteMap.GlobalPosition - mapSize / 2, mapSize);
             GD.Print("CameraManager MainCamera: " + MainCamera.Name);
 
         }
@@ -72,8 +75,9 @@ namespace dot_battle_signal_bus.scripts.Systems
                 //if mouse wheel is pressed, use mouse movement to move the camera
                 if (mouseEvent.ButtonIndex == MouseButton.WheelDown && mouseEvent.Pressed)
                 {
-                    _targetPosition = GetViewport().GetMousePosition();
-                    GD.Print("Mouse wheel down pressed, target position: " + _targetPosition);
+                    //TODO add camera movement?
+                    //_targetPosition = GetViewport().GetMousePosition();
+                    //GD.Print("Mouse wheel down pressed, target position: " + _targetPosition);
                 }
 
 
@@ -81,21 +85,23 @@ namespace dot_battle_signal_bus.scripts.Systems
                 {
                     _targetZoom = Mathf.Clamp(_targetZoom - ZoomSpeed, 0.02f, 3f);
                 }
-                else if (mouseEvent.ButtonIndex == MouseButton.WheelDown && mouseEvent.Pressed)
+                if (mouseEvent.ButtonIndex == MouseButton.WheelDown && mouseEvent.Pressed)
                 {
                     _targetZoom = Mathf.Clamp(_targetZoom + ZoomSpeed, 0.02f, 3f);
                 }
-                //make the camera move with the mouse if the middle mouse button is pressed
-                else if (mouseEvent.ButtonIndex == MouseButton.Middle && mouseEvent.Pressed)
+                if (mouseEvent.ButtonIndex == MouseButton.Middle)
                 {
-                    ////GD.Print("Middle mouse button pressed");
-                    ////get the mouse position
-                    //Vector2 mousePosition = GetViewport().GetMousePosition();
-                    ////convert the mouse position to world position
-                    //Vector2 worldPosition = MainCamera.GetGlobalMousePosition();
-                    ////set the target position to the world position
-                    //_targetPosition = worldPosition;
-                    ////GD.Print("Mouse position: " + mousePosition + " World position: " + worldPosition);
+                    _targetPosition = _gridPathfinding.GetLocalMousePosition();
+                }
+
+                if (_isDragging && @event is InputEventMouseMotion mouseMotion)
+                {
+                    // Adjust sensitivity by current zoom so it feels 1:1 with the cursor
+                    _targetPosition -= mouseMotion.Relative / MainCamera.Zoom;
+
+                    // Clamp the target so you can't drag the "view" outside the map
+                    _targetPosition.X = Mathf.Clamp(_targetPosition.X, _mapLimits.Position.X, _mapLimits.End.X);
+                    _targetPosition.Y = Mathf.Clamp(_targetPosition.Y, _mapLimits.Position.Y, _mapLimits.End.Y);
                 }
 
             }
@@ -112,6 +118,9 @@ namespace dot_battle_signal_bus.scripts.Systems
         //make the _targetZoom work on the maincamera
         public override void _Process(double delta)
         {
+            float weight = (float)delta * MoveSpeed;
+
+            
             //why do we need this?
             //if (_followTarget != null)
             //{

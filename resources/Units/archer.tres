@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=5 format=3 uid="uid://decms4y4t3tt8"]
+
+[ext_resource type="Texture2D" uid="uid://dpjvns1byateg" path="res://resources/unitinfo/ranged_attack.png" id="1_6ql6f"]
+[ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="1_kqubj"]
+[ext_resource type="Script" path="res://scripts/Combat/Damage.cs" id="2_mxgca"]
+
+[sub_resource type="Resource" id="Resource_g06w3"]
+script = ExtResource("2_mxgca")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[resource]
+script = ExtResource("1_kqubj")
+UnitName = ""
+AttackIcon = ExtResource("1_6ql6f")
+Dmg = SubResource("Resource_g06w3")

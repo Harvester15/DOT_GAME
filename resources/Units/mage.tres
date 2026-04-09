@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=5 format=3 uid="uid://cy561e2gwof2d"]
+
+[ext_resource type="Script" path="res://scripts/Combat/Damage.cs" id="1_20vga"]
+[ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="1_dcvqo"]
+[ext_resource type="Texture2D" uid="uid://xxsmlv8yiky8" path="res://resources/unitinfo/magic_attack.png" id="1_j4tot"]
+
+[sub_resource type="Resource" id="Resource_mbr3h"]
+script = ExtResource("1_20vga")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 1
+
+[resource]
+script = ExtResource("1_dcvqo")
+UnitName = ""
+AttackIcon = ExtResource("1_j4tot")
+Dmg = SubResource("Resource_mbr3h")

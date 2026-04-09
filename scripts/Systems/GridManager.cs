@@ -42,8 +42,8 @@ namespace dot_battle_signal_bus.scripts.Utils
         {
 
             
-            GridHeight = MapSprite.Texture.GetHeight();
-            GridWidth = MapSprite.Texture.GetWidth();
+            GridHeight = MapSprite.Texture.GetHeight()/CellSize;
+            GridWidth = MapSprite.Texture.GetWidth()/CellSize;
             GD.Print($"map texture is {MapSprite}, with dimensions: ({GridHeight}, {GridWidth})");
             SetupGrid();
             SetupWalkableAreas();
@@ -97,7 +97,7 @@ namespace dot_battle_signal_bus.scripts.Utils
                         {
                             _walkableGrid[x, y] = true;
                             _astarGrid.SetPointSolid(new Vector2I(x, y), false);
-                            GD.Print($"Setting walkable area at ({x}, {y}) to true in gridmanager");
+                            //GD.Print($"Setting walkable area at ({x}, {y}) to true in gridmanager");
                         }
                     }
                 }
@@ -114,12 +114,30 @@ namespace dot_battle_signal_bus.scripts.Utils
             //}
         }
 
+        public bool UnitFaction(Vector2 gridPosition, BaseUnit.Team team)
+        {
+            var gridPositionI = Utils.WorldToGrid(gridPosition, CellSize);
+            if (OccupiedCells.ContainsValue(gridPositionI))
+            {
+                var thing = OccupiedCells.FirstOrDefault(_ => _.Value == gridPositionI) ;
+                BaseUnit unit  = thing.Key as BaseUnit;
+                if (unit != null)
+                {
+                    return unit.UnitTeam == team;
+                }
+                //return OccupiedCells.Where(_ => _.Value == gridPositionI).Select(_ => _.Key) as BaseUnit;
+            }
+            return false;
+
+        }
 
         public  BaseUnit IsCellOccupied(Vector2 gridPosition)
         {
             var gridPositionI = Utils.WorldToGrid(gridPosition, CellSize);
             if (OccupiedCells.ContainsValue(gridPositionI))
             {
+                //TODO : this is really inefficient, we should have a reverse lookup dictionary for grid position to unit?
+                //return BaseGameObject instead of BaseUnit
                 var unit = OccupiedCells.FirstOrDefault(_ => _.Value == gridPositionI);
                 return unit.Key as BaseUnit;
                 //return OccupiedCells.Where(_ => _.Value == gridPositionI).Select(_ => _.Key) as BaseUnit;

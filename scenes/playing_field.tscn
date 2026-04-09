@@ -1,23 +1,93 @@
-[gd_scene load_steps=13 format=3 uid="uid://da6jg3kc6ks4h"]
+[gd_scene load_steps=30 format=3 uid="uid://da6jg3kc6ks4h"]
 
-[ext_resource type="Script" path="res://scripts/Systems/GameManager.cs" id="1_7hsjk"]
+[ext_resource type="Script" path="res://scripts/Systems/GameWorld.cs" id="1_kp10e"]
 [ext_resource type="Script" path="res://scripts/Systems/GridManager.cs" id="1_wlwot"]
 [ext_resource type="Texture2D" uid="uid://bpqiu4coyh8yq" path="res://resources/dungeonMap2.jpg" id="1_yudmw"]
 [ext_resource type="PackedScene" uid="uid://5sulucl7l1qb" path="res://scenes/BaseUnit.tscn" id="3_32xmt"]
+[ext_resource type="Script" path="res://scripts/Systems/SpawnManager.cs" id="3_aif4k"]
 [ext_resource type="Script" path="res://scripts/Systems/GridPathfinding.cs" id="4_af3rw"]
 [ext_resource type="Texture2D" uid="uid://d15vtd85lskhu" path="res://resources/player/playerSun_yellow.png" id="5_hnb7m"]
+[ext_resource type="Resource" uid="uid://cs6c7ucdgpmui" path="res://resources/Units/warrior.tres" id="5_o8xnj"]
 [ext_resource type="Script" path="res://scripts/UI/MovementRangeVisualizer.cs" id="5_u243p"]
 [ext_resource type="PackedScene" uid="uid://bmcndrjwodj8c" path="res://scenes/UI/ui.tscn" id="5_yidkf"]
 [ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="6_ejl3t"]
 [ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/player/playerSun_red.png" id="7_wrog3"]
 [ext_resource type="Texture2D" uid="uid://n1ika0lfb03u" path="res://resources/player/playerSun_loose2.png" id="8_hjfv3"]
+[ext_resource type="PackedScene" uid="uid://d34f8pbvjv7ks" path="res://scenes/army_stack.tscn" id="9_knkyv"]
+[ext_resource type="Script" path="res://scripts/Combat/Damage.cs" id="10_icvfm"]
+[ext_resource type="Resource" uid="uid://cy561e2gwof2d" path="res://resources/Units/mage.tres" id="11_mydig"]
+[ext_resource type="Script" path="res://scripts/Systems/SelectionManager.cs" id="11_ovvs2"]
+[ext_resource type="Resource" uid="uid://decms4y4t3tt8" path="res://resources/Units/archer.tres" id="12_03vc4"]
 [ext_resource type="PackedScene" uid="uid://binif11abscup" path="res://scenes/Systems/CameraRig.tscn" id="12_55xcr"]
+[ext_resource type="Script" path="res://scripts/Systems/CombatManager.cs" id="12_yo6lp"]
+
+[sub_resource type="Resource" id="Resource_1ebek"]
+script = ExtResource("10_icvfm")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_m5jfy"]
+script = ExtResource("10_icvfm")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_dpo61"]
+script = ExtResource("10_icvfm")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_qrcjb"]
+script = ExtResource("10_icvfm")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_xo1h0"]
+script = ExtResource("10_icvfm")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_6euq4"]
+script = ExtResource("10_icvfm")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_egrdo"]
+script = ExtResource("10_icvfm")
+DamageCount = 1
+DamageSides = 6
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_oumoi"]
+script = ExtResource("10_icvfm")
+DamageCount = 3
+DamageSides = 10
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_no0qg"]
+script = ExtResource("10_icvfm")
+DamageCount = 3
+DamageSides = 8
+DamageModifier = 0
+dmgType = 0
 
 [node name="Main" type="Node2D"]
 
-[node name="GameWorld" type="Node2D" parent="." node_paths=PackedStringArray("Objects")]
-script = ExtResource("1_7hsjk")
-Objects = [NodePath("Units/BaseUnit"), NodePath("Units/BaseUnit2"), NodePath("Units/BaseUnit3"), NodePath("Units/BaseUnit4"), NodePath("Units/BaseUnit5")]
+[node name="GameWorld" type="Node2D" parent="."]
+script = ExtResource("1_kp10e")
 
 [node name="Map" type="Node2D" parent="GameWorld" node_paths=PackedStringArray("MapSprite", "Areas")]
 script = ExtResource("1_wlwot")
@@ -65,12 +135,41 @@ offset_bottom = 593.0
 UnitName = "Player"
 UnitTeam = 1
 AttackRange = 32
+Data = ExtResource("5_o8xnj")
 NeutralSprite = ExtResource("5_hnb7m")
 PlayerSprite = ExtResource("6_ejl3t")
 EnemySprite = ExtResource("7_wrog3")
 AllySprite = ExtResource("8_hjfv3")
+Dmg = SubResource("Resource_1ebek")
+
+[node name="BaseUnit7" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
+UnitName = "Player"
+UnitTeam = 1
+AttackRange = 32
+Data = ExtResource("11_mydig")
+NeutralSprite = ExtResource("5_hnb7m")
+PlayerSprite = ExtResource("6_ejl3t")
+EnemySprite = ExtResource("7_wrog3")
+AllySprite = ExtResource("8_hjfv3")
+Dmg = SubResource("Resource_m5jfy")
 
 [node name="BaseUnit2" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
+position = Vector2(6, 339)
+UnitName = "Player2"
+UnitTeam = 1
+AttackRange = 32
+Data = ExtResource("12_03vc4")
+NeutralSprite = ExtResource("5_hnb7m")
+PlayerSprite = ExtResource("6_ejl3t")
+EnemySprite = ExtResource("7_wrog3")
+AllySprite = ExtResource("8_hjfv3")
+MaxHealth = 50
+Attack = 8
+Defense = 3
+MovementRange = 3
+Dmg = SubResource("Resource_dpo61")
+
+[node name="BaseUnit6" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
 position = Vector2(6, 339)
 UnitName = "Player2"
 UnitTeam = 1
@@ -79,6 +178,11 @@ NeutralSprite = ExtResource("5_hnb7m")
 PlayerSprite = ExtResource("6_ejl3t")
 EnemySprite = ExtResource("7_wrog3")
 AllySprite = ExtResource("8_hjfv3")
+MaxHealth = 50
+Attack = 8
+Defense = 3
+MovementRange = 3
+Dmg = SubResource("Resource_qrcjb")
 
 [node name="BaseUnit3" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
 UnitName = "Enemy"
@@ -87,16 +191,21 @@ NeutralSprite = ExtResource("5_hnb7m")
 PlayerSprite = ExtResource("6_ejl3t")
 EnemySprite = ExtResource("7_wrog3")
 AllySprite = ExtResource("8_hjfv3")
-MaxHealth = 30
+Attack = 8
+Dmg = SubResource("Resource_xo1h0")
+ExperienceReward = 30
 
 [node name="BaseUnit4" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
+priority = 30
 UnitName = "Enemy2"
 UnitTeam = 2
 NeutralSprite = ExtResource("5_hnb7m")
 PlayerSprite = ExtResource("6_ejl3t")
 EnemySprite = ExtResource("7_wrog3")
 AllySprite = ExtResource("8_hjfv3")
-MaxHealth = 35
+Defense = 4
+Dmg = SubResource("Resource_6euq4")
+ExperienceReward = 30
 
 [node name="BaseUnit5" parent="GameWorld/Units" instance=ExtResource("3_32xmt")]
 UnitName = "Enemy3"
@@ -105,11 +214,45 @@ NeutralSprite = ExtResource("5_hnb7m")
 PlayerSprite = ExtResource("6_ejl3t")
 EnemySprite = ExtResource("7_wrog3")
 AllySprite = ExtResource("8_hjfv3")
+Dmg = SubResource("Resource_egrdo")
+ExperienceReward = 30
+
+[node name="ArmyStack" parent="GameWorld/Units" instance=ExtResource("9_knkyv")]
+StartingUnits = Array[PackedScene]([ExtResource("3_32xmt"), ExtResource("3_32xmt"), ExtResource("3_32xmt")])
+UnitName = "UnitGroup"
+UnitTeam = 2
+EnemySprite = ExtResource("7_wrog3")
+MaxHealth = 85
+Attack = 9
+Defense = 4
+Dmg = SubResource("Resource_oumoi")
+ExperienceReward = 100
+
+[node name="ArmyStack2" parent="GameWorld/Units" instance=ExtResource("9_knkyv")]
+StartingUnits = Array[PackedScene]([ExtResource("3_32xmt"), ExtResource("3_32xmt"), ExtResource("3_32xmt")])
+UnitName = "UnitGroup"
+UnitTeam = 1
+PlayerSprite = ExtResource("6_ejl3t")
+Defense = 6
+MovementRange = 10
+Dmg = SubResource("Resource_no0qg")
 
 [node name="GridPathfinding" type="Node2D" parent="GameWorld"]
 script = ExtResource("4_af3rw")
 
 [node name="Objects" type="Node2D" parent="GameWorld"]
+
+[node name="Managers" type="Node2D" parent="GameWorld"]
+
+[node name="SpawnManager" type="Node2D" parent="GameWorld/Managers" node_paths=PackedStringArray("GameObjects")]
+script = ExtResource("3_aif4k")
+GameObjects = [NodePath("../../Units")]
+
+[node name="SelectionManager" type="Node2D" parent="GameWorld/Managers"]
+script = ExtResource("11_ovvs2")
+
+[node name="CombatManager" type="Node2D" parent="GameWorld/Managers"]
+script = ExtResource("12_yo6lp")
 
 [node name="UI" parent="." instance=ExtResource("5_yidkf")]
 

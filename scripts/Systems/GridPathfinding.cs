@@ -134,48 +134,6 @@ public partial class GridPathfinding : Node2D
 
     public override void _Input(InputEvent @event)
     {
-        //if (@event is InputEventMouseMotion)
-        //{
-        //    // drawMovement();
-        //}
-
-        //if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
-        //{
-        //    Vector2 worldPos = GetGlobalMousePosition();
-        //    Vector2I gridPos = WorldToGrid(worldPos);
-
-
-
-        //    if (IsValidGridPosition(gridPos) && _walkableGrid[gridPos.X, gridPos.Y])
-        //    {
-        //        // Find path from current position to clicked position
-        //        // Vector2I startPos = WorldToGrid(GetGlobalPosition()); // Assuming this node represents the player
-        //        Vector2I startPos = WorldToGrid(GetGlobalMousePosition()); // Assuming this node represents the player
-        //        FindPath(startPos, gridPos);
-        //    }
-
-        //    if (_currentPath.Count > 0 && !_isMoving)
-        //    {
-        //        // Move player along the path
-        //        _isMoving = true;
-        //        _movementPath.Clear();
-
-        //        foreach (var ghost in _pathGhosts)
-        //        {
-        //            if (ghost.Modulate == _ghostColor)
-        //                _movementPath.Add(ghost.Position);
-        //        }
-
-        //        // movementsLeft = movementPoints; // Reset movement points for the new path
-        //        Movements = new Vector2[1][]; // Initialize movements array
-        //        Movements[0] = GetWorldPath().ToArray(); // Store the path in movements
-        //                                                 // splitMovement(movements[0]);
-        //    }
-        //    else
-        //    {
-        //        GD.Print("No valid path found!");
-        //    }
-        //}
         if (Input.IsActionJustPressed("grid"))
         {
             showGrid = !showGrid;
@@ -198,15 +156,17 @@ public partial class GridPathfinding : Node2D
 
     }
 
-    public Vector2[] GetMovementPath(BaseUnit player)
+    public Vector2[] GetMovementPath(BaseUnit player, Vector2 clickedPoint)
     {
 
         //TDOD use camera to get mouse position in world instead of GetGlobalMousePosition
         _player = player; // Set the player reference
-        GD.Print($"GridPathfinding: Calculating movement path for player at {_player.GlobalPosition} wile clicked {GetGlobalMousePosition()}, local positin clicked {GetLocalMousePosition()}");
+        GD.Print($"GridPathfinding: Calculating movement path for player at {_player.GlobalPosition} wile clicked point: {clickedPoint}");
+        
+
 
         Vector2I startGrid = Utils.WorldToGrid(_player.Position, _gridManager.GetCellSize());
-        Vector2I endGrid = Utils.WorldToGrid(GetLocalMousePosition(), _gridManager.GetCellSize());
+        Vector2I endGrid = Utils.WorldToGrid(clickedPoint, _gridManager.GetCellSize());
 
         GD.Print($"end point position: {Utils.GridToWorld(endGrid, _gridManager.GetCellSize())}");
 
@@ -251,27 +211,6 @@ public partial class GridPathfinding : Node2D
         //show units as points on grid
         if (showUnits)
             ShowUnits();
-
-
-        //TODO check if this is needed
-        //// Draw currently calculated path on top
-        //if (_currentPath.Count > 1)
-        //{
-        //    for (int i = 0; i < _currentPath.Count - 1; i++)
-        //    {
-        //        var start = Utils.GridToWorld(_currentPath[i], cellSize);
-        //        var end = Utils.GridToWorld(_currentPath[i + 1], cellSize);
-        //        DrawLine(start, end, PathColor, 4);
-        //    }
-        //}
-
-        //foreach (var ghost in _pathGhosts)
-        //{
-        //    DrawTexture(ghost.Texture, ghost.GlobalPosition - (ghost.Texture.GetSize() * ghost.Scale) / 2, ghost.Modulate);
-        //}
-
-
-
     }
 
     // Method to get the current path (for player movement)

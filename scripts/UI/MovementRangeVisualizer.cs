@@ -1,14 +1,14 @@
+using dot_battle_signal_bus.scripts;
 using dot_battle_signal_bus.scripts.Utils;
 using Godot;
 using Godot.Collections;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public partial class MovementRangeVisualizer : Node2D
 {
-     private int _gridWidth = 50;
-     private int _gridHeight = 50;
+    private int _gridWidth = 50;
+    private int _gridHeight = 50;
     [Export] public int CellSize = 32;
     [Export] public Color WalkableColor = Colors.Green;
     [Export] public Color UnwalkableColor = Colors.Red;
@@ -28,15 +28,13 @@ public partial class MovementRangeVisualizer : Node2D
     private BaseUnit _player;
 
     //movement variables
-    public int MovementPoints = 6;
     public Vector2[][] Movements;
-    public int MovementsLeft = 6;
     private bool _isMoving = false;
     private List<Vector2> _movementPath = new List<Vector2>();
 
     // Ghost units for path visualization
-    private List<Sprite2D> _pathGhosts = new List<Sprite2D>();
-    private const float GHOST_SCALE = 0.6f; // Smaller than original unit
+    private List<TextureRect> _pathGhosts = new List<TextureRect>();
+    private const float GHOST_SCALE = 0.3f; // Smaller than original unit
     private const float GHOST_ALPHA = 0.5f; // Semi-transparent
     private Color _ghostColor = Colors.Green; // Default ghost color
 
@@ -58,22 +56,17 @@ public partial class MovementRangeVisualizer : Node2D
 
     public override void _Ready()
     {
-        //if (Areas == null)
-        //{
-        //    GD.PrintErr("ColorRect is not assigned! Please assign it in the inspector.");
-        //    return;
-        //}
-
-        //_player = GetNode<BaseUnit>("BaseUnit"); // Adjust the path to your player node
-
-        //_gridHeight = MapSprite.Texture.GetHeight();
-        //_gridWidth = MapSprite.Texture.GetWidth();
         _gridOffset = Vector2I.Zero; // Adjust if your grid doesn't start at (0,0)
         _ghostColor.A = GHOST_ALPHA; // Set ghost color transparency
-        //SetupGrid();
-        //SetupWalkableAreas();
+        SignalBus.Instance.UnitDeselected += Deselected;
+        SignalBus.Instance.NextUnitClicked += Deselected;
     }
 
+    private void Deselected(BaseUnit unit)
+    {
+        GD.Print("Unit deselected, clearing path ghosts");
+        ClearPathGhosts();
+    }
 
     private void SetupGrid()
     {
@@ -141,46 +134,6 @@ public partial class MovementRangeVisualizer : Node2D
             ShowGrid = !ShowGrid; // Toggle grid visibility
             QueueRedraw(); // Trigger _Draw to update grid visibility
         }
-
-        //if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
-        //{
-        //    Vector2 worldPos = GetGlobalMousePosition();
-        //    Vector2I gridPos = Utils.WorldToGrid(worldPos, CellSize);
-
-
-
-        //    if (IsValidGridPosition(gridPos) && _walkableGrid[gridPos.X, gridPos.Y])
-        //    {
-        //        // Find path from current position to clicked position
-        //        // Vector2I startPos = WorldToGrid(GetGlobalPosition()); // Assuming this node represents the player
-        //        Vector2I startPos = Utils.WorldToGrid(GetGlobalMousePosition(),CellSize); // Assuming this node represents the player
-        //        FindPath(startPos, gridPos);
-        //    }
-
-        //    if (_currentPath.Count > 0 && !_isMoving)
-        //    {
-        //        // Move player along the path
-        //        _isMoving = true;
-        //        _movementPath.Clear();
-
-        //        foreach (var ghost in _pathGhosts)
-        //        {
-        //            if (ghost.Modulate == _ghostColor)
-        //                _movementPath.Add(ghost.Position);
-        //        }
-
-        //        // movementsLeft = movementPoints; // Reset movement points for the new path
-        //        Movements = new Vector2[1][]; // Initialize movements array
-        //        Movements[0] = GetWorldPath().ToArray(); // Store the path in movements
-        //                                                 // splitMovement(movements[0]);
-        //    }
-        //    else
-        //    {
-        //        GD.Print("No valid path found!");
-        //    }
-        //}
-
-
     }
 
     public void DisplayMovementRange(BaseUnit selectedUnit)
@@ -189,7 +142,7 @@ public partial class MovementRangeVisualizer : Node2D
         Vector2I endGrid = Utils.WorldToGrid(GetGlobalMousePosition(), CellSize);
 
         // Calculate path between grid positions
-            PathPoints = _astarGrid.GetIdPath(startGrid, endGrid).Slice(1);
+        PathPoints = _astarGrid.GetIdPath(startGrid, endGrid).Slice(1);
 
         // Convert grid coordinates to world coordinates
         var pixelPath = new List<Vector2>();
@@ -199,13 +152,16 @@ public partial class MovementRangeVisualizer : Node2D
             pixelPath.Add(worldPos);
         }
 
-       // splitMovement(pixelPath.ToArray());
+        // splitMovement(pixelPath.ToArray());
     }
 
     public void ShowMovement(Vector2[] newPath, BaseUnit baseUnit)
     {
+        GD.Print($"showing movements for {baseUnit}, number of movements: {newPath.Length}");
+
         _player = baseUnit;
-        MovementsLeft = _player.MovementsLeft;
+        if (_player == null)
+            return;
         ClearPathGhosts();
 
         List<Vector2> tempListOfPoints = new List<Vector2>();
@@ -213,24 +169,24 @@ public partial class MovementRangeVisualizer : Node2D
 
         if (Movements.Length > 0)
         {
-                var currentTurnPoints = Movements[0].Chunk(MovementsLeft + 1).ToArray()[0];
+            var currentTurnPoints = Movements[0].Chunk(_player.MovementsLeft + 1).ToArray()[0];
             // Current turn's available moves
-            if (MovementsLeft > 0)
+            if (_player.MovementsLeft > 0)
             {
                 foreach (var point in currentTurnPoints.Skip(1)) // Skip first point as it's the unit's position
                 {
                     CreateGhostUnit(point, Colors.Green);
                 }
             }
-                // Remaining moves in current turn (if any)
-                if (Movements[0].Length > currentTurnPoints.Length)
+            // Remaining moves in current turn (if any)
+            if (Movements[0].Length > currentTurnPoints.Length)
+            {
+                var remainingPoints = Movements[0].Skip(currentTurnPoints.Length);
+                foreach (var point in remainingPoints)
                 {
-                    var remainingPoints = Movements[0].Skip(currentTurnPoints.Length);
-                    foreach (var point in remainingPoints)
-                    {
-                        CreateGhostUnit(point, Colors.Red);
-                    }
+                    CreateGhostUnit(point, Colors.Red);
                 }
+            }
 
             // Handle future turns
             for (int i = 1; i < Movements.Length; i++)
@@ -252,7 +208,7 @@ public partial class MovementRangeVisualizer : Node2D
     {
         _currentPath.Clear();
 
-        if (!Utils.IsValidGridPosition(start, _gridWidth, _gridHeight) || !Utils.IsValidGridPosition(end,_gridWidth,_gridHeight))
+        if (!Utils.IsValidGridPosition(start, _gridWidth, _gridHeight) || !Utils.IsValidGridPosition(end, _gridWidth, _gridHeight))
             return;
 
         if (!_walkableGrid[start.X, start.Y] || !_walkableGrid[end.X, end.Y])
@@ -274,7 +230,7 @@ public partial class MovementRangeVisualizer : Node2D
         }
     }
 
-  
+
 
     public override void _Draw()
     {
@@ -333,22 +289,30 @@ public partial class MovementRangeVisualizer : Node2D
 
     private void CreateGhostUnit(Vector2 position, Color color)
     {
-        Sprite2D ghost = new Sprite2D();
+        TextureRect ghost = new TextureRect();
         // Parent ghosts to the world so they follow camera movement/zoom
         var world = GetTree().Root.GetNode<Node2D>("/root/Main/GameWorld");
         world.AddChild(ghost);
 
         // Copy the unit's sprite properties
-        Sprite2D unitSprite = _player.GetSprite();
+        TextureRect unitSprite = _player.Portrait;
         ghost.Texture = unitSprite.Texture;
-        ghost.Hframes = unitSprite.Hframes;
-        ghost.Vframes = unitSprite.Vframes;
-        ghost.Frame = unitSprite.Frame;
+        ghost.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+        ghost.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+
+        //old sprite2d code
+        //ghost.Hframes = unitSprite.Hframes;
+        //ghost.Vframes = unitSprite.Vframes;
+        //ghost.Frame = unitSprite.Frame;
+        //ghost.Scale = unitSprite.Scale * GHOST_SCALE;
+
 
         // Position and scale the ghost
-        ghost.Position = position;
-        ghost.Scale = unitSprite.Scale * GHOST_SCALE;
-
+        Vector2 originalSize = unitSprite.Size ;
+        ghost.Size = originalSize * GHOST_SCALE  ;
+        ghost.Scale = new Vector2(GHOST_SCALE,GHOST_SCALE); // Keep the same scale as the original unit
+        ghost.GlobalPosition = position;
+        GD.Print($"Creating ghost at {position} with size {ghost.Size} and scale {ghost.Scale}");
         // Set transparency and color
         color.A = GHOST_ALPHA;
         ghost.Modulate = color;

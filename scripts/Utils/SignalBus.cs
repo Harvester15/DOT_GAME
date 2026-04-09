@@ -1,5 +1,7 @@
 ﻿// SignalBus.cs
+using dot_battle_signal_bus.scripts.Combat;
 using Godot;
+using Godot.Collections;
 using System.Collections.Generic;
 
 namespace dot_battle_signal_bus.scripts
@@ -29,19 +31,40 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void UnitAttackedEventHandler(BaseUnit attacker, BaseUnit target);
         [Signal] public delegate void UnitDefendEventHandler(BaseUnit attacker, BaseUnit target);
         [Signal] public delegate void UnitDiedEventHandler(BaseUnit unit);
+        [Signal] public delegate void UnitLowHealthEventHandler(BaseUnit unit);
         [Signal] public delegate void UnitHealthChangedEventHandler(BaseUnit unit, string status, bool isActive);
-       // [Signal] public delegate void AbilityUsedEventHandler(Ability ability, player caster, player target);
+        // [Signal] public delegate void AbilityUsedEventHandler(Ability ability, player caster, player target);
+        [Signal] public delegate void UnitsGroupedEventHandler(ArmyStack armyStack);
+        [Signal] public delegate void NextUnitClickedEventHandler(BaseUnit unit);
 
+        [Signal] public delegate void CombatResolvedEventHandler(CombatResult result);
         // UI signals
         [Signal] public delegate void ShowUnitInfoEventHandler(BaseUnit unit);
+        [Signal] public delegate void UnitEnteredAllyEventHandler(BaseUnit unitEntered, BaseUnit enteringUnit);
+        [Signal] public delegate void UnitExitedAllyEventHandler(BaseUnit unitExited, BaseUnit exitingUnit);
         [Signal] public delegate void HideUnitInfoEventHandler();
         [Signal] public delegate void ShowTileInfoEventHandler(Vector2 position);
         [Signal] public delegate void HideTileInfoEventHandler();
 
-        //Turn management signals
-        [Signal] public delegate void TurnPhaseChangedEventHandler(TurnManager.TurnPhase newPhase);
+        [Signal] public delegate void MapPointClickedEventHandler(Vector2 position);
+
+        //turn manager is an autoload, not managed by signalbus
+        ////Turn management signals
+        //[Signal] public delegate void StateChangedEventHandler(TurnManager.GameState newPhase);
+        //[Signal] public delegate void TurnChangedEventHandler(int turnNumber);
+
+        //world events
+        [Signal] public delegate void WorldInitializedEventHandler();
 
 
+        //combat
+        [Signal] public delegate void CombatStartedEventHandler(Array<BaseUnit> player, Array<BaseUnit> enemy);
+        [Signal] public delegate void CombatEndedEventHandler(CombatResult combatResult);
+        [Signal] public delegate void ShowCombatReportEventHandler(CombatResult combatResult);
+        [Signal] public delegate void CombatLogEventHandler(string combatReport, CombatSlot attacker, CombatSlot defender);
+        [Signal] public delegate void CriticalHitEventHandler(BaseUnit attacker, BaseUnit target, int damage);
+        [Signal] public delegate void UnitKilledEventHandler(BaseUnit killer, BaseUnit victim);
+        [Signal] public delegate void BattleReportClosedEventHandler();
 
         // To register the singleton in Godot's autoload:
         public override void _Ready()

@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://mvk62gkja5j2"]
+
+[ext_resource type="Texture2D" uid="uid://oeg2g1q6j0ju" path="res://resources/combat/scroll-removebg-preview.png" id="1_w750m"]
+[ext_resource type="Script" path="res://scripts/UI/BattleReport.cs" id="2_ik42x"]
+[ext_resource type="Texture2D" uid="uid://b1bpxid3vtweq" path="res://resources/btns/x.png" id="3_6gfv3"]
+[ext_resource type="Texture2D" uid="uid://d1hd6dn8kl0px" path="res://resources/btns/x_clickewd.png" id="4_y4o8u"]
+[ext_resource type="Texture2D" uid="uid://dnmsb0xqolues" path="res://resources/btns/x_hover.png" id="5_mqufl"]
+
+[node name="BattleReport" type="CanvasLayer"]
+script = ExtResource("2_ik42x")
+
+[node name="BattleReport" type="TextureRect" parent="."]
+offset_right = 675.0
+offset_bottom = 492.0
+texture = ExtResource("1_w750m")
+
+[node name="Label" type="Label" parent="BattleReport"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 38.0
+offset_right = 377.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Battle Report"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BattleReport"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 109.0
+offset_right = 546.0
+offset_bottom = 351.0
+
+[node name="XBtn" type="TextureButton" parent="BattleReport"]
+layout_mode = 0
+offset_left = 585.0
+offset_top = 39.0
+offset_right = 685.0
+offset_bottom = 140.0
+scale = Vector2(0.35, 0.35)
+tooltip_text = "close report"
+action_mode = 0
+texture_normal = ExtResource("3_6gfv3")
+texture_pressed = ExtResource("4_y4o8u")
+texture_hover = ExtResource("5_mqufl")
+stretch_mode = 3
+
+[node name="XPLabel" type="Label" parent="BattleReport"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 104.0
+offset_right = 133.0
+offset_bottom = 127.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "XP"
+
+[node name="KillsLabel" type="Label" parent="BattleReport"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 147.0
+offset_right = 133.0
+offset_bottom = 170.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Units Killed"
+
+[node name="GridContainer" type="GridContainer" parent="BattleReport"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 177.0
+offset_right = 136.0
+offset_bottom = 309.0
+
+[connection signal="pressed" from="BattleReport/XBtn" to="." method="_on_x_btn_pressed"]

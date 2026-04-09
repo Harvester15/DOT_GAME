@@ -1,76 +1,356 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmcndrjwodj8c"]
+[gd_scene load_steps=26 format=3 uid="uid://bmcndrjwodj8c"]
 
+[ext_resource type="Script" path="res://scripts/UI/TurnIcon.cs" id="1_0foxo"]
 [ext_resource type="Script" path="res://scripts/UI/UnitInfo.cs" id="1_pkmnq"]
+[ext_resource type="Texture2D" uid="uid://di81p7mnkv34k" path="res://resources/btns/next_unit.png" id="2_1bd0r"]
+[ext_resource type="Script" path="res://scripts/UI/UnitControlPanel.cs" id="2_r8lys"]
 [ext_resource type="Texture2D" uid="uid://c2uqyd04ks0fn" path="res://resources/unitinfo/nametag-removebg-preview.png" id="2_ra4c0"]
+[ext_resource type="Texture2D" uid="uid://d15vtd85lskhu" path="res://resources/player/playerSun_yellow.png" id="2_tb6cy"]
+[ext_resource type="Texture2D" uid="uid://d3ty6iy8obobp" path="res://resources/btns/group.png" id="3_21dvs"]
+[ext_resource type="Texture2D" uid="uid://cb4wln1ahl6k6" path="res://resources/btns/next_unit_clicked.png" id="3_ng7ue"]
 [ext_resource type="Texture2D" uid="uid://cf4w6767impk6" path="res://resources/unitinfo/health.png" id="3_siicm"]
+[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/player/playerSun_red.png" id="4_kvgtq"]
+[ext_resource type="Texture2D" uid="uid://be0m54d7xqsma" path="res://resources/btns/next_unit_hover.png" id="4_r1j1m"]
 [ext_resource type="Texture2D" uid="uid://b2yhn72sxkdc6" path="res://resources/unitinfo/movement.png" id="4_rr2v0"]
+[ext_resource type="Texture2D" uid="uid://d2ot48jsmmht7" path="res://resources/btns/group_clicked.png" id="4_y2wyx"]
+[ext_resource type="Texture2D" uid="uid://c30ya3x8cv51b" path="res://resources/btns/group_hover.png" id="5_wm5x8"]
+[ext_resource type="Texture2D" uid="uid://h28vv5g5mmgs" path="res://resources/btns/ungroup.png" id="6_30qx5"]
+[ext_resource type="Texture2D" uid="uid://cfk31iff2xv08" path="res://resources/btns/ungroup_clicked.png" id="7_q0p1w"]
+[ext_resource type="Texture2D" uid="uid://dcp7731pjcyql" path="res://resources/btns/ungroup_hover.png" id="8_2qxkw"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="13_7bjxy"]
+[ext_resource type="Texture2D" uid="uid://dfk8phg3i2ryc" path="res://resources/btns/endturn.png" id="15_b5ji1"]
+[ext_resource type="Texture2D" uid="uid://dw2evj1v1tuc0" path="res://resources/btns/endturn_clicked.png" id="16_jlvwk"]
+[ext_resource type="Texture2D" uid="uid://dti3s8588kt4" path="res://resources/btns/endturn_hover.png" id="17_mj444"]
+[ext_resource type="Texture2D" uid="uid://bssjtq68et7du" path="res://resources/unitinfo/defense.png" id="22_knh17"]
+[ext_resource type="Texture2D" uid="uid://7wcjnawufnbe" path="res://resources/unitinfo/bubble.png" id="22_kpivc"]
+[ext_resource type="Script" path="res://scripts/UI/CombatPanel.cs" id="22_wtdhf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjgjl"]
+bg_color = Color(0, 1, 0, 1)
 
 [node name="UI" type="CanvasLayer"]
 
 [node name="TopBar" type="HBoxContainer" parent="."]
+offset_right = 111.0
+offset_bottom = 119.0
+
+[node name="TurnPanel" type="Panel" parent="."]
+offset_right = 109.0
+offset_bottom = 115.0
+script = ExtResource("1_0foxo")
+NeutralSprite = ExtResource("2_tb6cy")
+PlayerSprite = ExtResource("13_7bjxy")
+EnemySprite = ExtResource("4_kvgtq")
+
+[node name="Label" type="Label" parent="TurnPanel"]
+layout_mode = 0
+offset_right = 63.0
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 16
+text = "Turn
+"
+
+[node name="TurnNumberLabel" type="Label" parent="TurnPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 71.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 16
+text = "Turn 1"
+
+[node name="TurnIcon" type="TextureRect" parent="TurnPanel"]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 60.0
+offset_right = 94.0
+offset_bottom = 100.0
+expand_mode = 2
+stretch_mode = 4
+
+[node name="UnitControlPanel" type="Panel" parent="."]
+offset_left = 1.0
+offset_top = 487.0
+offset_right = 158.0
+offset_bottom = 705.0
+scale = Vector2(0.765511, 0.740286)
+script = ExtResource("2_r8lys")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UnitControlPanel"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+scale = Vector2(0.635944, 0.532752)
 
-[node name="HeroPanel" type="Panel" parent="."]
-offset_right = 55.0
-offset_bottom = 59.0
+[node name="GridContainer" type="GridContainer" parent="UnitControlPanel/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+columns = 2
+
+[node name="GroupUnitsBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "group units"
+action_mode = 0
+texture_normal = ExtResource("3_21dvs")
+texture_pressed = ExtResource("4_y2wyx")
+texture_hover = ExtResource("5_wm5x8")
+
+[node name="UnGroupUnitsBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "ungroup units"
+action_mode = 0
+texture_normal = ExtResource("6_30qx5")
+texture_pressed = ExtResource("7_q0p1w")
+texture_hover = ExtResource("8_2qxkw")
+
+[node name="NextUnitBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "Next Unit"
+action_mode = 0
+texture_normal = ExtResource("2_1bd0r")
+texture_pressed = ExtResource("3_ng7ue")
+texture_hover = ExtResource("4_r1j1m")
+
+[node name="EndTurnBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "End Turn"
+action_mode = 0
+texture_normal = ExtResource("15_b5ji1")
+texture_pressed = ExtResource("16_jlvwk")
+texture_hover = ExtResource("17_mj444")
 
 [node name="UnitInfo" type="PanelContainer" parent="."]
 anchors_preset = -1
-anchor_left = 0.921
-anchor_top = 0.633
+anchor_left = 0.919
+anchor_top = 0.761
 anchor_right = 0.99
 anchor_bottom = 0.978
-offset_left = -14.9921
-offset_top = -14.184
+offset_left = -12.6881
+offset_top = -97.128
 offset_right = 11.5199
 offset_bottom = 12.256
 script = ExtResource("1_pkmnq")
 
-[node name="MarginContainer" type="MarginContainer" parent="UnitInfo"]
+[node name="SingleUnitContainer" type="MarginContainer" parent="UnitInfo"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UnitInfo/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UnitInfo/SingleUnitContainer"]
 layout_mode = 2
 
-[node name="Portrait" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer"]
+[node name="Portrait" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer"]
 layout_mode = 2
 expand_mode = 4
 
-[node name="GridContainer" type="GridContainer" parent="UnitInfo/MarginContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="UnitInfo/SingleUnitContainer/VBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="NameTag" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+[node name="NameTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 texture = ExtResource("2_ra4c0")
 expand_mode = 2
 
-[node name="UnitName" type="Label" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+[node name="UnitName" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HearthTag" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+[node name="HearthTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 texture = ExtResource("3_siicm")
 expand_mode = 2
 
-[node name="HealthPoints" type="Label" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+[node name="HealthPoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Hit
 "
 
-[node name="MovementTag" type="TextureRect" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+[node name="MovementTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 texture = ExtResource("4_rr2v0")
 expand_mode = 2
 
-[node name="MovementPoints" type="Label" parent="UnitInfo/MarginContainer/VBoxContainer/GridContainer"]
+[node name="MovementPoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Hit
 "
+
+[node name="DefenseTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("22_knh17")
+expand_mode = 2
+
+[node name="DefensePoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="AttackTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("22_knh17")
+expand_mode = 2
+
+[node name="AttackPoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="GroupContainer" type="VBoxContainer" parent="UnitInfo"]
+visible = false
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="UnitInfo/GroupContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="MovementTag" type="TextureRect" parent="UnitInfo/GroupContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("4_rr2v0")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="MovementPoints" type="Label" parent="UnitInfo/GroupContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="GroupLabel" type="Label" parent="UnitInfo/GroupContainer/GridContainer"]
+layout_mode = 2
+text = "ArmyStack:
+
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="UnitInfo/GroupContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UnitInfo/GroupContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="UnitInfo/GroupContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="TextureRect5" type="TextureRect" parent="UnitInfo/GroupContainer/MarginContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("13_7bjxy")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="HealthBar" type="ProgressBar" parent="UnitInfo/GroupContainer/MarginContainer/ScrollContainer/GridContainer/TextureRect5"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_mjgjl")
+value = 100.0
+show_percentage = false
+
+[node name="CombatPanel" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0.647059)
+offset_left = 306.0
+offset_top = 100.0
+offset_right = 957.0
+offset_bottom = 551.0
+script = ExtResource("22_wtdhf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label2" type="Label" parent="CombatPanel"]
+layout_mode = 0
+offset_left = 390.0
+offset_top = 36.0
+offset_right = 540.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0.870588, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Enemy armies
+"
+
+[node name="Label3" type="Label" parent="CombatPanel"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 37.0
+offset_right = 165.0
+offset_bottom = 74.0
+theme_override_font_sizes/font_size = 20
+text = "Your army"
+
+[node name="Label" type="Label" parent="CombatPanel"]
+layout_mode = 2
+offset_left = 40.0
+offset_top = 3.0
+offset_right = 341.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 40
+text = "               Combat"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttackGridContainer" type="GridContainer" parent="CombatPanel"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+offset_left = 54.0
+offset_top = 75.0
+offset_right = 254.0
+offset_bottom = 300.0
+columns = 4
+
+[node name="DefendGridContainer" type="GridContainer" parent="CombatPanel"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 0
+offset_left = 394.0
+offset_top = 72.0
+offset_right = 594.0
+offset_bottom = 297.0
+columns = 4
+
+[node name="CombatLabel" type="RichTextLabel" parent="CombatPanel"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 326.0
+offset_right = 651.0
+offset_bottom = 446.0
+
+[node name="CritialHitRect" type="TextureRect" parent="CombatPanel"]
+visible = false
+layout_mode = 0
+offset_left = 218.0
+offset_top = 125.0
+offset_right = 351.219
+offset_bottom = 238.0
+texture = ExtResource("22_kpivc")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="CombatPanel/CritialHitRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.3
+anchor_bottom = 0.204
+offset_left = 25.0
+offset_top = 50.0
+offset_right = 78.0344
+offset_bottom = 55.948
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Critical Hit"
+
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/GroupUnitsBtn" to="UnitControlPanel" method="_on_group_units_btn_pressed"]
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/UnGroupUnitsBtn" to="UnitControlPanel" method="_on_ungroup_units_btn_pressed"]
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/NextUnitBtn" to="UnitControlPanel" method="_on_next_unit_btn_pressed"]
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/EndTurnBtn" to="UnitControlPanel" method="_on_end_turn_btn_pressed"]
