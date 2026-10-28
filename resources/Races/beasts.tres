@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UnitRace" load_steps=2 format=3 uid="uid://bbsws7x6yyy0x"]
+
+[ext_resource type="Script" path="res://scripts/Actors/Units/UnitRace.cs" id="1_dfv66"]
+
+[resource]
+script = ExtResource("1_dfv66")
+RaceName = "Beasts"
+ImmuneToMindControl = false
+ImmuneToPoison = false
+MagicResistance = 0.0
+IsLiving = true
+MoraleBonus = 0
+BonusInitiative = 0
+BonusAttack = 0
+DamageMultiplier = 1.0

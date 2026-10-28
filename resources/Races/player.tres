@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UnitRace" load_steps=3 format=3 uid="uid://bqff3jlrv6ofn"]
+
+[ext_resource type="Script" path="res://scripts/Actors/Units/UnitRace.cs" id="1_onnjf"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="1_t4ap8"]
+
+[resource]
+script = ExtResource("1_onnjf")
+RaceName = "player"
+RaceIcon = ExtResource("1_t4ap8")
+ImmuneToMindControl = false
+ImmuneToPoison = false
+MagicResistance = 0.0
+IsLiving = true
+MoraleBonus = 0
+BonusInitiative = 0
+BonusAttack = 0
+DamageMultiplier = 1.0

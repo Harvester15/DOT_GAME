@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ShieldData" load_steps=2 format=3 uid="uid://nu6kotjcypwd"]
+
+[ext_resource type="Script" path="res://scripts/Combat/Logic/ShieldData.cs" id="1_oh76p"]
+
+[resource]
+script = ExtResource("1_oh76p")
+MaxShields = 3
+PhysicalDamageReduction = 0.5
+MagicalDamageReduction = 0.5
+ElementalDamageReduction = 0.5
+Element = 1
+Weaknesses = [1]

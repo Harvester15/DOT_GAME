@@ -1,5 +1,7 @@
 using dot_battle_signal_bus.scripts;
 using dot_battle_signal_bus.scripts.Combat;
+using dot_battle_signal_bus.scripts.Combat.Systems;
+using dot_battle_signal_bus.scripts.Systems;
 using Godot;
 using Godot.Collections;
 using System;
@@ -7,20 +9,29 @@ using System.Collections.Generic;
 
 public partial class CombatPanel : Panel
 {
-    private RichTextLabel _combatLabel => GetNode<RichTextLabel>("CombatLabel");
-    private Label _critHitLabel => GetNode<Label>("CritialHitRect");
-    private GridContainer _attackerGrid => GetNode<GridContainer>("AttackGridContainer");
-    private GridContainer _defenderGrid => GetNode<GridContainer>("DefendGridContainer");
-    private TextureRect _critHitRect => GetNode<TextureRect>("CritialHitRect");
+    private CombatManager _combatManager => GetNode<CombatManager>("/root/Main/GameWorld/Managers/CombatManager");
+    private RichTextLabel _combatLabel => GetNode<RichTextLabel>("Homam/CombatLabel");
+    private Label _critHitLabel => GetNode<Label>("Homam/CritialHitRect");
+    private GridContainer _attackerGrid => GetNode<GridContainer>("Homam/AttackGridContainer");
+    private GridContainer _defenderGrid => GetNode<GridContainer>("Homam/DefendGridContainer");
+    private TextureRect _critHitRect => GetNode<TextureRect>("Homam/CritialHitRect");
+
+    private Node2D _homam => GetNode<Node2D>("Homam");
+    private Node2D _darkest => GetNode<Node2D>("Darkest");
+
+    private OptionButton _combatModeSelector => GetNode<OptionButton>("CombatModeSelector");
 
     private System.Collections.Generic.Dictionary<string, Texture2D> _iconKeys = new System.Collections.Generic.Dictionary<string, Texture2D>();
+    private BaseUnit _attacker;
+    private BaseUnit _defender;
 
     public override void _Ready()
     {
         Visible = false; // Hide the combat panel by default
         // Connect to global signals
         SignalBus.Instance.UnitAttacked += OnUnitAttacked;
-        SignalBus.Instance.CombatStarted += OnCombatStarted;
+        //SignalBus.Instance.CombatModeSelected += OnCombatMode;
+        //SignalBus.Instance.CombatModeSelected += OnCombatStarted;
         SignalBus.Instance.CombatEnded += OnCombatEnded;
         SignalBus.Instance.CriticalHit += OnCriticalHit;
         SignalBus.Instance.CombatLog += OnCombatLog;
@@ -122,13 +133,13 @@ public partial class CombatPanel : Panel
         foreach (var child in children)
         { _defenderGrid.RemoveChild(child); }
 
+
     }
 
     private void OnCombatStarted(Array<BaseUnit> player, Array<BaseUnit> enemy)
     {
-        GD.Print($"CombatPanel received CombatStarted signal: {player.Count} player units vs {enemy.Count} enemy units");
-        Visible = true;
-
+        
+   
         foreach (var unit in player)
         {
             CombatSlot combatSlot = new CombatSlot
@@ -142,11 +153,6 @@ public partial class CombatPanel : Panel
             var bar = combatSlot.Portrait.GetChildren();
             GD.Print($"getting the potrait children {bar}, # {bar.Count}");
             combatSlot.Portrait.RemoveChild(bar[0]);
-            //TextureRect textureRect = unit.Portrait.Duplicate() as TextureRect;
-            //textureRect.CustomMinimumSize = new Vector2(50, 50);
-            //textureRect.ExpandMode = TextureRect.ExpandModeEnum.FitHeightProportional;
-            //textureRect.StretchMode = TextureRect.StretchModeEnum.KeepAspect;
-            //textureRect.GetNode<ProgressBar>("HealthBar").Visible = false;
             _attackerGrid.AddChild(combatSlot);
 
             if (combatSlot.GetChildCount() == 0)
@@ -167,27 +173,44 @@ public partial class CombatPanel : Panel
             var bar = combatSlot.Portrait.GetChildren();
             GD.Print($"getting the potrait children {bar}, # {bar.Count}");
             combatSlot.Portrait.RemoveChild(bar[0]);
-            //TextureRect textureRect = unit.Portrait.Duplicate() as TextureRect;
-            //textureRect.CustomMinimumSize = new Vector2(50, 50);
-            //textureRect.ExpandMode = TextureRect.ExpandModeEnum.FitHeightProportional;
-            //textureRect.StretchMode = TextureRect.StretchModeEnum.KeepAspect;
-            //textureRect.GetNode<ProgressBar>("HealthBar").Visible = false;
             _defenderGrid.AddChild(combatSlot);
         }
         _combatLabel.Text = $"Combat Started: {player.Count} player units vs {enemy.Count} enemy units";
 
     }
 
+    public void _on_combat_mode_selected (int index)
+    {
+        //TODO implement combat mode selection (e.g. normal, aggressive, defensive, etc.)
+        GD.Print($"Combat mode selected: {index}");
+        switch (index)
+        {
+            case 0: _combatManager.SetCombatSystem(new WarlordsCombatSystem()); break;
+            case 1: _combatManager.SetCombatSystem(new DarkestCombatSystem()); break;
+            //case 2: _combatManager.SetCombatSystem(new GridCombatSystem()); break;
+        }
+        AddChild(_combatManager.combatSystem as Node);
+    }
+
+    public void _on_button_pressed()
+    {
+        GD.Print($"Combat button pressed, starting combat with selected combat system: {_combatManager.combatSystem.GetType().Name}");
+        if (_combatManager.combatSystem is GodotObject godotSystem)
+        {
+            SignalBus.Instance.EmitSignal("CombatModeSelected", _attacker, _defender, godotSystem);
+        }
+        _combatModeSelector.Visible = false;
+    }
+
     private void OnUnitAttacked(BaseUnit attacker, BaseUnit target)
     {
-        //find out who is the attacker and who is the defender, and update the combat panel accordingly
-        //foreach (TextureRect textureRect in _attackerGrid.GetChildren())
-        //{
-        //    if (textureRect.Texture == attacker.Portrait.Texture)
-        //    {
-        //        textureRect.GetNode<ProgressBar>("HealthBar").Visible = true;
-        //        textureRect.GetNode<ProgressBar>("HealthBar").Value = attacker.CurrentHealth;
-        //    }
-        //}
+        GD.Print($"CombatPanel received CombatStarted signal: {attacker} player units vs {target} enemy units");
+        Visible = true;
+
+        _combatModeSelector.Visible = true;
+
+        _attacker = attacker;
+        _defender = target;
+
     }
 }

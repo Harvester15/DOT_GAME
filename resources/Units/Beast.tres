@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=8 format=3 uid="uid://cqok32v4xb72y"]
+
+[ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="1_6ocy4"]
+[ext_resource type="Texture2D" uid="uid://dpch23n6vjipj" path="res://resources/combat/jrpg/monster_sprite_small.png" id="1_15rxf"]
+[ext_resource type="Script" path="res://scripts/Combat/Damage.cs" id="1_ws3k8"]
+[ext_resource type="Texture2D" uid="uid://jrlneivyl381" path="res://resources/combat/jrpg/monster.png" id="2_xs7bo"]
+[ext_resource type="Script" path="res://scripts/Actors/Units/UnitRace.cs" id="3_lvwna"]
+
+[sub_resource type="Resource" id="Resource_l1kkq"]
+script = ExtResource("1_ws3k8")
+DamageCount = 1
+DamageSides = 10
+DamageModifier = 0
+dmgType = 0
+
+[sub_resource type="Resource" id="Resource_lv6x0"]
+script = ExtResource("3_lvwna")
+RaceName = ""
+ImmuneToMindControl = false
+ImmuneToPoison = false
+MagicResistance = 0.0
+IsLiving = true
+MoraleBonus = 0
+BonusInitiative = 0
+BonusAttack = 0
+DamageMultiplier = 1.0
+
+[resource]
+script = ExtResource("1_6ocy4")
+UnitName = ""
+Portrait = ExtResource("1_15rxf")
+ShieldIcon = null
+Dmg = SubResource("Resource_l1kkq")
+UnitRace = SubResource("Resource_lv6x0")
+XpReward = 150
+DefaultPortrait = ExtResource("1_15rxf")
+JrpgSprite = ExtResource("2_xs7bo")

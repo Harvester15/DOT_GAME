@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using dot_battle_signal_bus.scripts.Actors.Units;
+using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,9 @@ public partial class ArmyStack : BaseUnit
 
     public List<BaseUnit> Units = new List<BaseUnit>();
     public int MovementPoints;
+
+    //TODO add Heroes at some point
+    public Hero hero;
 
     public override void _Ready()
     {

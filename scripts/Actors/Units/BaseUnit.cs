@@ -2,6 +2,7 @@
 using dot_battle_signal_bus.scripts;
 using dot_battle_signal_bus.scripts.Actors.Units;
 using dot_battle_signal_bus.scripts.Combat;
+using dot_battle_signal_bus.scripts.Combat.Logic;
 using dot_battle_signal_bus.scripts.Utils;
 using Godot;
 using System;
@@ -21,12 +22,29 @@ public partial class BaseUnit : BaseGameObject
 
     //use unitdata resource to create individual unit types with different stats and sprites, then have the baseunit load the appropriate data based on its type
     [Export] public UnitData Data;
+    public UnitRace Race => Data?.UnitRace;
+    public string SystemRaceName => Data?.UnitRace?.RaceName ?? "Unknown"; //encountering an unknown race??
+    [Export] public Godot.Collections.Array<ShieldData> ShieldLayers;
 
-    [ExportGroup("Team Sprites")]
-    [Export] public Texture2D NeutralSprite;
-    [Export] public Texture2D PlayerSprite;
-    [Export] public Texture2D EnemySprite;
-    [Export] public Texture2D AllySprite;
+
+    public Texture2D GetActiveTexture()
+    {
+        if (Data == null) return null;
+
+        // If a specific skin variant is configured for the team, use it.
+        // Otherwise, fall back gracefully to the default portrait asset.
+        return UnitTeam switch
+        {
+            Team.Player => Data.PlayerSkinOverride ?? Data.DefaultPortrait,
+            Team.Enemy => Data.EnemySkinOverride ?? Data.DefaultPortrait,
+            _ => Data.DefaultPortrait
+        };
+    }
+    //[ExportGroup("Team Sprites")]
+    //[Export] public Texture2D NeutralSprite;
+    //[Export] public Texture2D PlayerSprite;
+    //[Export] public Texture2D EnemySprite;
+    //[Export] public Texture2D AllySprite;
 
     // Stats
     [ExportGroup("Combat Stats")]
@@ -249,7 +267,7 @@ public partial class BaseUnit : BaseGameObject
         HasMoved = false;
         HasActed = false;
         MovementsLeft = MovementRange;
-        OnUnitDeselected(this);
+        OnUnitDeselected();
         GD.Print($"ing BaseUnit - New turn started, resetting unit {this.Name} state. Movements left reset to {MovementsLeft}");
     }
 
@@ -417,10 +435,8 @@ public partial class BaseUnit : BaseGameObject
         }
     }
 
-    private void OnUnitDeselected(BaseUnit baseUnit)
+    private void OnUnitDeselected()
     {
-        if (baseUnit != this)
-            return;
         if (_isSelected)
         {
             _isSelected = false;
@@ -434,26 +450,26 @@ public partial class BaseUnit : BaseGameObject
 
     private void UpdateTeamSprite()
     {
-        GD.Print($"Updating team sprite for {UnitName} with team {UnitTeam} for {Portrait}");
-        switch (UnitTeam)
-        {
-            case Team.Neutral:
-                Portrait.Texture = NeutralSprite;
-                break;
-            case Team.Player:
-                Portrait.Texture = PlayerSprite;
-                break;
-            case Team.Enemy:
-                Portrait.Texture = EnemySprite;
-                break;
-            case Team.Ally:
-                Portrait.Texture = AllySprite;
-                break;
-            default:
-                GD.PrintErr("Unknown team type, using neutral sprite.");
-                Portrait.Texture = NeutralSprite;
-                break;
-        }
+        //GD.Print($"Updating team sprite for {UnitName} with team {UnitTeam} for {Portrait}");
+        //switch (UnitTeam)
+        //{
+        //    case Team.Neutral:
+        //        Portrait.Texture = NeutralSprite;
+        //        break;
+        //    case Team.Player:
+        //        Portrait.Texture = PlayerSprite;
+        //        break;
+        //    case Team.Enemy:
+        //        Portrait.Texture = EnemySprite;
+        //        break;
+        //    case Team.Ally:
+        //        Portrait.Texture = AllySprite;
+        //        break;
+        //    default:
+        //        GD.PrintErr("Unknown team type, using neutral sprite.");
+        //        Portrait.Texture = NeutralSprite;
+        //        break;
+        //}
     }
 
     //on area entered
@@ -487,7 +503,7 @@ public partial class BaseUnit : BaseGameObject
 
     private void OnGrouped(ArmyStack group)
     {
-        OnUnitDeselected(this);
+        OnUnitDeselected();
     }
 
     public override void OnPlayerInteract(BaseGameObject gameObject)

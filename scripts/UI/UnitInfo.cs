@@ -9,6 +9,8 @@ public partial class UnitInfo : PanelContainer
     private VBoxContainer _groupView => GetNode<VBoxContainer>("GroupContainer");
     private GridContainer _groupInfoGrid => GetNode<GridContainer>("GroupContainer/MarginContainer/ScrollContainer/GridContainer");
 
+    private ArmyStack _armyStack;
+
     public override void _Ready()
     {
         this.Visible = false; // Hide the unit info panel by default
@@ -17,6 +19,7 @@ public partial class UnitInfo : PanelContainer
         SignalBus.Instance.Connect(nameof(SignalBus.UnitSelected), new Callable(this, nameof(OnUnitSelected)));
         SignalBus.Instance.Connect(nameof(SignalBus.UnitDeselected), new Callable(this, nameof(OnUnitDeselected)));
         SignalBus.Instance.Connect(nameof(SignalBus.UnitDied), new Callable(this, nameof(OnUnitDeselected)));
+        //TODO consider if we want to update the info real time when the unit is selected, or only when certain events happen (e.g. health changes, movement, etc.)
         SignalBus.Instance.Connect(nameof(SignalBus.UnitHealthChanged), new Callable(this, nameof(UpdateAllInfo)));
         SignalBus.Instance.Connect(nameof(SignalBus.UnitMoved), new Callable(this, nameof(OnMoved)));
         SignalBus.Instance.Connect(nameof(SignalBus.UnitsGrouped), new Callable(this, nameof(OnGrouped)));
@@ -36,6 +39,13 @@ public partial class UnitInfo : PanelContainer
         foreach (var unit in group.Units)
         {
             TextureRect textureRect = unit.Portrait.Duplicate() as TextureRect;
+
+            var tooltip = textureRect._MakeCustomTooltip("");
+            //textureRect.TooltipText = unit.Name;
+            HoverTooltipComponent toolTip = new HoverTooltipComponent();
+            toolTip.Initialize(unit);
+
+
             textureRect.CustomMinimumSize = new Vector2(30, 30);
             textureRect.ExpandMode = TextureRect.ExpandModeEnum.FitWidth;
             textureRect.StretchMode = TextureRect.StretchModeEnum.KeepAspect;
@@ -44,6 +54,7 @@ public partial class UnitInfo : PanelContainer
             healthbar.AnchorsPreset = 12;            
             _groupInfoGrid.AddChild(textureRect);
         }
+        _armyStack = group;
         UpdateAllInfo(group);
     }
 
@@ -78,7 +89,7 @@ public partial class UnitInfo : PanelContainer
         UpdateAllInfo(unit);
     }
 
-    private void OnUnitDeselected(BaseUnit unit)
+    private void OnUnitDeselected()
     {
         // Unsubscribe from unit-specific signals
         //unit.Disconnect(nameof(BaseUnit.UnitHealthChanged), this, nameof(UpdateHealthBar));
@@ -114,5 +125,13 @@ public partial class UnitInfo : PanelContainer
         GetNode<TextureRect>("SingleUnitContainer/VBoxContainer/GridContainer/AttackTag").Texture = unit.Data.AttackIcon;
         GetNode<Label>("SingleUnitContainer/VBoxContainer/GridContainer/AttackPoints").Text = unit.Attack.ToString();
         // ... etc
+    }
+
+    public override Control _MakeCustomTooltip(string forText)
+    {
+        var tooltip = ResourceLoader.Load<PackedScene>("res://scenes/UI/UnitTooltipPopup.tscn").Instantiate();
+
+        //tooltip.GetNode<Label>("Label").Text = forText;
+        return (PanelContainer) tooltip;
     }
 }

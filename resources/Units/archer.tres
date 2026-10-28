@@ -1,18 +1,27 @@
-[gd_resource type="Resource" script_class="UnitData" load_steps=5 format=3 uid="uid://decms4y4t3tt8"]
+[gd_resource type="Resource" script_class="UnitData" load_steps=8 format=3 uid="uid://decms4y4t3tt8"]
 
 [ext_resource type="Texture2D" uid="uid://dpjvns1byateg" path="res://resources/unitinfo/ranged_attack.png" id="1_6ql6f"]
 [ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="1_kqubj"]
 [ext_resource type="Script" path="res://scripts/Combat/Damage.cs" id="2_mxgca"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="2_uc638"]
+[ext_resource type="Texture2D" uid="uid://bo5vwmsaleh1t" path="res://resources/combat/units/player_archer_side.png" id="3_mxayy"]
+[ext_resource type="Resource" uid="uid://bqff3jlrv6ofn" path="res://resources/Races/player.tres" id="5_k53sl"]
 
 [sub_resource type="Resource" id="Resource_g06w3"]
 script = ExtResource("2_mxgca")
 DamageCount = 1
 DamageSides = 6
-DamageModifier = 0
+DamageModifier = 1
 dmgType = 0
 
 [resource]
 script = ExtResource("1_kqubj")
 UnitName = ""
+Portrait = ExtResource("2_uc638")
 AttackIcon = ExtResource("1_6ql6f")
+ShieldIcon = null
 Dmg = SubResource("Resource_g06w3")
+UnitRace = ExtResource("5_k53sl")
+XpReward = 0
+DefaultPortrait = ExtResource("2_uc638")
+JrpgSprite = ExtResource("3_mxayy")

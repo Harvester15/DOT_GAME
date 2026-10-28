@@ -1,5 +1,6 @@
 ﻿// SignalBus.cs
 using dot_battle_signal_bus.scripts.Combat;
+using dot_battle_signal_bus.scripts.Combat.Logic;
 using Godot;
 using Godot.Collections;
 using System.Collections.Generic;
@@ -23,9 +24,10 @@ namespace dot_battle_signal_bus.scripts
             }
         }
 
+
         // Game signals
         [Signal] public delegate void UnitSelectedEventHandler(BaseUnit unit);
-        [Signal] public delegate void UnitDeselectedEventHandler(BaseUnit unit);
+        [Signal] public delegate void UnitDeselectedEventHandler();
         //[Signal] public delegate void UnitMovedEventHandler(BaseUnit unit, Vector2 from, Vector2 to);//is this needed?
         [Signal] public delegate void UnitMovedEventHandler(BaseUnit unit, int movementsLeft);
         [Signal] public delegate void UnitAttackedEventHandler(BaseUnit attacker, BaseUnit target);
@@ -35,9 +37,11 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void UnitHealthChangedEventHandler(BaseUnit unit, string status, bool isActive);
         // [Signal] public delegate void AbilityUsedEventHandler(Ability ability, player caster, player target);
         [Signal] public delegate void UnitsGroupedEventHandler(ArmyStack armyStack);
-        [Signal] public delegate void NextUnitClickedEventHandler(BaseUnit unit);
+        [Signal] public delegate void NextUnitClickedEventHandler();
 
+        //combat signals
         [Signal] public delegate void CombatResolvedEventHandler(CombatResult result);
+        [Signal] public delegate void ShieldHitEventHandler(BaseUnit defender, BaseUnit attacker, ShieldData shieldData);
         // UI signals
         [Signal] public delegate void ShowUnitInfoEventHandler(BaseUnit unit);
         [Signal] public delegate void UnitEnteredAllyEventHandler(BaseUnit unitEntered, BaseUnit enteringUnit);
@@ -45,6 +49,8 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void HideUnitInfoEventHandler();
         [Signal] public delegate void ShowTileInfoEventHandler(Vector2 position);
         [Signal] public delegate void HideTileInfoEventHandler();
+
+        [Signal] public delegate void CombatModeSelectedEventHandler(BaseUnit attacker, BaseUnit target, GodotObject system);
 
         [Signal] public delegate void MapPointClickedEventHandler(Vector2 position);
 
@@ -65,6 +71,15 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void CriticalHitEventHandler(BaseUnit attacker, BaseUnit target, int damage);
         [Signal] public delegate void UnitKilledEventHandler(BaseUnit killer, BaseUnit victim);
         [Signal] public delegate void BattleReportClosedEventHandler();
+
+        //jrpg combat signals
+        [Signal] public delegate void JrpgUnitSelectedEventHandler(JrpgUnit unit);
+        [Signal] public delegate void JrpgUnitClickededEventHandler(JrpgUnit unit);
+        [Signal] public delegate void CombatTurnStartedEventHandler(BaseUnit currentUnit);
+        [Signal] public delegate void CombatTurnEndedEventHandler(BaseUnit currentUnit);
+        [Signal] public delegate void CombatActionEventHandler(BaseUnit actor, string actionDescription);
+        [Signal] public delegate void CombatDamageEventHandler(BaseUnit attacker, BaseUnit target, int damage);
+
 
         // To register the singleton in Godot's autoload:
         public override void _Ready()
