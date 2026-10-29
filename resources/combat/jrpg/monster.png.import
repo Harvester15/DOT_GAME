@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://jrlneivyl381"
-path="res://.godot/imported/monster.png-30729d5390f6ad3fe106c43b56584add.ctex"
+path="res://.godot/imported/monster.png-688d1bc3c202432588c0794e514db9cd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/combat/jrpg/monster.png"
-dest_files=["res://.godot/imported/monster.png-30729d5390f6ad3fe106c43b56584add.ctex"]
+source_file="res://resources/Combat/jrpg/monster.png"
+dest_files=["res://.godot/imported/monster.png-688d1bc3c202432588c0794e514db9cd.ctex"]
 
 [params]
 

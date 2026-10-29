@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Witness" load_steps=2 format=3 uid="uid://cpwq44y77c8yr"]
+
+[ext_resource type="Script" path="res://scripts/Story/Witness.cs" id="1_ri0jh"]
+
+[resource]
+script = ExtResource("1_ri0jh")
+Id = ""
+Name = ""
+KnownEvidence = null
+ScenarioId = ""

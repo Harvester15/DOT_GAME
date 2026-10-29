@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scripts/Combat/Damage.cs" id="1_20vga"]
 [ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="1_dcvqo"]
 [ext_resource type="Texture2D" uid="uid://xxsmlv8yiky8" path="res://resources/unitinfo/magic_attack.png" id="1_j4tot"]
-[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="2_payx5"]
-[ext_resource type="Texture2D" uid="uid://c2u0ge33tw3p6" path="res://resources/combat/units/player_mage_side.png" id="3_m130k"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/Player/playerSun.png" id="2_payx5"]
+[ext_resource type="Texture2D" uid="uid://c2u0ge33tw3p6" path="res://resources/Combat/units/player_mage_side.png" id="3_m130k"]
 
 [sub_resource type="Resource" id="Resource_mbr3h"]
 script = ExtResource("1_20vga")

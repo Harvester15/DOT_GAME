@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="UnitData" load_steps=8 format=3 uid="uid://cs6c7ucdgpmui"]
 
 [ext_resource type="Texture2D" uid="uid://cgk4a3u8xvbq1" path="res://resources/unitinfo/phys_attack.png" id="1_1rqfe"]
-[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="2_6usui"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/Player/playerSun.png" id="2_6usui"]
 [ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="2_ae632"]
 [ext_resource type="Script" path="res://scripts/Combat/Damage.cs" id="2_f1i30"]
-[ext_resource type="Texture2D" uid="uid://c1tr70bc4ud5d" path="res://resources/combat/units/player_side_warrior.png" id="3_clv6i"]
+[ext_resource type="Texture2D" uid="uid://c1tr70bc4ud5d" path="res://resources/Combat/units/player_side_warrior.png" id="3_clv6i"]
 [ext_resource type="Resource" uid="uid://bqff3jlrv6ofn" path="res://resources/Races/player.tres" id="5_h654k"]
 
 [sub_resource type="Resource" id="Resource_vuuim"]

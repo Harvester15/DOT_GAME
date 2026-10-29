@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://5sulucl7l1qb"]
 
 [ext_resource type="Script" path="res://scripts/Actors/Units/BaseUnit.cs" id="1_34p1i"]
-[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="1_tb1e7"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/Player/playerSun.png" id="1_tb1e7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bknvd"]
 bg_color = Color(0, 1, 0, 1)

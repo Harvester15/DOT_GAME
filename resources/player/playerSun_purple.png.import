@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://btr4moenfparf"
-path="res://.godot/imported/playerSun_purple.png-ae20f7443a514db414a82752e9478e15.ctex"
+path="res://.godot/imported/playerSun_purple.png-6a67dd472faaa53bb102d240e0b872c0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/player/playerSun_purple.png"
-dest_files=["res://.godot/imported/playerSun_purple.png-ae20f7443a514db414a82752e9478e15.ctex"]
+source_file="res://resources/Player/playerSun_purple.png"
+dest_files=["res://.godot/imported/playerSun_purple.png-6a67dd472faaa53bb102d240e0b872c0.ctex"]
 
 [params]
 

@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://cgk4a3u8xvbq1" path="res://resources/unitinfo/phys_attack.png" id="1_kcuke"]
 [ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="1_umc5k"]
-[ext_resource type="Texture2D" uid="uid://doh4l5p4oc2wq" path="res://resources/combat/units/enemy_side_warrior.png" id="2_rc6xg"]
-[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/player/playerSun_red.png" id="2_tsc5g"]
+[ext_resource type="Texture2D" uid="uid://doh4l5p4oc2wq" path="res://resources/Combat/units/enemy_side_warrior.png" id="2_rc6xg"]
+[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/Player/playerSun_red.png" id="2_tsc5g"]
 
 [resource]
 script = ExtResource("1_umc5k")
