@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=5 format=3 uid="uid://c53xmp3d2u3uc"]
+
+[ext_resource type="Texture2D" uid="uid://cgk4a3u8xvbq1" path="res://resources/unitinfo/phys_attack.png" id="1_kcuke"]
+[ext_resource type="Script" path="res://scripts/Actors/Units/UnitData.cs" id="1_umc5k"]
+[ext_resource type="Texture2D" uid="uid://doh4l5p4oc2wq" path="res://resources/combat/units/enemy_side_warrior.png" id="2_rc6xg"]
+[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/player/playerSun_red.png" id="2_tsc5g"]
+
+[resource]
+script = ExtResource("1_umc5k")
+UnitName = ""
+Portrait = ExtResource("2_tsc5g")
+AttackIcon = ExtResource("1_kcuke")
+ShieldIcon = null
+XpReward = 0
+DefaultPortrait = ExtResource("2_tsc5g")
+JrpgSprite = ExtResource("2_rc6xg")

@@ -8,7 +8,7 @@ namespace dot_battle_signal_bus.scripts.Combat.Interface
 {
     public interface ICombatSystem
     {
-       // Task<CombatResult> Execute(CombatContext context);
+        Task<CombatResult> Execute(CombatContext context);
     }
 
 }

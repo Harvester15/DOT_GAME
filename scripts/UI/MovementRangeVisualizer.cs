@@ -62,7 +62,7 @@ public partial class MovementRangeVisualizer : Node2D
         SignalBus.Instance.NextUnitClicked += Deselected;
     }
 
-    private void Deselected(BaseUnit unit)
+    private void Deselected()
     {
         GD.Print("Unit deselected, clearing path ghosts");
         ClearPathGhosts();

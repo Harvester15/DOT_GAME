@@ -1,4 +1,5 @@
 using dot_battle_signal_bus.scripts;
+using dot_battle_signal_bus.scripts.Combat;
 using dot_battle_signal_bus.scripts.Systems;
 using dot_battle_signal_bus.scripts.Utils;
 using Godot;
@@ -26,8 +27,20 @@ public partial class UnitControlPanel : Panel
         GD.Print("getting player units for unit control panel");
         GetPlayerUnits();
         _ungroupUnitsBtn.Visible = false;
+        SignalBus.Instance.UnitAttacked += OnUnitAttacked;
+        SignalBus.Instance.CombatEnded += OnCombatEnded;
         // connect to signal unitdied, if the current unit dies, move to the next one
 
+    }
+
+    private void OnCombatEnded(CombatResult combatResult)
+    {
+        Visible = true;
+    }
+
+    private void OnUnitAttacked(BaseUnit attacker, BaseUnit target)
+    {
+        Visible = false;
     }
 
     public override void _Process(double delta)
@@ -150,8 +163,7 @@ public partial class UnitControlPanel : Panel
             _ungroupUnitsBtn.Visible = true;
 
             SignalBus.Instance.EmitSignal("UnitsGrouped", armyStack);
-
-
+            SignalBus.Instance.EmitSignal("UnitDeselected");
         }
     }
 
@@ -166,6 +178,7 @@ public partial class UnitControlPanel : Panel
     {
         GD.Print("End Turn button pressed");
         // Emit a signal to end the player's turn
+        SignalBus.Instance.EmitSignal("UnitDeselected");
         TurnManager.Instance.EndTurn();
     }
 

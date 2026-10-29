@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://c0unkou83ejt"]
+
+[ext_resource type="Texture2D" uid="uid://d1eo0qevnupk6" path="res://resources/combat/units/shadow.png" id="1_foocs"]
+[ext_resource type="Script" path="res://scripts/Combat/JrpgUnit.cs" id="1_kdrbr"]
+[ext_resource type="Resource" uid="uid://bw04gxvsi47bt" path="res://resources/Shields/PhysicalShield.tres" id="2_6pfpj"]
+[ext_resource type="Texture2D" uid="uid://tjo5q5fmk8u6" path="res://resources/combat/jrpg/moonshield.png" id="3_3t6cf"]
+[ext_resource type="Texture2D" uid="uid://bfyrfwsbfoeqe" path="res://resources/combat/jrpg/qmark.png" id="4_jkq3c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e3ml3"]
+size = Vector2(347, 327)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dhd0g"]
+bg_color = Color(0, 1, 0, 1)
+
+[node name="JrpgUnit" type="Node2D"]
+script = ExtResource("1_kdrbr")
+ShieldData = ExtResource("2_6pfpj")
+
+[node name="shadow" type="Sprite2D" parent="."]
+position = Vector2(-85, 178)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_foocs")
+
+[node name="unit" type="Sprite2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-40.5, 3.5)
+shape = SubResource("RectangleShape2D_e3ml3")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -154.0
+offset_top = -190.0
+offset_right = 74.0
+offset_bottom = -163.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_dhd0g")
+show_percentage = false
+
+[node name="ShieldContainer" type="Node2D" parent="."]
+position = Vector2(0, 34)
+
+[node name="Shield" type="Sprite2D" parent="ShieldContainer"]
+position = Vector2(-228, 199)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_3t6cf")
+
+[node name="ShieldLabel" type="Label" parent="ShieldContainer"]
+offset_left = -235.0
+offset_top = 183.0
+offset_right = -195.0
+offset_bottom = 217.0
+theme_override_colors/font_color = Color(0, 0.105882, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "0"
+
+[node name="Qmark" type="Sprite2D" parent="ShieldContainer"]
+position = Vector2(-58, 212)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_jkq3c")
+
+[node name="Qmark2" type="Sprite2D" parent="ShieldContainer"]
+position = Vector2(-3, 212)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_jkq3c")
+
+[node name="Qmark3" type="Sprite2D" parent="ShieldContainer"]
+position = Vector2(52, 212)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_jkq3c")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

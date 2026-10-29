@@ -41,7 +41,7 @@ namespace dot_battle_signal_bus.scripts.Combat
         // Convenience for damage dice from a Unit
         public static int RollDamage(BaseUnit unit)
         {
-            return Roll(unit.Dmg.DamageCount, unit.Dmg.DamageSides, unit.Dmg.DamageModifier);
+            return Roll(unit.Data.Dmg.DamageCount, unit.Data.Dmg.DamageSides, unit.Data.Dmg.DamageModifier);
         }
     }
 }

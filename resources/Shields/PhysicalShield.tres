@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ShieldData" load_steps=3 format=3 uid="uid://bw04gxvsi47bt"]
+
+[ext_resource type="Texture2D" uid="uid://tjo5q5fmk8u6" path="res://resources/combat/jrpg/moonshield.png" id="1_2uapf"]
+[ext_resource type="Script" path="res://scripts/Combat/Logic/ShieldData.cs" id="1_ihst3"]
+
+[resource]
+script = ExtResource("1_ihst3")
+Shield = ExtResource("1_2uapf")
+MaxShields = 3
+PhysicalDamageReduction = 0.5
+MagicalDamageReduction = 0.5
+ElementalDamageReduction = 0.5
+Element = 0
+Weaknesses = [0]

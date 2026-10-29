@@ -4,11 +4,11 @@ using System;
 
 public partial class GameWorld : Node2D
 {
-    public override async void _Ready()
-    {
-        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+	public override async void _Ready()
+	{
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-        SignalBus.Instance.EmitSignal("WorldInitialized");
-    }
+		SignalBus.Instance.EmitSignal("WorldInitialized");
+	}
 }
 

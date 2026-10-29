@@ -2,6 +2,7 @@ using dot_battle_signal_bus.scripts;
 using dot_battle_signal_bus.scripts.Systems;
 using dot_battle_signal_bus.scripts.Utils;
 using Godot;
+using System;
 
 public partial class SelectionManager : Node2D
 {
@@ -9,16 +10,31 @@ public partial class SelectionManager : Node2D
     private GridPathfinding _gridPathfinding => GetNode<GridPathfinding>("/root/Main/GameWorld/GridPathfinding");
     private GridManager _gridManager => GetNode<GridManager>("/root/Main/GameWorld/Map");
 
+    public bool IsEnabled { get; private set; } = true;
+
+    public void SetEnabled(bool enabled)
+    {
+        IsEnabled = enabled;
+    }
+
     public override void _Ready()
     {
         GD.Print("SelectionManager ready");
-        SignalBus.Instance.Connect("UnitDeselected", new Callable(this, nameof(DeselectCurrent)));
+        SignalBus.Instance.UnitDeselected += DeselectCurrent;
         SignalBus.Instance.UnitSelected += SelectUnit;
-        SignalBus.Instance.UnitsGrouped += DeselectCurrent;
+        SignalBus.Instance.UnitsGrouped += OnGrouped;
+    }
+
+    private void OnGrouped(ArmyStack armyStack)
+    {
+        //TODO anything else?
+        DeselectCurrent();
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
+        if (!IsEnabled) return;
+
         if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
         {
             var clickedPosition = _gridPathfinding.GetLocalMousePosition();
@@ -29,19 +45,19 @@ public partial class SelectionManager : Node2D
             }
             if (mouseEvent.ButtonIndex == MouseButton.Right)
             {
-                DeselectCurrent(_activeUnit);
+                DeselectCurrent();
             }
         }
     }
 
-    private void DeselectCurrent(BaseUnit unit)
+    private void DeselectCurrent()
     {
         if (_activeUnit == null )
             return;
 
         _activeUnit._isSelected = false;
         _activeUnit = null;
-        SignalBus.Instance.EmitSignal("UnitDeselected", _activeUnit);
+        SignalBus.Instance.EmitSignal("UnitDeselected");
         
     }
 

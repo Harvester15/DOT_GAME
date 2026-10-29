@@ -82,7 +82,13 @@ public partial class SpawnManager : Node2D
 
         gameObject = area as BaseGameObject;
 
-        gameObject.Portrait = gameObject.GetNodeOrNull<TextureRect>("TextureRect");
+        if (gameObject is BaseUnit unit)
+        {
+            if (gameObject.Portrait == null && unit.Portrait != null)
+                gameObject.Portrait = unit.Portrait;
+
+            gameObject.Portrait.Texture = unit.GetActiveTexture();
+        }
 
         GD.Print($"portrait size before scaling: {gameObject.Portrait.Size}, scale: {gameObject.Portrait.Scale}");
 
@@ -90,6 +96,8 @@ public partial class SpawnManager : Node2D
         gameObject.Portrait.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
         gameObject.Portrait.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
 
+
+        //TODO use either race or some other resource to generate from instead of team sprites?
         gameObject.Portrait.PivotOffset = gameObject.Portrait.Texture.GetSize() / 2;
 
         float scaleFactor = (float)_gridManager.GetCellSize() / gameObject.Portrait.Texture.GetWidth();

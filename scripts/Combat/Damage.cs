@@ -10,7 +10,7 @@ namespace dot_battle_signal_bus.scripts.Combat
     [GlobalClass]
     public partial class Damage : Resource
     {
-        public enum DamageType
+        public enum DamageType 
         {
             Physical,
             Magical,
@@ -18,6 +18,7 @@ namespace dot_battle_signal_bus.scripts.Combat
             Ice,
             Lightning,
             Poison,
+            Arrows
             // Add more types as needed
         }
         // Damage dice: e.g., 2d6+1 → Count=2, Sides=6, Modifier=1

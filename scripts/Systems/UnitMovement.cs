@@ -36,7 +36,7 @@ public partial class UnitMovement : Node
         SignalBus.Instance.UnitDeselected += OnUnitDeselected;
     }
 
-    private void OnUnitDeselected(BaseUnit unit)
+    private void OnUnitDeselected()
     {
         _pathSelected = null;
     }
