@@ -24,7 +24,6 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
 
         public override void _Ready()
         {
-            SignalBus.Instance.UnitDied += OnUnitDied;
             SignalBus.Instance.UnitKilled += OnUnitKilled;
             this.Name = "WarlordsCombatSystem";
             _combatEnded = false;
@@ -285,17 +284,6 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
                 _enemyUnits.Remove(victim);
             if (_allUnits != null && _allUnits.Contains(victim))
                 _allUnits.Remove(victim);
-
-        }
-
-        // Generic death handler — handles removals when a unit dies from any cause while combat is active
-        private void OnUnitDied(BaseUnit unit)
-        {
-            if (!_inCombat)
-                return;
-
-            GD.Print($"CombatManager - UnitDied handler: {unit.Name} died (non-combat). Removing from turn order.");
-
 
         }
 

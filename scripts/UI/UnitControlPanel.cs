@@ -12,9 +12,9 @@ public partial class UnitControlPanel : Panel
     private GridManager _gridManager => GetNode<GridManager>("/root/Main/GameWorld/Map");
     private List<BaseUnit> _playerUnits = new List<BaseUnit>();
     private int _currentUnitIndex = -1;
-    private bool _isConnectedToUnitDied = false;
-    private bool _isConnectedToUnitEnteredAlly = false;
-    private bool _isConnectedToUnitExitedAlly = false;
+    //private bool _isConnectedToUnitDied = false;
+    //private bool _isConnectedToUnitEnteredAlly = false;
+    //private bool _isConnectedToUnitExitedAlly = false;
     private BaseUnit _enteredUnit;
     private BaseUnit _enteringUnit;
 
@@ -27,11 +27,24 @@ public partial class UnitControlPanel : Panel
         GD.Print("getting player units for unit control panel");
         GetPlayerUnits();
         _ungroupUnitsBtn.Visible = false;
+
         SignalBus.Instance.UnitAttacked += OnUnitAttacked;
         SignalBus.Instance.CombatEnded += OnCombatEnded;
-        // connect to signal unitdied, if the current unit dies, move to the next one
-
+        SignalBus.Instance.UnitDied += OnUnitDied;
+        SignalBus.Instance.UnitEnteredAlly += UnitEnteresAlly;
+        SignalBus.Instance.UnitExitedAlly += UnitExitsAlly;
     }
+
+    public override void _ExitTree()
+    {
+        SignalBus.Instance.UnitAttacked -= OnUnitAttacked;
+        SignalBus.Instance.CombatEnded -= OnCombatEnded;
+        SignalBus.Instance.UnitDied -= OnUnitDied;
+        SignalBus.Instance.UnitEnteredAlly -= UnitEnteresAlly;
+        SignalBus.Instance.UnitExitedAlly -= UnitExitsAlly;
+    }
+
+    // DELETE the entire _Process override and the three _isConnected* bool fields.
 
     private void OnCombatEnded(CombatResult combatResult)
     {
@@ -43,30 +56,30 @@ public partial class UnitControlPanel : Panel
         Visible = false;
     }
 
-    public override void _Process(double delta)
-    {
-        // For testing: Press N to cycle through player units
-        if (!_isConnectedToUnitDied)
-        {
-            SignalBus.Instance.Connect("UnitDied", new Callable(this, nameof(OnUnitDied)));
-            _isConnectedToUnitDied = SignalBus.Instance.IsConnected(SignalBus.SignalName.UnitDied, new Callable(this, nameof(OnUnitDied)));
-            GD.Print($"Connected to UnitDied signal: {_isConnectedToUnitDied}");
-        }
-        if (!_isConnectedToUnitEnteredAlly)
-        {
-            SignalBus.Instance.Connect("UnitEnteredAlly", new Callable(this, nameof(UnitEnteresAlly)));
-            _isConnectedToUnitEnteredAlly = SignalBus.Instance.IsConnected(SignalBus.SignalName.UnitEnteredAlly, new Callable(this, nameof(UnitEnteresAlly)));
-            GD.Print($"Connected to UnitEnteresAlly signal: {_isConnectedToUnitEnteredAlly}");
-        }
+    //public override void _Process(double delta)
+    //{
+    //    // For testing: Press N to cycle through player units
+    //    if (!_isConnectedToUnitDied)
+    //    {
+    //        SignalBus.Instance.Connect("UnitDied", new Callable(this, nameof(OnUnitDied)));
+    //        _isConnectedToUnitDied = SignalBus.Instance.IsConnected(SignalBus.SignalName.UnitDied, new Callable(this, nameof(OnUnitDied)));
+    //        GD.Print($"Connected to UnitDied signal: {_isConnectedToUnitDied}");
+    //    }
+    //    if (!_isConnectedToUnitEnteredAlly)
+    //    {
+    //        SignalBus.Instance.Connect("UnitEnteredAlly", new Callable(this, nameof(UnitEnteresAlly)));
+    //        _isConnectedToUnitEnteredAlly = SignalBus.Instance.IsConnected(SignalBus.SignalName.UnitEnteredAlly, new Callable(this, nameof(UnitEnteresAlly)));
+    //        GD.Print($"Connected to UnitEnteresAlly signal: {_isConnectedToUnitEnteredAlly}");
+    //    }
 
-        if (!_isConnectedToUnitExitedAlly)
-        {
-            SignalBus.Instance.Connect("UnitExitedAlly", new Callable(this, nameof(UnitExitsAlly)));
-            _isConnectedToUnitExitedAlly = SignalBus.Instance.IsConnected(SignalBus.SignalName.UnitExitedAlly, new Callable(this, nameof(UnitExitsAlly)));
-            GD.Print($"Connected to UnitExitsAlly signal: {_isConnectedToUnitExitedAlly}");
-        }
+    //    if (!_isConnectedToUnitExitedAlly)
+    //    {
+    //        SignalBus.Instance.Connect("UnitExitedAlly", new Callable(this, nameof(UnitExitsAlly)));
+    //        _isConnectedToUnitExitedAlly = SignalBus.Instance.IsConnected(SignalBus.SignalName.UnitExitedAlly, new Callable(this, nameof(UnitExitsAlly)));
+    //        GD.Print($"Connected to UnitExitsAlly signal: {_isConnectedToUnitExitedAlly}");
+    //    }
 
-    }
+    //}
 
 
     private void GetPlayerUnits()

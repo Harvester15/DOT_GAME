@@ -187,7 +187,7 @@ public partial class CombatPanel : Panel
         {
             case 0: _combatManager.SetCombatSystem(new WarlordsCombatSystem()); break;
             case 1: _combatManager.SetCombatSystem(new DarkestCombatSystem()); break;
-            //case 2: _combatManager.SetCombatSystem(new GridCombatSystem()); break;
+            case 2: _combatManager.SetCombatSystem(new HommCombatSystem()); break;
         }
         AddChild(_combatManager.combatSystem as Node);
     }

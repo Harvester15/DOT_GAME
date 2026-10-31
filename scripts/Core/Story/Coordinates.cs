@@ -1,4 +1,4 @@
-﻿namespace dot_battle_signal_bus.scripts.Story
+﻿namespace dot_battle_signal_bus.scripts.Core.Story
 {
     public class Coordinates
     {

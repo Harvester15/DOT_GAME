@@ -17,17 +17,20 @@ public partial class TurnManager : Node
     private GameState _currentState = GameState.Initializing;
     private int _turnCount = 1;
 
+    public GameState CurrentState => _currentState;
+    public int TurnCount => _turnCount;
+
+
+
+
     private static TurnManager _instance;
-    public static TurnManager Instance
+    public static TurnManager Instance => _instance;
+
+    public void LoadSaveData(int turnCount, GameState state)
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new TurnManager();
-            }
-            return _instance;
-        }
+        _turnCount = turnCount;
+        ChangeState(state);   // emits StateChanged so listeners resync
+        EmitSignal(SignalName.TurnChanged, _turnCount);
     }
 
     public override void _Ready()

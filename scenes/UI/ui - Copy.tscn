@@ -1,0 +1,493 @@
+[gd_scene load_steps=30 format=3 uid="uid://bmcndrjwodj8c"]
+
+[ext_resource type="Script" path="res://scripts/UI/TurnIcon.cs" id="1_0foxo"]
+[ext_resource type="Script" path="res://scripts/UI/UnitInfo.cs" id="1_pkmnq"]
+[ext_resource type="Texture2D" uid="uid://di81p7mnkv34k" path="res://resources/btns/next_unit.png" id="2_1bd0r"]
+[ext_resource type="Script" path="res://scripts/UI/UnitControlPanel.cs" id="2_r8lys"]
+[ext_resource type="Texture2D" uid="uid://c2uqyd04ks0fn" path="res://resources/unitinfo/nametag-removebg-preview.png" id="2_ra4c0"]
+[ext_resource type="Texture2D" uid="uid://d15vtd85lskhu" path="res://resources/Player/playerSun_yellow.png" id="2_tb6cy"]
+[ext_resource type="Texture2D" uid="uid://d3ty6iy8obobp" path="res://resources/btns/group.png" id="3_21dvs"]
+[ext_resource type="Texture2D" uid="uid://cb4wln1ahl6k6" path="res://resources/btns/next_unit_clicked.png" id="3_ng7ue"]
+[ext_resource type="Texture2D" uid="uid://cf4w6767impk6" path="res://resources/unitinfo/health.png" id="3_siicm"]
+[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/Player/playerSun_red.png" id="4_kvgtq"]
+[ext_resource type="Texture2D" uid="uid://be0m54d7xqsma" path="res://resources/btns/next_unit_hover.png" id="4_r1j1m"]
+[ext_resource type="Texture2D" uid="uid://b2yhn72sxkdc6" path="res://resources/unitinfo/movement.png" id="4_rr2v0"]
+[ext_resource type="Texture2D" uid="uid://d2ot48jsmmht7" path="res://resources/btns/group_clicked.png" id="4_y2wyx"]
+[ext_resource type="Texture2D" uid="uid://c30ya3x8cv51b" path="res://resources/btns/group_hover.png" id="5_wm5x8"]
+[ext_resource type="Texture2D" uid="uid://h28vv5g5mmgs" path="res://resources/btns/ungroup.png" id="6_30qx5"]
+[ext_resource type="Texture2D" uid="uid://cfk31iff2xv08" path="res://resources/btns/ungroup_clicked.png" id="7_q0p1w"]
+[ext_resource type="Texture2D" uid="uid://dcp7731pjcyql" path="res://resources/btns/ungroup_hover.png" id="8_2qxkw"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/Player/playerSun.png" id="13_7bjxy"]
+[ext_resource type="Texture2D" uid="uid://dfk8phg3i2ryc" path="res://resources/btns/endturn.png" id="15_b5ji1"]
+[ext_resource type="Texture2D" uid="uid://dw2evj1v1tuc0" path="res://resources/btns/endturn_clicked.png" id="16_jlvwk"]
+[ext_resource type="Texture2D" uid="uid://dti3s8588kt4" path="res://resources/btns/endturn_hover.png" id="17_mj444"]
+[ext_resource type="Texture2D" uid="uid://bssjtq68et7du" path="res://resources/unitinfo/defense.png" id="22_knh17"]
+[ext_resource type="Texture2D" uid="uid://7wcjnawufnbe" path="res://resources/unitinfo/bubble.png" id="22_kpivc"]
+[ext_resource type="Script" path="res://scripts/UI/CombatPanel.cs" id="22_wtdhf"]
+[ext_resource type="Texture2D" uid="uid://dnmjgh3gsfcfu" path="res://resources/Combat/3D_Animation_Style_ruins_of_a_castle_3.jpg" id="25_bsgyd"]
+[ext_resource type="Texture2D" uid="uid://bfr7ft65137j1" path="res://resources/btns/abilities/swords_regular.png" id="26_208ke"]
+[ext_resource type="Texture2D" uid="uid://hp7u5wpl4bn3" path="res://resources/btns/abilities/swords_light.png" id="27_fr0la"]
+[ext_resource type="Texture2D" uid="uid://b12ie5t4lcreh" path="res://resources/btns/abilities/swords_dark.png" id="28_eu8tg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjgjl"]
+bg_color = Color(0, 1, 0, 1)
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+offset_right = 111.0
+offset_bottom = 119.0
+
+[node name="TurnPanel" type="Panel" parent="."]
+offset_right = 109.0
+offset_bottom = 115.0
+script = ExtResource("1_0foxo")
+NeutralSprite = ExtResource("2_tb6cy")
+PlayerSprite = ExtResource("13_7bjxy")
+EnemySprite = ExtResource("4_kvgtq")
+
+[node name="Label" type="Label" parent="TurnPanel"]
+layout_mode = 0
+offset_right = 63.0
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 16
+text = "Turn
+"
+
+[node name="TurnNumberLabel" type="Label" parent="TurnPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 71.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 16
+text = "Turn 1"
+
+[node name="TurnIcon" type="TextureRect" parent="TurnPanel"]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 60.0
+offset_right = 94.0
+offset_bottom = 100.0
+expand_mode = 2
+stretch_mode = 4
+
+[node name="UnitControlPanel" type="Panel" parent="."]
+offset_left = 1.0
+offset_top = 487.0
+offset_right = 158.0
+offset_bottom = 705.0
+scale = Vector2(0.765511, 0.740286)
+script = ExtResource("2_r8lys")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UnitControlPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.635944, 0.532752)
+
+[node name="GridContainer" type="GridContainer" parent="UnitControlPanel/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+columns = 2
+
+[node name="GroupUnitsBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "group units"
+action_mode = 0
+texture_normal = ExtResource("3_21dvs")
+texture_pressed = ExtResource("4_y2wyx")
+texture_hover = ExtResource("5_wm5x8")
+
+[node name="UnGroupUnitsBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "ungroup units"
+action_mode = 0
+texture_normal = ExtResource("6_30qx5")
+texture_pressed = ExtResource("7_q0p1w")
+texture_hover = ExtResource("8_2qxkw")
+
+[node name="NextUnitBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "Next Unit"
+action_mode = 0
+texture_normal = ExtResource("2_1bd0r")
+texture_pressed = ExtResource("3_ng7ue")
+texture_hover = ExtResource("4_r1j1m")
+
+[node name="EndTurnBtn" type="TextureButton" parent="UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "End Turn"
+action_mode = 0
+texture_normal = ExtResource("15_b5ji1")
+texture_pressed = ExtResource("16_jlvwk")
+texture_hover = ExtResource("17_mj444")
+
+[node name="UnitInfo" type="PanelContainer" parent="."]
+anchors_preset = -1
+anchor_left = 0.919
+anchor_top = 0.761
+anchor_right = 0.99
+anchor_bottom = 0.978
+offset_left = -12.6881
+offset_top = -97.128
+offset_right = 11.5199
+offset_bottom = 12.256
+script = ExtResource("1_pkmnq")
+
+[node name="SingleUnitContainer" type="MarginContainer" parent="UnitInfo"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UnitInfo/SingleUnitContainer"]
+layout_mode = 2
+
+[node name="Portrait" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer"]
+layout_mode = 2
+expand_mode = 4
+
+[node name="GridContainer" type="GridContainer" parent="UnitInfo/SingleUnitContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="NameTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("2_ra4c0")
+expand_mode = 2
+
+[node name="UnitName" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HearthTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("3_siicm")
+expand_mode = 2
+
+[node name="HealthPoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="MovementTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("4_rr2v0")
+expand_mode = 2
+
+[node name="MovementPoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="DefenseTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("22_knh17")
+expand_mode = 2
+
+[node name="DefensePoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="AttackTag" type="TextureRect" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("22_knh17")
+expand_mode = 2
+
+[node name="AttackPoints" type="Label" parent="UnitInfo/SingleUnitContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="GroupContainer" type="VBoxContainer" parent="UnitInfo"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="UnitInfo/GroupContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="MovementTag" type="TextureRect" parent="UnitInfo/GroupContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("4_rr2v0")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="MovementPoints" type="Label" parent="UnitInfo/GroupContainer/GridContainer"]
+layout_mode = 2
+text = "Hit
+"
+
+[node name="GroupLabel" type="Label" parent="UnitInfo/GroupContainer/GridContainer"]
+layout_mode = 2
+text = "ArmyStack:
+
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="UnitInfo/GroupContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UnitInfo/GroupContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="UnitInfo/GroupContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="TextureRect5" type="TextureRect" parent="UnitInfo/GroupContainer/MarginContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("13_7bjxy")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="HealthBar" type="ProgressBar" parent="UnitInfo/GroupContainer/MarginContainer/ScrollContainer/GridContainer/TextureRect5"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_mjgjl")
+value = 100.0
+show_percentage = false
+
+[node name="CombatPanel" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0.647059)
+offset_left = 306.0
+offset_top = 100.0
+offset_right = 957.0
+offset_bottom = 551.0
+script = ExtResource("22_wtdhf")
+
+[node name="Homam" type="Node2D" parent="CombatPanel"]
+visible = false
+position = Vector2(-306, -100)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatPanel/Homam"]
+offset_left = 306.0
+offset_top = 100.0
+offset_right = 346.0
+offset_bottom = 140.0
+
+[node name="Label2" type="Label" parent="CombatPanel/Homam"]
+offset_left = 696.0
+offset_top = 136.0
+offset_right = 846.0
+offset_bottom = 172.0
+theme_override_colors/font_color = Color(0.870588, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Enemy armies
+"
+
+[node name="Label3" type="Label" parent="CombatPanel/Homam"]
+offset_left = 353.0
+offset_top = 137.0
+offset_right = 471.0
+offset_bottom = 174.0
+theme_override_font_sizes/font_size = 20
+text = "Your army"
+
+[node name="Label" type="Label" parent="CombatPanel/Homam"]
+offset_left = 346.0
+offset_top = 103.0
+offset_right = 647.0
+offset_bottom = 158.0
+theme_override_font_sizes/font_size = 40
+text = "               Combat"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttackGridContainer" type="GridContainer" parent="CombatPanel/Homam"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 360.0
+offset_top = 175.0
+offset_right = 560.0
+offset_bottom = 400.0
+columns = 4
+
+[node name="DefendGridContainer" type="GridContainer" parent="CombatPanel/Homam"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 700.0
+offset_top = 172.0
+offset_right = 900.0
+offset_bottom = 397.0
+columns = 4
+
+[node name="CombatLabel" type="RichTextLabel" parent="CombatPanel/Homam"]
+offset_left = 307.0
+offset_top = 426.0
+offset_right = 957.0
+offset_bottom = 546.0
+
+[node name="CritialHitRect" type="TextureRect" parent="CombatPanel/Homam"]
+visible = false
+offset_left = 524.0
+offset_top = 225.0
+offset_right = 657.219
+offset_bottom = 338.0
+texture = ExtResource("22_kpivc")
+expand_mode = 3
+
+[node name="Label4" type="Label" parent="CombatPanel/Homam"]
+anchors_preset = -1
+anchor_right = 0.3
+anchor_bottom = 0.204
+offset_left = 549.0
+offset_top = 275.0
+offset_right = 630.0
+offset_bottom = 298.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Critical Hit"
+
+[node name="Darkest" type="Node2D" parent="CombatPanel"]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="CombatPanel/Darkest"]
+offset_left = -306.0
+offset_top = -99.0
+offset_right = 843.0
+offset_bottom = 400.0
+mouse_filter = 2
+texture = ExtResource("25_bsgyd")
+expand_mode = 2
+
+[node name="Markers" type="Node2D" parent="CombatPanel/Darkest"]
+
+[node name="Defender1" type="Marker2D" parent="CombatPanel/Darkest/Markers"]
+position = Vector2(751, 265)
+
+[node name="Defender2" type="Marker2D" parent="CombatPanel/Darkest/Markers"]
+position = Vector2(592, 295)
+
+[node name="Attacker1" type="Marker2D" parent="CombatPanel/Darkest/Markers"]
+position = Vector2(-207, 287)
+
+[node name="Attacker2" type="Marker2D" parent="CombatPanel/Darkest/Markers"]
+position = Vector2(-73, 331)
+
+[node name="Attacker3" type="Marker2D" parent="CombatPanel/Darkest/Markers"]
+position = Vector2(33, 284)
+
+[node name="UnitControlPanel" type="Panel" parent="CombatPanel/Darkest"]
+offset_left = -307.0
+offset_top = 402.0
+offset_right = 107.0
+offset_bottom = 601.0
+scale = Vector2(0.765511, 0.740286)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatPanel/Darkest/UnitControlPanel"]
+layout_mode = 0
+offset_right = 639.0
+offset_bottom = 360.0
+scale = Vector2(0.635944, 0.532752)
+
+[node name="GridContainer" type="GridContainer" parent="CombatPanel/Darkest/UnitControlPanel/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+columns = 6
+
+[node name="SwordAttackBtn" type="TextureButton" parent="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "sword attack"
+action_mode = 0
+texture_normal = ExtResource("26_208ke")
+texture_pressed = ExtResource("27_fr0la")
+texture_hover = ExtResource("28_eu8tg")
+
+[node name="UnGroupUnitsBtn" type="TextureButton" parent="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "ungroup units"
+action_mode = 0
+texture_normal = ExtResource("6_30qx5")
+texture_pressed = ExtResource("7_q0p1w")
+texture_hover = ExtResource("8_2qxkw")
+
+[node name="NextUnitBtn" type="TextureButton" parent="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "Next Unit"
+action_mode = 0
+texture_normal = ExtResource("2_1bd0r")
+texture_pressed = ExtResource("3_ng7ue")
+texture_hover = ExtResource("4_r1j1m")
+
+[node name="EndTurnBtn" type="TextureButton" parent="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "End Turn"
+action_mode = 0
+texture_normal = ExtResource("15_b5ji1")
+texture_pressed = ExtResource("16_jlvwk")
+texture_hover = ExtResource("17_mj444")
+
+[node name="UnitInfoPanel" type="Panel" parent="CombatPanel/Darkest"]
+offset_left = 12.0
+offset_top = 400.0
+offset_right = 412.0
+offset_bottom = 547.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatPanel/Darkest/UnitInfoPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CurrentUnitInfoLabel" type="Label" parent="CombatPanel/Darkest/UnitInfoPanel/HBoxContainer"]
+layout_mode = 2
+text = "current unit info"
+
+[node name="HSeparator" type="HSeparator" parent="CombatPanel/Darkest/UnitInfoPanel/HBoxContainer"]
+layout_mode = 2
+
+[node name="UnitInfoLabel" type="Label" parent="CombatPanel/Darkest/UnitInfoPanel/HBoxContainer"]
+layout_mode = 2
+text = "current unit info"
+
+[node name="CombatModeSelector" type="OptionButton" parent="CombatPanel"]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 127.0
+offset_right = 265.0
+offset_bottom = 147.0
+theme_override_font_sizes/font_size = 14
+item_count = 2
+popup/item_0/text = "Warlords"
+popup/item_0/id = 0
+popup/item_1/text = "Darkest"
+popup/item_1/id = 1
+
+[node name="Label" type="Label" parent="CombatPanel/CombatModeSelector"]
+layout_mode = 0
+offset_left = -45.0
+offset_top = -57.0
+offset_right = 214.0
+offset_bottom = -31.0
+theme_override_font_sizes/font_size = 18
+text = "please select mode of combat"
+
+[node name="Button" type="Button" parent="CombatPanel/CombatModeSelector"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 55.0
+offset_right = 16.0
+offset_bottom = 63.0
+text = "Start Combat"
+
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/GroupUnitsBtn" to="UnitControlPanel" method="_on_group_units_btn_pressed"]
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/UnGroupUnitsBtn" to="UnitControlPanel" method="_on_ungroup_units_btn_pressed"]
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/NextUnitBtn" to="UnitControlPanel" method="_on_next_unit_btn_pressed"]
+[connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/EndTurnBtn" to="UnitControlPanel" method="_on_end_turn_btn_pressed"]
+[connection signal="pressed" from="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer/SwordAttackBtn" to="CombatPanel/Darkest/UnitControlPanel" method="_on_group_units_btn_pressed"]
+[connection signal="pressed" from="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer/UnGroupUnitsBtn" to="CombatPanel/Darkest/UnitControlPanel" method="_on_ungroup_units_btn_pressed"]
+[connection signal="pressed" from="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer/NextUnitBtn" to="CombatPanel/Darkest/UnitControlPanel" method="_on_next_unit_btn_pressed"]
+[connection signal="pressed" from="CombatPanel/Darkest/UnitControlPanel/HBoxContainer/GridContainer/EndTurnBtn" to="CombatPanel/Darkest/UnitControlPanel" method="_on_end_turn_btn_pressed"]
+[connection signal="item_selected" from="CombatPanel/CombatModeSelector" to="CombatPanel" method="_on_combat_mode_selected"]
+[connection signal="pressed" from="CombatPanel/CombatModeSelector/Button" to="CombatPanel" method="_on_button_pressed"]

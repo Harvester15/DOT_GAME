@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bmcndrjwodj8c"]
+[gd_scene load_steps=35 format=3 uid="uid://bmcndrjwodj8c"]
 
 [ext_resource type="Script" path="res://scripts/UI/TurnIcon.cs" id="1_0foxo"]
 [ext_resource type="Script" path="res://scripts/UI/UnitInfo.cs" id="1_pkmnq"]
@@ -28,6 +28,11 @@
 [ext_resource type="Texture2D" uid="uid://bfr7ft65137j1" path="res://resources/btns/abilities/swords_regular.png" id="26_208ke"]
 [ext_resource type="Texture2D" uid="uid://hp7u5wpl4bn3" path="res://resources/btns/abilities/swords_light.png" id="27_fr0la"]
 [ext_resource type="Texture2D" uid="uid://b12ie5t4lcreh" path="res://resources/btns/abilities/swords_dark.png" id="28_eu8tg"]
+[ext_resource type="Script" path="res://scripts/UI/MiniMap.cs" id="29_iric5"]
+[ext_resource type="Script" path="res://scripts/Combat/HommField.cs" id="29_s44k1"]
+[ext_resource type="Texture2D" uid="uid://cjg0n6frwlumf" path="res://resources/Story/MVP/steppe1.jpg" id="30_d0fau"]
+[ext_resource type="Texture2D" uid="uid://cb4c46745cymo" path="res://resources/Story/MVP/menu.png" id="31_r7wbc"]
+[ext_resource type="Script" path="res://scripts/UI/HommActionBar.cs" id="32_55gnt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjgjl"]
 bg_color = Color(0, 1, 0, 1)
@@ -451,6 +456,40 @@ layout_mode = 2
 layout_mode = 2
 text = "current unit info"
 
+[node name="Homm" type="Node2D" parent="CombatPanel"]
+
+[node name="HommField" type="Node2D" parent="CombatPanel/Homm"]
+script = ExtResource("29_s44k1")
+FieldBackground = ExtResource("30_d0fau")
+HexTileTexture = ExtResource("31_r7wbc")
+
+[node name="HommActionBar" type="Control" parent="CombatPanel/Homm"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 196.0
+offset_top = 411.0
+offset_right = 236.0
+offset_bottom = 451.0
+script = ExtResource("32_55gnt")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatPanel/Homm/HommActionBar"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DefendBtn" type="Button" parent="CombatPanel/Homm/HommActionBar/HBoxContainer"]
+layout_mode = 2
+text = "Defend"
+
+[node name="WaitBtn" type="Button" parent="CombatPanel/Homm/HommActionBar/HBoxContainer"]
+layout_mode = 2
+text = "wait"
+
+[node name="CastBtn" type="Button" parent="CombatPanel/Homm/HommActionBar/HBoxContainer"]
+layout_mode = 2
+text = "cast
+"
+
 [node name="CombatModeSelector" type="OptionButton" parent="CombatPanel"]
 layout_mode = 0
 offset_left = 220.0
@@ -480,6 +519,27 @@ offset_top = 55.0
 offset_right = 16.0
 offset_bottom = 63.0
 text = "Start Combat"
+
+[node name="MiniMapPanel" type="Panel" parent="."]
+offset_left = 1037.0
+offset_top = 2.0
+offset_right = 1153.0
+offset_bottom = 111.0
+
+[node name="MiniMap" type="Control" parent="MiniMapPanel"]
+top_level = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 974.0
+offset_top = 1.0
+offset_right = 1.0
+offset_bottom = -538.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("29_iric5")
 
 [connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/GroupUnitsBtn" to="UnitControlPanel" method="_on_group_units_btn_pressed"]
 [connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/UnGroupUnitsBtn" to="UnitControlPanel" method="_on_ungroup_units_btn_pressed"]

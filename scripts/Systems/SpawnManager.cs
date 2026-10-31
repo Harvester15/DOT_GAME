@@ -90,6 +90,13 @@ public partial class SpawnManager : Node2D
             gameObject.Portrait.Texture = unit.GetActiveTexture();
         }
 
+        if (gameObject.Portrait?.Texture == null)
+        {
+            GD.PrintErr($"SpawnManager: '{gameObject.Name}' has no portrait texture " +
+                        $"(missing UnitData?). Skipping scale.");
+            return;
+        }
+
         GD.Print($"portrait size before scaling: {gameObject.Portrait.Size}, scale: {gameObject.Portrait.Scale}");
 
         // 1. Setup the TextureRect for scaling (do this once)

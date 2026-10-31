@@ -34,7 +34,7 @@ Areas = [NodePath("ColorRect"), NodePath("ColorRect2"), NodePath("ColorRect3"), 
 
 [node name="Sprite2D" type="Sprite2D" parent="GameWorld/Map"]
 z_index = -1
-position = Vector2(575.5, 322.5)
+position = Vector2(575, 328)
 rotation = 1.5708
 scale = Vector2(1.00469, 1.37861)
 texture = ExtResource("1_yudmw")
@@ -81,7 +81,7 @@ ShieldLayers = Array[Object]([ExtResource("8_rfsp2"), ExtResource("9_jwnjf")])
 
 [node name="BaseUnit7" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
 script = ExtResource("8_q3a0w")
-UnitTeam = 2
+UnitTeam = 3
 Data = ExtResource("5_o8xnj")
 
 [node name="BaseUnit2" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
@@ -93,6 +93,7 @@ Data = ExtResource("11_mydig")
 [node name="BaseUnit6" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
 position = Vector2(6, 339)
 script = ExtResource("5_2y6ly")
+UnitTeam = 2
 Data = ExtResource("13_vvje5")
 
 [node name="BaseUnit3" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
@@ -107,6 +108,7 @@ Data = ExtResource("13_vvje5")
 
 [node name="BaseUnit5" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
 script = ExtResource("5_2y6ly")
+UnitTeam = 2
 Data = ExtResource("13_vvje5")
 
 [node name="BaseUnit9" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
@@ -131,6 +133,10 @@ script = ExtResource("12_yo6lp")
 
 [node name="UI" parent="." instance=ExtResource("5_yidkf")]
 
+[node name="MiniMap" parent="UI/MiniMapPanel" index="0" node_paths=PackedStringArray("Grid", "Camera")]
+Grid = NodePath("../../../GameWorld/Map")
+Camera = NodePath("../../../CameraRig/Camera2D")
+
 [node name="MovementRangeVisualizer" type="Node2D" parent="UI" node_paths=PackedStringArray("Areas")]
 script = ExtResource("5_u243p")
 Areas = []
@@ -142,4 +148,5 @@ script = ExtResource("22_ekcy8")
 Combat = NodePath("../GameWorld/Managers/CombatManager")
 Selection = NodePath("../GameWorld/Managers/SelectionManager")
 
+[editable path="UI"]
 [editable path="CameraRig"]

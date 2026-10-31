@@ -6,5 +6,5 @@
 script = ExtResource("1_ri0jh")
 Id = ""
 Name = ""
-KnownEvidence = null
+KnownEvidence = Array[String]([])
 ScenarioId = ""

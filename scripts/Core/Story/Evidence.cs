@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dot_battle_signal_bus.scripts.Story
+namespace dot_battle_signal_bus.scripts.Core.Story
 {
     public class Evidence
     {
