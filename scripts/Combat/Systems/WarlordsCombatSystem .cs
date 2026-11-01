@@ -2,6 +2,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Threading.Tasks;
 using Array = Godot.Collections.Array;
 
@@ -17,6 +18,7 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
         private BaseUnit currentUnit;
         private int currentIndex;
         private CombatResult _combatResult;
+        private CombatSettings _settings; // per-witness bias for Archive of Echoes
 
         private bool _inCombat = false; // track whether a combat session is active
         private bool _battleReportEndUpdate = false;
@@ -53,10 +55,14 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
                 defender.Add(unit);
             }
 
-            // Roll initiative for each unit
+            // Roll initiative for each unit, applying per-side bias from the witness account.
             foreach (BaseUnit unit in _allUnits)
             {
-                unit.Initiative = Dice.RollD10() + unit.Initiative; // we need to store this temp value
+                int bias = _playerUnits.Contains(unit)
+                    ? _settings.AttackerInitiativeBonus
+                    : _settings.DefenderInitiativeBonus;
+
+                unit.Initiative = Dice.RollD10() + unit.Initiative + bias;
             }
             // Sort descending by initiative
             _allUnits = _allUnits.OrderByDescending(u => u.Initiative).ToList();
@@ -207,16 +213,29 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
             hit = attackRoll >= defenseValue;
             if (hit)
             {
+                int rawDamage = Dice.RollDamage(attacker) * criticalHit;
 
-                int damage = Dice.RollDamage(attacker) * criticalHit;
+                // Bias: the witness inflates/downplays how hard each side hit.
+                float dmgMult = _playerUnits.Contains(attacker)
+                    ? _settings.AttackerDamageMultiplier
+                    : _settings.DefenderDamageMultiplier;
+                int damage = Mathf.RoundToInt(rawDamage * dmgMult);
+
                 GD.Print($"sending keys to combatlog {attackerName} - key:{attackerKey}  and defender {defenderName} - key: {defenderKey}");
                 combatLog = $"\n{attackerName}  hits {defenderName}  dealing [color=red]{damage}[/color] damage";
-                //combatLog = $"\n[img name=\"{attackerKey}\"]  hits [img name=\"{defenderKey}\"]  dealing [color=red]{damage}[/color] damage";
                 SignalBus.Instance.EmitSignal("CombatLog", combatLog, attackerSlot, defenderSlot);
                 SignalBus.Instance.EmitSignal("CriticalHit", attacker, defender, damage);
 
-                //TODO find a better solution, instead of using a placeholder for the potential killed unit, we should have a separate signal for damage dealt and handle the low health and death logic in the unit scripts, this would also allow us to show damage numbers and have more complex interactions with damage (e.g., armor, resistances, lifesteal, etc.)
-                if (defender.CurrentHealth - damage <= 0)
+                bool lethal = defender.CurrentHealth - damage <= 0;
+
+                // "Miracle" bias: in this account, a unit cannot die (e.g., the Priest's save).
+                if (lethal && _settings.ForcedMiracle)
+                {
+                    damage = System.Math.Max(0, defender.CurrentHealth - 1); // leave at 1 HP
+                    lethal = false;
+                }
+
+                if (lethal)
                 {
                     GD.Print("in COMBATMANAGER before distributing dmg");
                     OnUnitKilled(attacker, defender);
@@ -262,7 +281,7 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
             //    return;
 
             GD.Print($"CombatManager - UnitKilled handler: {victim.Name} killed by {killer?.Name}");
-            
+
             //TODO remove the bool, doesn't do anything?!!?
             if (!_battleReportEndUpdate)
                 UpdateBattleReport(killer, victim);
@@ -287,9 +306,11 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
 
         }
 
+
         public async Task<CombatResult> Execute(CombatContext context)
         {
-           await StartCombat(context._attacker, context._defender);
+            _settings = context.Settings ?? new CombatSettings(); // bias layer (neutral if null)
+            await StartCombat(context._attacker, context._defender);
             return _combatResult;
         }
     }

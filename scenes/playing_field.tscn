@@ -95,6 +95,7 @@ position = Vector2(6, 339)
 script = ExtResource("5_2y6ly")
 UnitTeam = 2
 Data = ExtResource("13_vvje5")
+ExperienceReward = 10
 
 [node name="BaseUnit3" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
 script = ExtResource("5_2y6ly")
@@ -105,14 +106,13 @@ Data = ExtResource("12_03vc4")
 priority = 30
 script = ExtResource("5_2y6ly")
 Data = ExtResource("13_vvje5")
+ExperienceReward = 10
 
 [node name="BaseUnit5" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
 script = ExtResource("5_2y6ly")
 UnitTeam = 2
 Data = ExtResource("13_vvje5")
-
-[node name="BaseUnit9" parent="GameWorld/Units" instance=ExtResource("19_fc0ot")]
-script = ExtResource("5_2y6ly")
+ExperienceReward = 10
 
 [node name="GridPathfinding" type="Node2D" parent="GameWorld"]
 script = ExtResource("4_af3rw")

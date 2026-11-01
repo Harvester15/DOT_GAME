@@ -85,6 +85,16 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void CombatDamageEventHandler(BaseUnit attacker, BaseUnit target, int damage);
 
 
+        //investigation signals
+        [Signal] public delegate void DialogueLineShownEventHandler(string text);
+        [Signal] public delegate void ClueEncounteredEventHandler(string clueId, string displayText);
+        [Signal] public delegate void ClueMarkedEventHandler(string clueId);
+        [Signal] public delegate void TopicAskedEventHandler(string topicId);
+        [Signal] public delegate void ConfrontationResolvedEventHandler(string witnessId, int approach);
+        [Signal] public delegate void EchoRequestedEventHandler(string eventId, string witnessId);
+
+        [Signal] public delegate void PortalTravelRequestedEventHandler(string coordClueId, Vector2 coord);
+
         // To register the singleton in Godot's autoload:
         public override void _Ready()
         {

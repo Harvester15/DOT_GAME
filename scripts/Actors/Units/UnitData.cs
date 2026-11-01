@@ -21,7 +21,6 @@ namespace dot_battle_signal_bus.scripts.Actors.Units
         [Export] public Damage Dmg;
         [Export] public UnitRace UnitRace;
 
-        [Export] public int XpReward;
 
         [ExportGroup("Base Sprites")]
         [Export] public Texture2D DefaultPortrait;

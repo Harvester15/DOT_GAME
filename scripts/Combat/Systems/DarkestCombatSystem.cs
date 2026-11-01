@@ -271,7 +271,7 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
         {
             GD.Print($"updating combat result: {victim.Name}  - {victim.UnitData.ExperienceReward} XP");
             _combatResult.AddKill(killer.UnitData);
-            _combatResult.AddXPEarned(killer.UnitData, victim.UnitData.Data.XpReward);
+            _combatResult.AddXPEarned(killer.UnitData, victim.UnitData.ExperienceReward);
             _combatResult.TotalXPPool += victim.UnitData.ExperienceReward;
 
             _combatResult.AddLoss(victim.UnitData);

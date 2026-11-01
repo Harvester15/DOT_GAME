@@ -28,7 +28,7 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
         private TaskCompletionSource<HommAction> _pendingAction;
 
         private readonly HashSet<BaseUnit> _defending = new();
-
+        private BaseUnit _activePlayerUnit;   // unit currently awaiting player input (needed for casting)
 
         public override void _Ready()
         {
@@ -49,6 +49,10 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
             // Hand the field its data and show it.
             _homm.Visible = true;
             _field.Initialize(this, _grid, _positions);
+
+            _grid = new HexGrid(Columns, Rows);
+            if (_field.FieldBackground != null)
+                _grid.FitToArea(_field.FieldBackground.GetSize(), Vector2.Zero);
 
             // Reuse the existing typed CombatStarted signal.
             SignalBus.Instance.EmitSignal(SignalBus.SignalName.CombatStarted,
@@ -111,7 +115,7 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
             {
                 case HommActionType.Move: MoveUnit(unit, action.TargetCell); break;
                 case HommActionType.Attack: if (action.TargetUnit != null) Attack(unit, action.TargetUnit); break;
-                case HommActionType.Cast: GD.Print($"{unit.UnitName} casts (TODO: ability system)."); break;
+                case HommActionType.Cast: ResolveCast(unit, action.TargetUnit); break;
                 case HommActionType.Defend: _defending.Add(unit); break;   // grant the bonus
                 case HommActionType.Wait:
                 default: break;
@@ -148,6 +152,34 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
             }
         }
 
+        private void ResolveCast(BaseUnit caster, BaseUnit target)
+        {
+            if (caster.Data == null || target == null) return;
+
+            if (caster.Data.SpellIsHeal)
+            {
+                target.CurrentHealth = Mathf.Min(target.MaxHealth,
+                    target.CurrentHealth + caster.Data.SpellPower);
+                SignalBus.Instance.EmitSignal(SignalBus.SignalName.UnitHealthChanged, target);
+                GD.Print($"{caster.UnitName} heals {target.UnitName} for {caster.Data.SpellPower}.");
+            }
+            else
+            {
+                int dmg = caster.Data.SpellPower;
+                target.TakeDamage(dmg);
+                SignalBus.Instance.EmitSignal(SignalBus.SignalName.CombatDamage, caster, target, dmg);
+                GD.Print($"{caster.UnitName} casts on {target.UnitName} for {dmg}.");
+
+                if (target.CurrentHealth <= 0)
+                {
+                    UpdateBattleReport(caster, target);
+                    _combatResult.AddLoss(target);
+                    _turnOrder.Remove(target);
+                    _positions.Remove(target);
+                }
+            }
+        }
+
         private HommAction DecideEnemyAction(BaseUnit unit)
         {
             var target = _positions.Keys
@@ -170,8 +202,20 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
         private Task<HommAction> RequestPlayerAction(BaseUnit unit)
         {
             _pendingAction = new TaskCompletionSource<HommAction>();
+            _activePlayerUnit = unit;       // <-- added: BeginCastTargeting uses this
             _field.BeginPlayerTurn(unit);   // field lights up move/attack hexes
             return _pendingAction.Task;
+        }
+
+        /// <summary>Called by HommActionBar when the player presses Cast.
+        /// Delegates target selection to the field; the Cast action is submitted
+        /// later when the player clicks a valid target.</summary>
+        public void BeginCastTargeting()
+        {
+            if (_activePlayerUnit?.Data?.CanCast == true)
+                _field.EnterCastMode(_activePlayerUnit);
+            else
+                GD.Print("BeginCastTargeting: active unit cannot cast.");
         }
 
         public void SubmitPlayerAction(HommAction action) => _pendingAction?.TrySetResult(action);

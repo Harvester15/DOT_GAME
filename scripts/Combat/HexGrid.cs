@@ -95,5 +95,28 @@ namespace dot_battle_signal_bus.scripts.Combat
             }
             return result;
         }
+
+        /// <summary>Sizes hexes + origin so the whole grid fills the given pixel area.</summary>
+        public void FitToArea(Vector2 areaSize, Vector2 areaOrigin)
+        {
+            // Column spacing = HexWidth; row spacing = HexHeight * 0.75. Plus half-hex offset on odd rows.
+            HexWidth = areaSize.X / (Columns + 0.5f);
+            HexHeight = areaSize.Y / ((Rows * 0.75f) + 0.25f);
+            Origin = areaOrigin + new Vector2(HexWidth * 0.5f, HexHeight * 0.5f);
+        }
+
+        /// <summary>Nearest hex to a local pixel position (simple radius test).</summary>
+        public Vector2I? WorldToCell(Vector2 local)
+        {
+            for (int y = 0; y < Rows; y++)
+                for (int x = 0; x < Columns; x++)
+                {
+                    var cell = new Vector2I(x, y);
+                    if (local.DistanceTo(CellToWorld(cell)) < HexWidth * 0.5f)
+                        return cell;
+                }
+            return null;
+
+        }
     }
 }

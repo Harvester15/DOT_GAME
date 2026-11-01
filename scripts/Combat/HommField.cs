@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using dot_battle_signal_bus.scripts.Combat.Systems;
-using global::dot_battle_signal_bus.scripts.Combat.Logic;
-using global::dot_battle_signal_bus.scripts.Combat.Systems;
+using dot_battle_signal_bus.scripts.Combat.Logic;
+using dot_battle_signal_bus.scripts.Combat.Systems;
 using Godot;
 using System.Collections.Generic;
 
@@ -98,6 +98,7 @@ namespace dot_battle_signal_bus.scripts.Combat
         {
             _activeUnit = unit;
             _moveCells = _grid.CellsInRange(_positions[unit], unit.MovementRange);
+            SetCursor(MoveCursor);   // show move cursor while the unit can act
             QueueRedraw();
         }
 
@@ -110,9 +111,7 @@ namespace dot_battle_signal_bus.scripts.Combat
             if (FieldBackground != null)
                 DrawTexture(FieldBackground, Vector2.Zero);
 
-            // Hexes.
-
-
+            // Hexes — drawn as polygons via shared Utils helpers.
             for (int y = 0; y < _grid.Rows; y++)
                 for (int x = 0; x < _grid.Columns; x++)
                 {
@@ -120,16 +119,15 @@ namespace dot_battle_signal_bus.scripts.Combat
                     var pos = _grid.CellToWorld(cell);
                     var tint = DefaultTint;
                     if (_activeUnit != null && _moveCells.Contains(cell)) tint = MoveTint;
+                    if (_mode == FieldMode.Casting && _castCells.Contains(cell))
+                        tint = new Color(0.7f, 0.3f, 1f, 0.5f);   // purple = castable
 
-                    if (HexTileTexture != null)
-                        DrawTextureRect(HexTileTexture,
-                            new Rect2(pos - HexTileTexture.GetSize() / 2, HexTileTexture.GetSize()),
-                            false, tint);
-                    else
-                        DrawCircle(pos, 24, tint);   // fallback if no art yet
+                    var verts = Utils.Utils.HexCorners(pos, _grid.HexWidth, _grid.HexHeight);
+                    DrawColoredPolygon(verts, tint);
+                    DrawPolyline(Utils.Utils.ClosePolygon(verts), new Color(1, 1, 1, 0.35f), 1.5f);
                 }
 
-            // Units (HommSprite, with attack highlight for valid targets).
+            // Units — scaled to fit a cell (not native sprite size).
             foreach (var kv in _positions)
             {
                 var unit = kv.Key;
@@ -137,15 +135,31 @@ namespace dot_battle_signal_bus.scripts.Combat
                 var sprite = unit.Data?.HommSprite;
 
                 if (_activeUnit != null && !_system.IsPlayerSide(unit) &&
-                    _grid.Distance(_positions[_activeUnit], kv.Value) <= Mathf.Max(1, _activeUnit.AttackRange))
-                    DrawCircle(pos, 28, AttackTint);
+     _grid.Distance(_positions[_activeUnit], kv.Value) <= Mathf.Max(1, _activeUnit.AttackRange))
+                    DrawColoredPolygon(Utils.Utils.HexCorners(pos, _grid.HexWidth, _grid.HexHeight), AttackTint);
 
                 if (sprite != null)
-                    DrawTextureRect(sprite,
-                        new Rect2(pos - sprite.GetSize() / 2, sprite.GetSize()), false);
-                else
-                    DrawCircle(pos, 18,
-                        _system.IsPlayerSide(unit) ? Colors.Green : Colors.Red);
+                {
+                    var texSize = sprite.GetSize();
+                    float target = Mathf.Min(_grid.HexWidth, _grid.HexHeight) * 0.9f;
+                    float scale = target / Mathf.Max(texSize.X, texSize.Y);
+                    var drawn = texSize * scale;
+
+                    bool flip = !_system.IsPlayerSide(unit);
+                    if (flip)
+                    {
+                        // Mirror horizontally but keep centered on the cell:
+                        // left edge = pos.X + drawn.X/2, width = -drawn.X.
+                        var rect = new Rect2(
+                            new Vector2(pos.X + drawn.X / 2, pos.Y - drawn.Y / 2),
+                            new Vector2(-drawn.X, drawn.Y));
+                        DrawTextureRectRegion(sprite, rect, new Rect2(Vector2.Zero, texSize));
+                    }
+                    else
+                    {
+                        DrawTextureRect(sprite, new Rect2(pos - drawn / 2, drawn), false);
+                    }
+                }
             }
         }
 
@@ -154,9 +168,10 @@ namespace dot_battle_signal_bus.scripts.Combat
             if (_activeUnit == null) return;
 
             // Hover: show attack cursor over valid melee/ranged targets (Normal mode only).
+            // Hover (Normal mode):
             if (@event is InputEventMouseMotion && _mode == FieldMode.Normal)
             {
-                var hover = WorldToCell(GetLocalMousePosition());
+                var hover = _grid.WorldToCell(GetLocalMousePosition());   // was WorldToCell(...)
                 var hovered = hover.HasValue ? _system.UnitAt(hover.Value) : null;
                 bool canAttack = hovered != null && !_system.IsPlayerSide(hovered) &&
                     _grid.Distance(_positions[_activeUnit], hover.Value) <= Mathf.Max(1, _activeUnit.AttackRange);
@@ -175,7 +190,8 @@ namespace dot_battle_signal_bus.scripts.Combat
 
             if (mb.ButtonIndex != MouseButton.Left) return;
 
-            var cell = WorldToCell(GetLocalMousePosition());
+            var cell = _grid.WorldToCell(GetLocalMousePosition());
+            GD.Print($"click local={GetLocalMousePosition()} -> cell={cell}, active={_activeUnit?.UnitName}");
             if (cell == null) return;
             var clicked = _system.UnitAt(cell.Value);
 
@@ -215,17 +231,7 @@ namespace dot_battle_signal_bus.scripts.Combat
             QueueRedraw();
         }
 
-        /// <summary>Nearest hex to a local pixel position (simple radius test).</summary>
-        private Vector2I? WorldToCell(Vector2 local)
-        {
-            for (int y = 0; y < _grid.Rows; y++)
-                for (int x = 0; x < _grid.Columns; x++)
-                {
-                    var cell = new Vector2I(x, y);
-                    if (local.DistanceTo(_grid.CellToWorld(cell)) < _grid.HexWidth * 0.5f)
-                        return cell;
-                }
-            return null;
-        }
+
+
     }
 }

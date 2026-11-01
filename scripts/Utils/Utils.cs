@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System;
 using System.Linq;
 
 namespace dot_battle_signal_bus.scripts.Utils
@@ -30,6 +31,27 @@ namespace dot_battle_signal_bus.scripts.Utils
         public static bool IsValidGridPosition(Vector2I gridPos, int gridWidth, int gridHeight)
         {
             return gridPos.X >= 0 && gridPos.X < gridWidth && gridPos.Y >= 0 && gridPos.Y < gridHeight;
+        }
+
+
+        /// <summary>Six corners of a pointy-top hex centered at <paramref name="center"/>.</summary>
+        public static Vector2[] HexCorners(Vector2 center, float width, float height)
+        {
+            var pts = new Vector2[6];
+            for (int i = 0; i < 6; i++)
+            {
+                float a = Mathf.DegToRad(60 * i - 90);
+                pts[i] = center + new Vector2(Mathf.Cos(a) * width * 0.5f, Mathf.Sin(a) * height * 0.5f);
+            }
+            return pts;
+        }
+
+        public static Vector2[] ClosePolygon(Vector2[] poly)
+        {
+            var closed = new Vector2[poly.Length + 1];
+            poly.CopyTo(closed, 0);
+            closed[poly.Length] = poly[0];
+            return closed;
         }
 
     }
