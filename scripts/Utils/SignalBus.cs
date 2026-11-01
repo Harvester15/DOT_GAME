@@ -34,7 +34,7 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void UnitDefendEventHandler(BaseUnit attacker, BaseUnit target);
         [Signal] public delegate void UnitDiedEventHandler(BaseUnit unit);
         [Signal] public delegate void UnitLowHealthEventHandler(BaseUnit unit);
-        [Signal] public delegate void UnitHealthChangedEventHandler(BaseUnit unit, string status, bool isActive);
+        [Signal] public delegate void UnitHealthChangedEventHandler(BaseUnit unit);
         // [Signal] public delegate void AbilityUsedEventHandler(Ability ability, player caster, player target);
         [Signal] public delegate void UnitsGroupedEventHandler(ArmyStack armyStack);
         [Signal] public delegate void NextUnitClickedEventHandler();
@@ -71,6 +71,10 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void CriticalHitEventHandler(BaseUnit attacker, BaseUnit target, int damage);
         [Signal] public delegate void UnitKilledEventHandler(BaseUnit killer, BaseUnit victim);
         [Signal] public delegate void BattleReportClosedEventHandler();
+        //Homm
+        [Signal] public delegate void HommAwaitingActionEventHandler(BaseUnit unit);
+        // (CombatStarted may already exist — reuse if so.)
+
 
         //jrpg combat signals
         [Signal] public delegate void JrpgUnitSelectedEventHandler(JrpgUnit unit);
@@ -80,6 +84,16 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void CombatActionEventHandler(BaseUnit actor, string actionDescription);
         [Signal] public delegate void CombatDamageEventHandler(BaseUnit attacker, BaseUnit target, int damage);
 
+
+        //investigation signals
+        [Signal] public delegate void DialogueLineShownEventHandler(string text);
+        [Signal] public delegate void ClueEncounteredEventHandler(string clueId, string displayText);
+        [Signal] public delegate void ClueMarkedEventHandler(string clueId);
+        [Signal] public delegate void TopicAskedEventHandler(string topicId);
+        [Signal] public delegate void ConfrontationResolvedEventHandler(string witnessId, int approach);
+        [Signal] public delegate void EchoRequestedEventHandler(string eventId, string witnessId);
+
+        [Signal] public delegate void PortalTravelRequestedEventHandler(string coordClueId, Vector2 coord);
 
         // To register the singleton in Godot's autoload:
         public override void _Ready()

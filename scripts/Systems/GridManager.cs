@@ -7,7 +7,9 @@ namespace dot_battle_signal_bus.scripts.Utils
 {
     public partial class GridManager : Node
     {
-        // public static GridManager Instance { get; private set; }
+        private static GridManager _instance;
+        public static GridManager Instance => _instance ??= new GridManager();
+        
         private AStarGrid2D _astarGrid;
 
         [Export] public int GridWidth = 50;

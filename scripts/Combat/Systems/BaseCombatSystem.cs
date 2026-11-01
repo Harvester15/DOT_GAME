@@ -18,7 +18,6 @@ namespace dot_battle_signal_bus.scripts.Combat.Systems
         {
             _combatResult.AddKill(killer);
             _combatResult.TotalXPPool += victim.ExperienceReward;
-            // ... (rest of your logic)
         }
 
         public abstract Task<CombatResult> Execute(CombatContext context);

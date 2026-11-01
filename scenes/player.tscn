@@ -1,7 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://5sulucl7l1qb"]
 
-
-[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="1_tb1e7"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/Player/playerSun.png" id="1_tb1e7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4fdf3"]
 radius = 107.019

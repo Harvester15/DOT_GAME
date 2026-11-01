@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://tjo5q5fmk8u6"
-path="res://.godot/imported/moonshield.png-ad9893f08712e0f267f1552c1e8ca371.ctex"
+path="res://.godot/imported/moonshield.png-52d94cf2da642821861001c8d524fc9b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/combat/jrpg/moonshield.png"
-dest_files=["res://.godot/imported/moonshield.png-ad9893f08712e0f267f1552c1e8ca371.ctex"]
+source_file="res://resources/Combat/jrpg/moonshield.png"
+dest_files=["res://.godot/imported/moonshield.png-52d94cf2da642821861001c8d524fc9b.ctex"]
 
 [params]
 

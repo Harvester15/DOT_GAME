@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c1tr70bc4ud5d"
-path="res://.godot/imported/player_side_warrior.png-273e245170493df48ebf721b64eeec91.ctex"
+path="res://.godot/imported/player_side_warrior.png-f70ca368b7ba8fedd596f43844399ebb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/combat/units/player_side_warrior.png"
-dest_files=["res://.godot/imported/player_side_warrior.png-273e245170493df48ebf721b64eeec91.ctex"]
+source_file="res://resources/Combat/units/player_side_warrior.png"
+dest_files=["res://.godot/imported/player_side_warrior.png-f70ca368b7ba8fedd596f43844399ebb.ctex"]
 
 [params]
 

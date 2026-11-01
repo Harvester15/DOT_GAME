@@ -1,4 +1,4 @@
-using dot_battle_signal_bus.scripts;
+﻿using dot_battle_signal_bus.scripts;
 using Godot;
 using System;
 using System.Data;
@@ -13,16 +13,33 @@ public partial class UnitInfo : PanelContainer
 
     public override void _Ready()
     {
-        this.Visible = false; // Hide the unit info panel by default
-        _groupView.Visible = false; // Hide group info by default
-        // Connect to global signals
-        SignalBus.Instance.Connect(nameof(SignalBus.UnitSelected), new Callable(this, nameof(OnUnitSelected)));
-        SignalBus.Instance.Connect(nameof(SignalBus.UnitDeselected), new Callable(this, nameof(OnUnitDeselected)));
-        SignalBus.Instance.Connect(nameof(SignalBus.UnitDied), new Callable(this, nameof(OnUnitDeselected)));
-        //TODO consider if we want to update the info real time when the unit is selected, or only when certain events happen (e.g. health changes, movement, etc.)
-        SignalBus.Instance.Connect(nameof(SignalBus.UnitHealthChanged), new Callable(this, nameof(UpdateAllInfo)));
-        SignalBus.Instance.Connect(nameof(SignalBus.UnitMoved), new Callable(this, nameof(OnMoved)));
-        SignalBus.Instance.Connect(nameof(SignalBus.UnitsGrouped), new Callable(this, nameof(OnGrouped)));
+        this.Visible = false;
+        _groupView.Visible = false;
+
+        // Typed event subscriptions — compiler-checked signatures.
+        SignalBus.Instance.UnitSelected += OnUnitSelected;
+        SignalBus.Instance.UnitDeselected += OnUnitDeselected;
+        SignalBus.Instance.UnitDied += OnUnitDied;          // correct BaseUnit-typed handler
+        SignalBus.Instance.UnitHealthChanged += UpdateAllInfo;       // now matches 1-arg delegate
+        SignalBus.Instance.UnitMoved += OnMoved;
+        SignalBus.Instance.UnitsGrouped += OnGrouped;
+    }
+
+    public override void _ExitTree()
+    {
+        // Mirror cleanup so a freed panel can't be invoked.
+        SignalBus.Instance.UnitSelected -= OnUnitSelected;
+        SignalBus.Instance.UnitDeselected -= OnUnitDeselected;
+        SignalBus.Instance.UnitDied -= OnUnitDied;
+        SignalBus.Instance.UnitHealthChanged -= UpdateAllInfo;
+        SignalBus.Instance.UnitMoved -= OnMoved;
+        SignalBus.Instance.UnitsGrouped -= OnGrouped;
+    }
+
+    /// <summary>UnitDied carries the dead unit; hide the panel if it was shown.</summary>
+    private void OnUnitDied(BaseUnit unit)
+    {
+        OnUnitDeselected();
     }
 
     private void OnMoved(BaseUnit unit, int movement)

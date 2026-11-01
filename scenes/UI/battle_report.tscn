@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://mvk62gkja5j2"]
 
-[ext_resource type="Texture2D" uid="uid://oeg2g1q6j0ju" path="res://resources/combat/scroll-removebg-preview.png" id="1_w750m"]
+[ext_resource type="Texture2D" uid="uid://oeg2g1q6j0ju" path="res://resources/Combat/scroll-removebg-preview.png" id="1_w750m"]
 [ext_resource type="Script" path="res://scripts/UI/BattleReport.cs" id="2_ik42x"]
 [ext_resource type="Texture2D" uid="uid://b1bpxid3vtweq" path="res://resources/btns/x.png" id="3_6gfv3"]
 [ext_resource type="Texture2D" uid="uid://d1hd6dn8kl0px" path="res://resources/btns/x_clickewd.png" id="4_y4o8u"]

@@ -41,6 +41,22 @@ namespace dot_battle_signal_bus.scripts.Combat
         // Convenience for damage dice from a Unit
         public static int RollDamage(BaseUnit unit)
         {
+            if (unit == null)
+            {
+                GD.PrintErr("RollDamage: unit is null.");
+                return 0;
+            }
+
+            // Prefer the UnitData damage, fall back to the unit's own Dmg if the resource is incomplete.
+            Damage dmg = unit.Data?.Dmg ?? unit.Dmg;
+
+            if (dmg == null)
+            {
+                GD.PrintErr($"RollDamage: no Damage data for '{unit.Name}' " +
+                            $"(Data={(unit.Data == null ? "null" : "set")}, Dmg={(unit.Dmg == null ? "null" : "set")}).");
+                return 0;
+            }
+
             return Roll(unit.Data.Dmg.DamageCount, unit.Data.Dmg.DamageSides, unit.Data.Dmg.DamageModifier);
         }
     }

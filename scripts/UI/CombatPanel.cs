@@ -99,18 +99,15 @@ public partial class CombatPanel : Panel
 
     private void OnCombatEnded(CombatResult combatResult)
     {
-        if (GetNode<BattleReport>("/root/Main/BattleReport") == null)
+        if (GetNodeOrNull<BattleReport>("/root/Main/BattleReport") == null)
         {
             GD.Print($"CombatPanel received CombatEnded signal: {combatResult}");
             var reportScene = GD.Load<PackedScene>("res://scenes/UI/battle_report.tscn");
             var reportInstance = reportScene.Instantiate<BattleReport>();
+            reportInstance.Name = "BattleReport";            // so the guard can find it next time
             GetTree().CurrentScene.AddChild(reportInstance);
             reportInstance.Display(combatResult);
-
         }
-
-       // SignalBus.Instance.EmitSignal("ShowCombatReport", combatResult);
-        
     }
 
     public void OnBattleReportClosed()
@@ -187,7 +184,7 @@ public partial class CombatPanel : Panel
         {
             case 0: _combatManager.SetCombatSystem(new WarlordsCombatSystem()); break;
             case 1: _combatManager.SetCombatSystem(new DarkestCombatSystem()); break;
-            //case 2: _combatManager.SetCombatSystem(new GridCombatSystem()); break;
+            case 2: _combatManager.SetCombatSystem(new HommCombatSystem()); break;
         }
         AddChild(_combatManager.combatSystem as Node);
     }

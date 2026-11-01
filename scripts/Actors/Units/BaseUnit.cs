@@ -26,7 +26,6 @@ public partial class BaseUnit : BaseGameObject
     public string SystemRaceName => Data?.UnitRace?.RaceName ?? "Unknown"; //encountering an unknown race??
     [Export] public Godot.Collections.Array<ShieldData> ShieldLayers;
 
-
     public Texture2D GetActiveTexture()
     {
         if (Data == null) return null;
@@ -55,7 +54,7 @@ public partial class BaseUnit : BaseGameObject
     [Export] public int MovementRange = 5;
     [Export] public int Level = 1;
     [Export] public int Initiative = 1;
-    [Export] public Damage Dmg ;
+    [Export] public Damage Dmg;
 
     [Export] public int Experience { get; set; }
     [Export] public int ExperienceReward;
@@ -78,7 +77,7 @@ public partial class BaseUnit : BaseGameObject
 
     // Components
     private UnitMovement _movement;
-    public  bool _isSelected = false;
+    public bool _isSelected = false;
 
     private Area2D _attackRangeDetector;
     private ProgressBar _healthBar;
@@ -275,14 +274,14 @@ public partial class BaseUnit : BaseGameObject
     {
         GD.Print($"in BaseUnit taking dmg");
 
-        
+
 
 
         CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
         //  _visuals.PlayDamageEffect();
         _healthBar.Value = CurrentHealth;
         SignalBus.Instance.EmitSignal("UnitHealthChanged", this);
-        
+
         GD.Print($"Unit {this.Name} took {amount} damage, current health: {CurrentHealth}");
         if (CurrentHealth <= 0)
         {
@@ -319,17 +318,20 @@ public partial class BaseUnit : BaseGameObject
     protected virtual void Die()
     {
         SignalBus.Instance.EmitSignal("UnitDied", this);
+
+        // Remove from grid occupancy so nothing references a freed unit.
+        _gridManager?.UnregisterUnitFromCell(this);
+
         var tween = CreateTween();
-        // Fade out the unit before removing it using tween
         tween.TweenProperty(this, "modulate:a", 0.1f, 5.1f);
+
         SignalBus.Instance.UnitMoved -= OnUnitMoved;
-        SignalBus.Instance.UnitDeselected -=OnUnitDeselected;
-        SignalBus.Instance.UnitAttacked -=OnUnitAttacked;
-        SignalBus.Instance.UnitDefend -=OnUnitDefend;
+        SignalBus.Instance.UnitDeselected -= OnUnitDeselected;
+        SignalBus.Instance.UnitAttacked -= OnUnitAttacked;
+        SignalBus.Instance.UnitDefend -= OnUnitDefend;
         SignalBus.Instance.UnitsGrouped -= OnGrouped;
         SignalBus.Instance.UnitSelected -= OnUnitSelected;
 
-        // Use CallDeferred so it doesn't vanish mid-function call
         CallDeferred(MethodName.QueueFree);
     }
 
@@ -509,5 +511,60 @@ public partial class BaseUnit : BaseGameObject
     public override void OnPlayerInteract(BaseGameObject gameObject)
     {
         throw new NotImplementedException();
+    }
+
+    public Godot.Collections.Dictionary ToSaveData()
+    {
+        return new Godot.Collections.Dictionary
+    {
+        { "category", "unit" },   // self-declares which factory rebuilds it
+        { "name", UnitName },
+        { "team", (int)UnitTeam },
+        { "maxHealth", MaxHealth },
+        { "currentHealth", CurrentHealth },
+        { "attack", Attack },
+        { "defense", Defense },
+        { "level", Level },
+        { "experience", Experience },
+        { "movementRange", MovementRange },
+        { "movementsLeft", MovementsLeft },
+        { "hasMoved", HasMoved },
+        { "hasActed", HasActed },
+        { "isGrouped", IsGrouped },
+        { "gridX", (int)GridPosition.X },
+        { "gridY", (int)GridPosition.Y }
+    };
+    }
+
+    public void LoadSaveData(Godot.Collections.Dictionary data)
+    {
+        UnitName = (string)data["name"];
+        UnitTeam = (Team)(int)data["team"];
+        MaxHealth = (int)data["maxHealth"];
+        CurrentHealth = (int)data["currentHealth"];
+        Attack = (int)data["attack"];
+        Defense = (int)data["defense"];
+        Level = (int)data["level"];
+        Experience = (int)data["experience"];
+        MovementRange = (int)data["movementRange"];
+        MovementsLeft = (int)data["movementsLeft"];
+        HasMoved = (bool)data["hasMoved"];
+        HasActed = (bool)data["hasActed"];
+        IsGrouped = (bool)data["isGrouped"];
+    }
+
+    /// <summary>Re-applies loaded state to visuals/UI. Call once after LoadSaveData().</summary>
+    public void RefreshAfterLoad()
+    {
+        UpdateTeamSprite();
+
+        if (_healthBar != null)
+        {
+            _healthBar.MaxValue = MaxHealth;
+            _healthBar.Value = CurrentHealth;
+        }
+
+        // Tell the rest of the game to resync anything bound to this unit.
+        SignalBus.Instance.EmitSignal("UnitHealthChanged", this);
     }
 }

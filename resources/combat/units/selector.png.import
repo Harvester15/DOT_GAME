@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cfqt0m8mj7sd5"
-path="res://.godot/imported/selector.png-4bd7176713f87c895b842b1d6110f79f.ctex"
+path="res://.godot/imported/selector.png-791c3791b67d90cbdb901d280a594fd6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/combat/units/selector.png"
-dest_files=["res://.godot/imported/selector.png-4bd7176713f87c895b842b1d6110f79f.ctex"]
+source_file="res://resources/Combat/units/selector.png"
+dest_files=["res://.godot/imported/selector.png-791c3791b67d90cbdb901d280a594fd6.ctex"]
 
 [params]
 

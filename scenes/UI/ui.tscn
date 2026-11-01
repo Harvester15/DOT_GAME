@@ -1,15 +1,15 @@
-[gd_scene load_steps=30 format=3 uid="uid://bmcndrjwodj8c"]
+[gd_scene load_steps=38 format=3 uid="uid://bmcndrjwodj8c"]
 
 [ext_resource type="Script" path="res://scripts/UI/TurnIcon.cs" id="1_0foxo"]
 [ext_resource type="Script" path="res://scripts/UI/UnitInfo.cs" id="1_pkmnq"]
 [ext_resource type="Texture2D" uid="uid://di81p7mnkv34k" path="res://resources/btns/next_unit.png" id="2_1bd0r"]
 [ext_resource type="Script" path="res://scripts/UI/UnitControlPanel.cs" id="2_r8lys"]
 [ext_resource type="Texture2D" uid="uid://c2uqyd04ks0fn" path="res://resources/unitinfo/nametag-removebg-preview.png" id="2_ra4c0"]
-[ext_resource type="Texture2D" uid="uid://d15vtd85lskhu" path="res://resources/player/playerSun_yellow.png" id="2_tb6cy"]
+[ext_resource type="Texture2D" uid="uid://d15vtd85lskhu" path="res://resources/Player/playerSun_yellow.png" id="2_tb6cy"]
 [ext_resource type="Texture2D" uid="uid://d3ty6iy8obobp" path="res://resources/btns/group.png" id="3_21dvs"]
 [ext_resource type="Texture2D" uid="uid://cb4wln1ahl6k6" path="res://resources/btns/next_unit_clicked.png" id="3_ng7ue"]
 [ext_resource type="Texture2D" uid="uid://cf4w6767impk6" path="res://resources/unitinfo/health.png" id="3_siicm"]
-[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/player/playerSun_red.png" id="4_kvgtq"]
+[ext_resource type="Texture2D" uid="uid://dscfx3sxyftym" path="res://resources/Player/playerSun_red.png" id="4_kvgtq"]
 [ext_resource type="Texture2D" uid="uid://be0m54d7xqsma" path="res://resources/btns/next_unit_hover.png" id="4_r1j1m"]
 [ext_resource type="Texture2D" uid="uid://b2yhn72sxkdc6" path="res://resources/unitinfo/movement.png" id="4_rr2v0"]
 [ext_resource type="Texture2D" uid="uid://d2ot48jsmmht7" path="res://resources/btns/group_clicked.png" id="4_y2wyx"]
@@ -17,17 +17,25 @@
 [ext_resource type="Texture2D" uid="uid://h28vv5g5mmgs" path="res://resources/btns/ungroup.png" id="6_30qx5"]
 [ext_resource type="Texture2D" uid="uid://cfk31iff2xv08" path="res://resources/btns/ungroup_clicked.png" id="7_q0p1w"]
 [ext_resource type="Texture2D" uid="uid://dcp7731pjcyql" path="res://resources/btns/ungroup_hover.png" id="8_2qxkw"]
-[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/player/playerSun.png" id="13_7bjxy"]
+[ext_resource type="Texture2D" uid="uid://dhylja023xv13" path="res://resources/Player/playerSun.png" id="13_7bjxy"]
 [ext_resource type="Texture2D" uid="uid://dfk8phg3i2ryc" path="res://resources/btns/endturn.png" id="15_b5ji1"]
 [ext_resource type="Texture2D" uid="uid://dw2evj1v1tuc0" path="res://resources/btns/endturn_clicked.png" id="16_jlvwk"]
 [ext_resource type="Texture2D" uid="uid://dti3s8588kt4" path="res://resources/btns/endturn_hover.png" id="17_mj444"]
 [ext_resource type="Texture2D" uid="uid://bssjtq68et7du" path="res://resources/unitinfo/defense.png" id="22_knh17"]
 [ext_resource type="Texture2D" uid="uid://7wcjnawufnbe" path="res://resources/unitinfo/bubble.png" id="22_kpivc"]
 [ext_resource type="Script" path="res://scripts/UI/CombatPanel.cs" id="22_wtdhf"]
-[ext_resource type="Texture2D" uid="uid://dnmjgh3gsfcfu" path="res://resources/combat/3D_Animation_Style_ruins_of_a_castle_3.jpg" id="25_bsgyd"]
+[ext_resource type="Texture2D" uid="uid://dnmjgh3gsfcfu" path="res://resources/Combat/3D_Animation_Style_ruins_of_a_castle_3.jpg" id="25_bsgyd"]
 [ext_resource type="Texture2D" uid="uid://bfr7ft65137j1" path="res://resources/btns/abilities/swords_regular.png" id="26_208ke"]
 [ext_resource type="Texture2D" uid="uid://hp7u5wpl4bn3" path="res://resources/btns/abilities/swords_light.png" id="27_fr0la"]
 [ext_resource type="Texture2D" uid="uid://b12ie5t4lcreh" path="res://resources/btns/abilities/swords_dark.png" id="28_eu8tg"]
+[ext_resource type="Script" path="res://scripts/UI/MiniMap.cs" id="29_iric5"]
+[ext_resource type="Script" path="res://scripts/Combat/HommField.cs" id="29_s44k1"]
+[ext_resource type="Texture2D" uid="uid://cjg0n6frwlumf" path="res://resources/Story/MVP/steppe1.jpg" id="30_d0fau"]
+[ext_resource type="Texture2D" uid="uid://cb4c46745cymo" path="res://resources/Story/MVP/menu.png" id="31_r7wbc"]
+[ext_resource type="Script" path="res://scripts/UI/HommActionBar.cs" id="32_55gnt"]
+[ext_resource type="Texture2D" uid="uid://djhqlkmkgu6e2" path="res://resources/Story/MVP/attack_cursor-removebg-preview.png" id="32_bqdv2"]
+[ext_resource type="Texture2D" uid="uid://b5rleq3k2tvdw" path="res://resources/Story/MVP/Heal_cusor-removebg-preview.png" id="33_fdto5"]
+[ext_resource type="Texture2D" uid="uid://bbghdwimf3ly1" path="res://resources/Story/MVP/magic_cursor-removebg-preview.png" id="34_bo4xh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjgjl"]
 bg_color = Color(0, 1, 0, 1)
@@ -268,6 +276,7 @@ offset_left = 306.0
 offset_top = 100.0
 offset_right = 957.0
 offset_bottom = 551.0
+mouse_filter = 1
 script = ExtResource("22_wtdhf")
 
 [node name="Homam" type="Node2D" parent="CombatPanel"]
@@ -451,6 +460,45 @@ layout_mode = 2
 layout_mode = 2
 text = "current unit info"
 
+[node name="Homm" type="Node2D" parent="CombatPanel"]
+visible = false
+
+[node name="HommField" type="Node2D" parent="CombatPanel/Homm"]
+script = ExtResource("29_s44k1")
+FieldBackground = ExtResource("30_d0fau")
+HexTileTexture = ExtResource("31_r7wbc")
+AttackCursor = ExtResource("32_bqdv2")
+CastCursor = ExtResource("33_fdto5")
+MoveCursor = ExtResource("34_bo4xh")
+
+[node name="HommActionBar" type="Control" parent="CombatPanel/Homm"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 196.0
+offset_top = 411.0
+offset_right = 236.0
+offset_bottom = 451.0
+mouse_filter = 1
+script = ExtResource("32_55gnt")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatPanel/Homm/HommActionBar"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DefendBtn" type="Button" parent="CombatPanel/Homm/HommActionBar/HBoxContainer"]
+layout_mode = 2
+text = "Defend"
+
+[node name="WaitBtn" type="Button" parent="CombatPanel/Homm/HommActionBar/HBoxContainer"]
+layout_mode = 2
+text = "wait"
+
+[node name="CastBtn" type="Button" parent="CombatPanel/Homm/HommActionBar/HBoxContainer"]
+layout_mode = 2
+text = "cast
+"
+
 [node name="CombatModeSelector" type="OptionButton" parent="CombatPanel"]
 layout_mode = 0
 offset_left = 220.0
@@ -458,11 +506,13 @@ offset_top = 127.0
 offset_right = 265.0
 offset_bottom = 147.0
 theme_override_font_sizes/font_size = 14
-item_count = 2
+item_count = 3
 popup/item_0/text = "Warlords"
 popup/item_0/id = 0
 popup/item_1/text = "Darkest"
 popup/item_1/id = 1
+popup/item_2/text = "Homm"
+popup/item_2/id = 2
 
 [node name="Label" type="Label" parent="CombatPanel/CombatModeSelector"]
 layout_mode = 0
@@ -480,6 +530,27 @@ offset_top = 55.0
 offset_right = 16.0
 offset_bottom = 63.0
 text = "Start Combat"
+
+[node name="MiniMapPanel" type="Panel" parent="."]
+offset_left = 1037.0
+offset_top = 2.0
+offset_right = 1153.0
+offset_bottom = 111.0
+
+[node name="MiniMap" type="Control" parent="MiniMapPanel"]
+top_level = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 974.0
+offset_top = 1.0
+offset_right = 1.0
+offset_bottom = -538.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("29_iric5")
 
 [connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/GroupUnitsBtn" to="UnitControlPanel" method="_on_group_units_btn_pressed"]
 [connection signal="pressed" from="UnitControlPanel/HBoxContainer/GridContainer/UnGroupUnitsBtn" to="UnitControlPanel" method="_on_ungroup_units_btn_pressed"]

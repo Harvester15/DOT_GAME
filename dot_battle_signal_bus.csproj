@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.2.1">
+﻿<Project Sdk="Godot.NET.Sdk/4.2.1">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
@@ -7,5 +7,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="scripts\Actors\Buildings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\DIALOGUES.md" />
+    <None Include="docs\ENDINGS.md" />
+    <None Include="docs\LOGBOOK_SPECS.md" />
+    <None Include="docs\MECHANICS.md" />
+    <None Include="docs\MVP_ROADMAP.md" />
+    <None Include="docs\MVP_VERTICAL_SLICE.md" />
+    <None Include="docs\PLOTLINE.md" />
+    <None Include="docs\SCENARIO_OUTLINES.md" />
+    <None Include="docs\STORY_ARCS.md" />
+    <None Include="docs\TESTIMONIES.md" />
   </ItemGroup>
 </Project>

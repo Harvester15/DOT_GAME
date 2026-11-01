@@ -1,4 +1,5 @@
-﻿using dot_battle_signal_bus.scripts.Actors.Units;
+﻿using dot_battle_signal_bus.scripts;
+using dot_battle_signal_bus.scripts.Actors.Units;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,52 @@ public partial class ArmyStack : BaseUnit
         base._Ready();
     }
 
+    // --- HOMM groundwork: more than just units ---------------------------------
+
+    /// <summary>Resources carried by this stack (gold, ore, etc.). Picked up on the map.</summary>
+    [Export] public Godot.Collections.Dictionary<string, int> CarriedResources = new();
+
+    /// <summary>The unit the player has selected WITHIN the stack (for info/reordering).</summary>
+    public BaseUnit SelectedUnit { get; private set; }
+
+    /// <summary>
+    /// The unit shown "on top" of the stack: the hero if present, else the first unit.
+    /// Single source of truth so visuals/selection never disagree.
+    /// </summary>
+    public BaseUnit LeadUnit => (BaseUnit)hero ?? (Units.Count > 0 ? Units[0] : null);
+
+    /// <summary>Select a unit inside the stack (e.g., clicking its portrait in the roster UI).</summary>
+    public void SelectUnit(BaseUnit unit)
+    {
+        if (!Units.Contains(unit)) return;
+        SelectedUnit = unit;
+        SignalBus.Instance.EmitSignal(SignalBus.SignalName.UnitSelected, unit);
+    }
+
+    public void DeselectUnit()
+    {
+        if (SelectedUnit == null) return;
+        SelectedUnit = null;
+        SignalBus.Instance.EmitSignal(SignalBus.SignalName.UnitDeselected);
+    }
+
+    /// <summary>Make a unit the leader (reorders so it displays on top). No-op for the hero.</summary>
+    public void PromoteToLead(BaseUnit unit)
+    {
+        if (hero != null) return;            // hero always leads when present
+        if (!Units.Contains(unit)) return;
+
+        Units.Remove(unit);
+        Units.Insert(0, unit);
+        InitializeVisuals();                 // refresh the stack icon to the new leader
+    }
+
+    public void AddResource(string resourceId, int amount)
+    {
+        CarriedResources.TryGetValue(resourceId, out var current);
+        CarriedResources[resourceId] = current + amount;
+    }
+
     protected override void InitializeCore()
     {
         Name = "ArmyStack";
@@ -48,9 +95,10 @@ public partial class ArmyStack : BaseUnit
 
     protected override void InitializeVisuals()
     {
-        if (Units.Count > 0)
+        var lead = LeadUnit;
+        if (lead != null)
         {
-            var firstUnit = Units[0];
+            var firstUnit = lead;
 
             TextureRect stackIcon = new TextureRect();
             var unitPortrait = (TextureRect)firstUnit.GetNode<TextureRect>("TextureRect").Duplicate();
@@ -60,12 +108,12 @@ public partial class ArmyStack : BaseUnit
             unitPortrait.Visible = true;
             Portrait = unitPortrait;
             CollisionShape2D stackCol = new CollisionShape2D();
-            stackCol = (CollisionShape2D)Units[0].GetNode<CollisionShape2D>("CollisionShape2D").Duplicate();
+            stackCol = (CollisionShape2D)lead.GetNode<CollisionShape2D>("CollisionShape2D").Duplicate();
             AddChild(stackCol);
         }
     }
 
-    
+
 
     public ArmyStack CreateUnit(BaseUnit unit1, BaseUnit unit2)
     {

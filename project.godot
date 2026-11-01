@@ -21,6 +21,8 @@ SignalBus="*res://scripts/Utils/SignalBus.cs"
 UnitMovement="*res://scripts/Systems/UnitMovement.cs"
 CameraManager="*res://scripts/Systems/CameraManager.cs"
 TurnManager="*res://scripts/Systems/TurnManager.cs"
+SaveManager="*res://scripts/Systems/SaveManager.cs"
+StoryManager="*res://scripts/Systems/StoryManager.cs"
 
 [dotnet]
 

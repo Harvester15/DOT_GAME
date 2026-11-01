@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2u0ge33tw3p6"
-path="res://.godot/imported/player_mage_side.png-55f0362e294c48514141de9d5e3f136f.ctex"
+path="res://.godot/imported/player_mage_side.png-e5895ec2979aebd43b7ec683b179bde3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/combat/units/player_mage_side.png"
-dest_files=["res://.godot/imported/player_mage_side.png-55f0362e294c48514141de9d5e3f136f.ctex"]
+source_file="res://resources/Combat/units/player_mage_side.png"
+dest_files=["res://.godot/imported/player_mage_side.png-e5895ec2979aebd43b7ec683b179bde3.ctex"]
 
 [params]
 

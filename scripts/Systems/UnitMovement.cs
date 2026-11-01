@@ -122,6 +122,8 @@ public partial class UnitMovement : Node
         _isMoving = false; // Stop moving if we reached the clicked position
         _movementRangeVisualizer.ShowMovement(new Vector2[0], _selectedUnit);
         _gridManager.UnregisterUnitFromCell(_selectedUnit);
+        var cell = Utils.WorldToGrid(_selectedUnit.GlobalPosition, _gridManager.GetCellSize());
+        _selectedUnit.GridPosition = cell;                 // keep the unit's own position authoritative
         _gridManager.RegisterUnitOnCell(Utils.WorldToGrid(_selectedUnit.GlobalPosition, _gridManager.GetCellSize()), _selectedUnit);
     }
 
