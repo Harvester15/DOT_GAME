@@ -14,7 +14,7 @@ namespace dot_battle_signal_bus.scripts.Utils
 
         [Export] public int GridWidth = 50;
         [Export] public int GridHeight = 50;
-        [Export] public static int CellSize = 32;
+        [Export] public int CellSize = 32;
 
         //map
         [Export] public Sprite2D MapSprite;
