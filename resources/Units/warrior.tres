@@ -14,6 +14,7 @@ DamageSides = 12
 
 [resource]
 script = ExtResource("2_ae632")
+UnitName = "warrior"
 Portrait = ExtResource("2_ocof3")
 AttackIcon = ExtResource("1_1rqfe")
 ShieldIcon = null

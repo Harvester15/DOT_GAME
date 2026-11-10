@@ -1,89 +1,129 @@
 [gd_scene format=3 uid="uid://c1esk4yvits71"]
 
-[ext_resource type="Texture2D" uid="uid://d26ia5xh52h3a" path="res://resources/Story/MVP/paly_portrait.jpg" id="1_2nff5"]
 [ext_resource type="Texture2D" uid="uid://8j07620e6gvd" path="res://resources/Story/MVP/scientist_potrait.jpg" id="1_8ldjs"]
-[ext_resource type="Texture2D" uid="uid://dvrgp7yicfcec" path="res://resources/Story/MVP/priest_portait.jpg" id="2_j0l04"]
+[ext_resource type="Script" uid="uid://b6hyso1gkm8nf" path="res://scripts/UI/ArchiveOfEchoes.cs" id="1_mlq3m"]
+[ext_resource type="Texture2D" uid="uid://pycc6cerh4kf" path="res://resources/Story/MVP/Archive Background.jpg" id="3_mlq3m"]
+[ext_resource type="Texture2D" uid="uid://0hotlvr230th" path="res://resources/Story/MVP/Journal.jpg" id="4_bxvo3"]
+[ext_resource type="Script" uid="uid://dlmvltvqjxk7w" path="res://scripts/Investigation/QuestioningPanel.cs" id="4_mlq3m"]
+[ext_resource type="Script" uid="uid://bbbeidp4m1ggp" path="res://scripts/Investigation/NotebookLabel.cs" id="5_su7k3"]
 
 [node name="ArchiveOfEchoes" type="Control" unique_id=96342821]
+top_level = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_mlq3m")
 
 [node name="JournalPanel" type="Panel" parent="." unique_id=387430442]
 layout_mode = 0
-offset_right = 669.0
-offset_bottom = 490.0
-
-[node name="RichTextLabel" type="RichTextLabel" parent="JournalPanel" unique_id=240658359]
-layout_mode = 0
-offset_left = 85.0
-offset_top = 388.0
-offset_right = 574.0
-offset_bottom = 487.0
-text = "once there was Time, and Echoes of time. Which floated through the ether. without anyone to witness this, the ether turned gloomy."
-
-[node name="Wtiness" type="TextureRect" parent="JournalPanel" unique_id=1864173278]
-layout_mode = 0
-offset_left = 19.0
-offset_top = 13.0
-offset_right = 219.0
-offset_bottom = 235.0
-texture = ExtResource("1_8ldjs")
-expand_mode = 3
+offset_right = 1144.0
+offset_bottom = 644.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=961278235]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.994
+anchor_bottom = 1.1600001
+offset_left = -11.0
+offset_top = 4.0
+offset_right = -0.088012695
+offset_bottom = 0.3199463
+
+[node name="WitnessHeader" type="Control" parent="VBoxContainer" unique_id=251108184]
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Background" type="TextureRect" parent="VBoxContainer/WitnessHeader" unique_id=1360924079]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.009000001
+anchor_right = 0.99700004
+anchor_bottom = 0.5
+offset_left = -0.40400028
+offset_right = 0.4678955
+offset_bottom = 177.0
+texture = ExtResource("3_mlq3m")
+expand_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/WitnessHeader" unique_id=1179033330]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 460.0
+offset_top = 73.0
+offset_right = 682.0
+offset_bottom = 319.0
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer" unique_id=622585834]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/WitnessHeader/CenterContainer" unique_id=1128891114]
 layout_mode = 2
 
-[node name="WtinessPanel" type="Panel" parent="VBoxContainer/HSplitContainer" unique_id=734484601]
-visible = false
+[node name="Witness" type="TextureRect" parent="VBoxContainer/WitnessHeader/CenterContainer/VBoxContainer" unique_id=1864173278]
+custom_minimum_size = Vector2(230, 230)
+layout_mode = 2
+texture = ExtResource("1_8ldjs")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="WitnessName" type="Label" parent="VBoxContainer/WitnessHeader/CenterContainer/VBoxContainer" unique_id=1394296657]
+layout_mode = 2
+text = "witness"
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=905989126]
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 
-[node name="ItemList" type="ItemList" parent="VBoxContainer/HSplitContainer/WtinessPanel" unique_id=2044475580]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer" unique_id=1628978640]
+layout_mode = 2
+alignment = 1
+
+[node name="WitnessRichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1747495779]
+custom_minimum_size = Vector2(500, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "once there was Time, and Echoes of time. Which floated through the ether. without anyone to witness this, the ether turned gloomy."
+horizontal_alignment = 3
+vertical_alignment = 3
+
+[node name="filler" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=281615674]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+action_mode = 0
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="NoteBookBtn" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=547744692]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+size_flags_vertical = 8
+action_mode = 0
+texture_normal = ExtResource("4_bxvo3")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1748159619]
+layout_mode = 2
+script = ExtResource("5_su7k3")
+
+[node name="ResponseLineEdit" type="LineEdit" parent="VBoxContainer/VBoxContainer" unique_id=2136130005]
+custom_minimum_size = Vector2(700, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("4_mlq3m")
+TopicInputPath = NodePath(".")
+SuggestionsPath = NodePath(".")
+
+[node name="ItemList" type="ItemList" parent="." unique_id=541452704]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-item_count = 2
-item_0/text = "paly"
-item_0/icon = ExtResource("1_2nff5")
-item_1/text = "priest"
-item_1/icon = ExtResource("2_j0l04")
+offset_left = 221.0
+offset_top = 552.0
+offset_right = 528.0
+offset_bottom = 610.0
 
-[node name="EvidencePanel" type="Panel" parent="VBoxContainer/HSplitContainer" unique_id=1195676339]
-visible = false
-layout_mode = 2
-
-[node name="ItemList" type="ItemList" parent="VBoxContainer/HSplitContainer/EvidencePanel" unique_id=2143116011]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-item_count = 1
-item_0/text = "evidence 1"
-
-[node name="MenuBar" type="MenuBar" parent="VBoxContainer" unique_id=1697009800]
-visible = false
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MenuBar" unique_id=994414234]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="InterviewButton" type="Button" parent="VBoxContainer/MenuBar/HBoxContainer" unique_id=580226167]
-layout_mode = 2
-text = "Interview"
-
-[node name="SaveButton" type="Button" parent="VBoxContainer/MenuBar/HBoxContainer" unique_id=1316834512]
-layout_mode = 2
-text = "Save"
-
-[node name="LoadButton" type="Button" parent="VBoxContainer/MenuBar/HBoxContainer" unique_id=1925879223]
-layout_mode = 2
-text = "Load"
+[connection signal="gui_input" from="VBoxContainer/VBoxContainer/HBoxContainer/WitnessRichTextLabel" to="VBoxContainer/VBoxContainer/ResponseLineEdit" method="_on_witness_rich_text_label_gui_input"]
+[connection signal="gui_input" from="VBoxContainer/VBoxContainer/HBoxContainer/NoteBookBtn" to="VBoxContainer/VBoxContainer/ResponseLineEdit" method="_on_note_book_btn_gui_input"]
+[connection signal="mouse_entered" from="VBoxContainer/VBoxContainer/HBoxContainer/NoteBookBtn" to="." method="_on_note_book_btn_mouse_entered"]

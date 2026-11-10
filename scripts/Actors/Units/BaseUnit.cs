@@ -185,12 +185,18 @@ public partial class BaseUnit : BaseGameObject
 
     protected virtual void InitializeSignals()
     {
-        SignalBus.Instance.Connect("UnitMoved", new Callable(this, nameof(OnUnitMoved)));
-        SignalBus.Instance.Connect("UnitDeselected", new Callable(this, nameof(OnUnitDeselected)));
-        // connect the area entered signal   to the UnitAttack signal
+        SignalBus.Instance.UnitMoved += OnUnitMoved;
+        SignalBus.Instance.UnitSelected += OnUnitSelected;
+        SignalBus.Instance.UnitAttacked += OnUnitAttacked;
+        SignalBus.Instance.UnitDefend += OnUnitDefend;
+        
+        //SignalBus.Instance.Connect("UnitMoved", new Callable(this, nameof(OnUnitMoved)));
+        //SignalBus.Instance.Connect("UnitMoved", new Callable(this, nameof(OnUnitMoved)));
+        //SignalBus.Instance.Connect("UnitDeselected", new Callable(this, nameof(OnUnitDeselected)));
+        //// connect the area entered signal   to the UnitAttack signal
         //connect mouse entered signal to the _OnMouseEntered method
-        SignalBus.Instance.Connect("UnitAttacked", new Callable(this, nameof(OnUnitAttacked)));
-        SignalBus.Instance.Connect("UnitDefend", new Callable(this, nameof(OnUnitDefend)));
+        //SignalBus.Instance.Connect("UnitAttacked", new Callable(this, nameof(OnUnitAttacked)));
+        //SignalBus.Instance.Connect("UnitDefend", new Callable(this, nameof(OnUnitDefend)));
     }
 
     private void BaseUnit_AreaExited(Area2D area)

@@ -5,12 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://bpqiu4coyh8yq" path="res://resources/dungeonMap2.jpg" id="1_yudmw"]
 [ext_resource type="Script" uid="uid://dhle1t0o1328v" path="res://scripts/Systems/SpawnManager.cs" id="3_aif4k"]
 [ext_resource type="Script" uid="uid://ch04eqa1bukto" path="res://scripts/Systems/GridPathfinding.cs" id="4_af3rw"]
+[ext_resource type="PackedScene" uid="uid://5sulucl7l1qb" path="res://scenes/BaseUnit.tscn" id="4_sce75"]
 [ext_resource type="Resource" uid="uid://cs6c7ucdgpmui" path="res://resources/Units/warrior.tres" id="5_o8xnj"]
 [ext_resource type="Script" uid="uid://cqj7p1jd5smgf" path="res://scripts/UI/MovementRangeVisualizer.cs" id="5_u243p"]
 [ext_resource type="PackedScene" uid="uid://bmcndrjwodj8c" path="res://scenes/UI/ui.tscn" id="5_yidkf"]
-[ext_resource type="Script" uid="uid://bc6wn44wbp5bi" path="res://scripts/Actors/Units/Enemy.cs" id="8_q3a0w"]
-[ext_resource type="Resource" uid="uid://bw04gxvsi47bt" path="res://resources/Shields/PhysicalShield.tres" id="8_rfsp2"]
-[ext_resource type="Resource" uid="uid://nu6kotjcypwd" path="res://resources/Shields/magicalShield.tres" id="9_jwnjf"]
 [ext_resource type="Resource" uid="uid://cy561e2gwof2d" path="res://resources/Units/mage.tres" id="11_mydig"]
 [ext_resource type="Script" uid="uid://dvw42d5vkfudl" path="res://scripts/Systems/SelectionManager.cs" id="11_ovvs2"]
 [ext_resource type="Resource" uid="uid://cqok32v4xb72y" path="res://resources/Units/Beast.tres" id="11_r54el"]
@@ -18,7 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://binif11abscup" path="res://scenes/Systems/CameraRig.tscn" id="12_55xcr"]
 [ext_resource type="Script" uid="uid://cq5q0nb7llvy3" path="res://scripts/Systems/CombatManager.cs" id="12_yo6lp"]
 [ext_resource type="Resource" uid="uid://c53xmp3d2u3uc" path="res://resources/Units/enemy_warrior.tres" id="13_vvje5"]
-[ext_resource type="PackedScene" uid="uid://5sulucl7l1qb" path="res://scenes/BaseUnit.tscn" id="19_fc0ot"]
 [ext_resource type="Script" uid="uid://bukn36m75ee82" path="res://scripts/Systems/GameManager.cs" id="22_ekcy8"]
 
 [node name="Main" type="Node2D" unique_id=714872199]
@@ -68,43 +65,41 @@ offset_bottom = 593.0
 
 [node name="Units" type="Node2D" parent="GameWorld" unique_id=2126846340]
 
-[node name="BaseUnit" parent="GameWorld/Units" unique_id=450059940 instance=ExtResource("19_fc0ot")]
+[node name="BaseUnit" parent="GameWorld/Units" unique_id=1857532523 instance=ExtResource("4_sce75")]
 UnitTeam = 1
 Data = ExtResource("5_o8xnj")
 
-[node name="BaseUnit8" parent="GameWorld/Units" unique_id=1003724252 instance=ExtResource("19_fc0ot")]
+[node name="BaseUnit2" parent="GameWorld/Units" unique_id=690451933 instance=ExtResource("4_sce75")]
+UnitTeam = 1
+Data = ExtResource("5_o8xnj")
+
+[node name="BaseUnit7" parent="GameWorld/Units" unique_id=2005800781 instance=ExtResource("4_sce75")]
+UnitName = "Beast"
 Data = ExtResource("11_r54el")
-ShieldLayers = Array[Object]([ExtResource("8_rfsp2"), ExtResource("9_jwnjf")])
 
-[node name="BaseUnit7" parent="GameWorld/Units" unique_id=1488267389 instance=ExtResource("19_fc0ot")]
-script = ExtResource("8_q3a0w")
+[node name="BaseUnit8" parent="GameWorld/Units" unique_id=992757488 instance=ExtResource("4_sce75")]
+UnitTeam = 2
+Data = ExtResource("13_vvje5")
+
+[node name="BaseUnit9" parent="GameWorld/Units" unique_id=685353689 instance=ExtResource("4_sce75")]
+UnitTeam = 2
+Data = ExtResource("13_vvje5")
+
+[node name="BaseUnit10" parent="GameWorld/Units" unique_id=1614335576 instance=ExtResource("4_sce75")]
+UnitTeam = 2
+Data = ExtResource("13_vvje5")
+
+[node name="BaseUnit3" parent="GameWorld/Units" unique_id=1506193620 instance=ExtResource("4_sce75")]
 UnitTeam = 3
-Data = ExtResource("5_o8xnj")
-
-[node name="BaseUnit2" parent="GameWorld/Units" unique_id=1923834081 instance=ExtResource("19_fc0ot")]
-position = Vector2(6, 339)
-UnitTeam = 1
 Data = ExtResource("11_mydig")
 
-[node name="BaseUnit6" parent="GameWorld/Units" unique_id=1466418829 instance=ExtResource("19_fc0ot")]
-position = Vector2(6, 339)
+[node name="BaseUnit4" parent="GameWorld/Units" unique_id=332227422 instance=ExtResource("4_sce75")]
 UnitTeam = 2
 Data = ExtResource("13_vvje5")
-ExperienceReward = 10
 
-[node name="BaseUnit3" parent="GameWorld/Units" unique_id=972419526 instance=ExtResource("19_fc0ot")]
-UnitTeam = 1
+[node name="BaseUnit6" parent="GameWorld/Units" unique_id=1779091530 instance=ExtResource("4_sce75")]
+UnitTeam = 3
 Data = ExtResource("12_03vc4")
-
-[node name="BaseUnit4" parent="GameWorld/Units" unique_id=1329421191 instance=ExtResource("19_fc0ot")]
-priority = 30
-Data = ExtResource("13_vvje5")
-ExperienceReward = 10
-
-[node name="BaseUnit5" parent="GameWorld/Units" unique_id=658103530 instance=ExtResource("19_fc0ot")]
-UnitTeam = 2
-Data = ExtResource("13_vvje5")
-ExperienceReward = 10
 
 [node name="GridPathfinding" type="Node2D" parent="GameWorld" unique_id=1246291601]
 script = ExtResource("4_af3rw")
@@ -125,7 +120,7 @@ script = ExtResource("12_yo6lp")
 
 [node name="UI" parent="." unique_id=1773949358 instance=ExtResource("5_yidkf")]
 
-[node name="MiniMap" parent="UI/MiniMapPanel" index="0" node_paths=PackedStringArray("Grid", "Camera")]
+[node name="MiniMap" parent="UI/MiniMapPanel" parent_id_path=PackedInt32Array(1773949358, 1816921731) index="0" unique_id=1410918878 node_paths=PackedStringArray("Grid", "Camera")]
 Grid = NodePath("../../../GameWorld/Map")
 Camera = NodePath("../../../CameraRig/Camera2D")
 

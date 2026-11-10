@@ -48,6 +48,8 @@ public partial class SpawnManager : Node2D
             foreach (var area in children)
             {
                 GD.Print($"dealing with gameObject {area.Name}");
+
+                GD.Print($"Spawn child: {area.GetPath()} | managed type: {area.GetType().FullName} | script: {area.GetScript()}");
                 ScalePlayerToCellSize((BaseGameObject)area);
                 PlacePlayerRandomly((BaseGameObject)area);
             }

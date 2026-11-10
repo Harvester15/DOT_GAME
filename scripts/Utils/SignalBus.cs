@@ -1,6 +1,7 @@
 ﻿// SignalBus.cs
 using dot_battle_signal_bus.scripts.Combat;
 using dot_battle_signal_bus.scripts.Combat.Logic;
+using dot_battle_signal_bus.scripts.Investigation;
 using Godot;
 using Godot.Collections;
 using System.Collections.Generic;
@@ -92,6 +93,8 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void TopicAskedEventHandler(string topicId);
         [Signal] public delegate void ConfrontationResolvedEventHandler(string witnessId, int approach);
         [Signal] public delegate void EchoRequestedEventHandler(string eventId, string witnessId);
+
+        [Signal] public delegate void DisplayWitnessEventHandler(WitnessData witnessData);
 
         [Signal] public delegate void PortalTravelRequestedEventHandler(string coordClueId, Vector2 coord);
 

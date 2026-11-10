@@ -11,6 +11,9 @@ namespace dot_battle_signal_bus.scripts.Investigation
     [GlobalClass]
     public partial class ClueEntry : Resource
     {
+        /// <summary>
+        /// the actual key that will be saved in the notebook and retrieved by #
+        /// </summary>
         [Export] public string ClueId;            // stable key, e.g. "outbound_logs"
         [Export] public ClueKind Kind;
         [Export(PropertyHint.MultilineText)] public string DisplayText;
