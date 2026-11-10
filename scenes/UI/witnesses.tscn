@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://vmfb4olx5jdc"]
+
+[ext_resource type="Script" uid="uid://dpype1rtth581" path="res://scripts/UI/Witnesses.cs" id="1_jjif3"]
+[ext_resource type="Script" uid="uid://bkhemse0xwarr" path="res://scripts/Investigation/WitnessButton.cs" id="1_qedtm"]
+[ext_resource type="Script" uid="uid://b88px5jp38hyy" path="res://scripts/Investigation/ClueEntry.cs" id="2_jjif3"]
+[ext_resource type="Texture2D" uid="uid://pycc6cerh4kf" path="res://resources/Story/MVP/Archive Background.jpg" id="2_u7pnh"]
+[ext_resource type="Texture2D" uid="uid://8j07620e6gvd" path="res://resources/Story/MVP/scientist_potrait.jpg" id="3_jjif3"]
+[ext_resource type="Script" uid="uid://dslwqpy4saqaf" path="res://scripts/Investigation/WitnessData.cs" id="4_fsjhq"]
+[ext_resource type="Texture2D" uid="uid://d26ia5xh52h3a" path="res://resources/Story/MVP/paly_portrait.jpg" id="5_fsjhq"]
+
+[sub_resource type="Resource" id="Resource_u7pnh"]
+script = ExtResource("2_jjif3")
+metadata/_custom_type_script = "uid://b88px5jp38hyy"
+
+[sub_resource type="Resource" id="Resource_qedtm"]
+script = ExtResource("4_fsjhq")
+KnownClues = Array[Object]([SubResource("Resource_u7pnh")])
+metadata/_custom_type_script = "uid://dslwqpy4saqaf"
+
+[sub_resource type="Resource" id="Resource_jjif3"]
+script = ExtResource("2_jjif3")
+ClueId = "sundering"
+Kind = 1
+DisplayText = "??
+How do you know about the 'sundering' ?
+go see Aldric he usually is to be found at the Library [10.10] as this hour"
+Topics = PackedStringArray("")
+metadata/_custom_type_script = "uid://b88px5jp38hyy"
+
+[sub_resource type="Resource" id="Resource_g7jvr"]
+script = ExtResource("4_fsjhq")
+WitnessId = "Old Mage"
+DisplayName = "Old Mage"
+Portrait = ExtResource("3_jjif3")
+Background = ExtResource("2_u7pnh")
+IntroStatement = "Hump, I've a very busy man...but of course when an \"Inquisitor\" comes calling I'll make time."
+KnownClues = Array[Object]([SubResource("Resource_jjif3")])
+metadata/_custom_type_script = "uid://dslwqpy4saqaf"
+
+[node name="Witnesses" type="Control" unique_id=1043555631]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1151.0
+offset_bottom = 649.0
+script = ExtResource("1_jjif3")
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1343971683]
+layout_mode = 0
+offset_right = 522.0
+offset_bottom = 205.0
+script = ExtResource("1_qedtm")
+WitnessData = SubResource("Resource_qedtm")
+
+[node name="TextureButton2" type="TextureButton" parent="." unique_id=1874320291]
+layout_mode = 0
+offset_left = 302.0
+offset_right = 549.0
+offset_bottom = 226.0
+texture_normal = ExtResource("5_fsjhq")
+ignore_texture_size = true
+stretch_mode = 4
+script = ExtResource("1_qedtm")
+
+[node name="TextureButton3" type="TextureButton" parent="." unique_id=2143542637]
+custom_minimum_size = Vector2(220, 220)
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 220.0
+texture_normal = ExtResource("3_jjif3")
+ignore_texture_size = true
+stretch_mode = 4
+script = ExtResource("1_qedtm")
+WitnessData = SubResource("Resource_g7jvr")
