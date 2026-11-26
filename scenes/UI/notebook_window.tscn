@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://7fdko6umqc8b"]
+
+[ext_resource type="Script" uid="uid://c26frm0arw52l" path="res://scripts/UI/NotebookWindow.cs" id="1_bfga5"]
+[ext_resource type="Texture2D" uid="uid://cuhvdu3v7o7pr" path="res://resources/Story/MVP/notebook.jpg" id="1_wf8gf"]
+
+[node name="Window" type="Window" unique_id=1276886020 node_paths=PackedStringArray("CategoriesRTL", "EntriesRTL", "EntryDetailsRTL", "NotesTextEdit", "EditingLabel")]
+oversampling_override = 1.0
+title = "Notebook"
+position = Vector2i(0, 36)
+size = Vector2i(600, 600)
+script = ExtResource("1_bfga5")
+CategoriesRTL = NodePath("EntryPanel/CategoriesRichTextLabel")
+EntriesRTL = NodePath("EntryPanel/EntriesRichTextLabel")
+EntryDetailsRTL = NodePath("EntryPanel/EntryDetailsRichTextLabel")
+NotesTextEdit = NodePath("EntryPanel/CommentsTextEdit")
+EditingLabel = NodePath("EntryPanel/Label")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2108526748]
+custom_minimum_size = Vector2(600, 800)
+offset_left = -15.0
+offset_top = -198.0
+offset_right = 641.0
+offset_bottom = 1018.30396
+scale = Vector2(1, 0.9200003)
+texture = ExtResource("1_wf8gf")
+expand_mode = 1
+
+[node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=1828062972]
+offset_left = 58.0
+offset_top = 116.0
+offset_right = 439.0
+offset_bottom = 392.0
+
+[node name="EntryPanel" type="Panel" parent="." unique_id=985425694]
+offset_left = 45.0
+offset_top = 24.0
+offset_right = 574.0
+offset_bottom = 640.0
+
+[node name="EntriesRichTextLabel" type="RichTextLabel" parent="EntryPanel" unique_id=302173854]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 124.0
+offset_right = 223.0
+offset_bottom = 416.0
+bbcode_enabled = true
+text = "clues
+"
+
+[node name="CategoriesRichTextLabel" type="RichTextLabel" parent="EntryPanel" unique_id=1543495311]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 239.0
+offset_bottom = 97.0
+bbcode_enabled = true
+text = "Entries"
+
+[node name="EntryDetailsRichTextLabel" type="RichTextLabel" parent="EntryPanel" unique_id=183492807]
+layout_mode = 0
+offset_left = 276.0
+offset_top = -3.0
+offset_right = 521.0
+offset_bottom = 404.0
+bbcode_enabled = true
+
+[node name="CommentsTextEdit" type="TextEdit" parent="EntryPanel" unique_id=398110173]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 465.0
+offset_right = 521.0
+offset_bottom = 741.0
+text = "comments
+"
+
+[node name="Label" type="Label" parent="EntryPanel" unique_id=603409538]
+layout_mode = 0
+offset_left = 435.0
+offset_top = 441.0
+offset_right = 521.0
+offset_bottom = 464.0
+theme_override_font_sizes/font_size = 13
+text = "type"
+
+[node name="Button" type="Button" parent="EntryPanel" unique_id=927845999]
+layout_mode = 0
+offset_left = 464.0
+offset_top = 541.0
+offset_right = 511.0
+offset_bottom = 572.0
+text = "SAVE"
+
+[node name="NotebookWindow" type="Node2D" parent="." unique_id=351874863]
+
+[connection signal="pressed" from="EntryPanel/Button" to="." method="OnSavePressed"]

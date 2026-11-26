@@ -41,6 +41,8 @@ public partial class SpawnManager : Node2D
 
         GD.Print($"spawnmanager getting objects to spawn, number of nodes: {GameObjects.Count}");
         // Connect signals or set up initial game state
+        
+        
         foreach (var node in GameObjects)
         {
             var children = node.GetChildren();

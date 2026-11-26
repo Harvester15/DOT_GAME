@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://b7kjhwsetvk8i"]
+
+[ext_resource type="Texture2D" uid="uid://b2jt8hq4lxgid" path="res://resources/Story/MVP/locations/art/portal_hall.jpg" id="1_cmpeh"]
+[ext_resource type="Script" uid="uid://bkjv6tfup48ma" path="res://scripts/UI/story/PortalWindow.cs" id="1_l1dsu"]
+
+[node name="PortalWindow" type="Control" unique_id=389451357]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 625.0
+offset_bottom = 388.0
+script = ExtResource("1_l1dsu")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1369140750]
+layout_mode = 0
+offset_right = 1149.0
+offset_bottom = 633.0
+texture = ExtResource("1_cmpeh")
+expand_mode = 1
+
+[node name="Panel" type="Panel" parent="." unique_id=1974670165]
+layout_mode = 0
+offset_left = 301.0
+offset_top = 214.0
+offset_right = 832.0
+offset_bottom = 479.0
+
+[node name="LocationIcon" type="TextureRect" parent="Panel" unique_id=611327277]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 9.0
+offset_right = 199.0
+offset_bottom = 75.0
+
+[node name="Description" type="RichTextLabel" parent="Panel" unique_id=1762177402]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 54.0
+offset_right = 486.0
+offset_bottom = 233.0
+text = "description
+"
+
+[node name="KnownLocations" type="RichTextLabel" parent="Panel" unique_id=1782025409]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 54.0
+offset_right = 486.0
+offset_bottom = 233.0
+text = "description
+"
+
+[node name="TravelButton" type="Button" parent="Panel" unique_id=343734956]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 228.0
+offset_right = 412.0
+offset_bottom = 259.0
+text = "go to location"
+
+[node name="LocationName" type="Label" parent="Panel" unique_id=1053568523]
+layout_mode = 0
+offset_left = 251.0
+offset_top = 10.0
+offset_right = 295.0
+offset_bottom = 33.0
+text = "name"

@@ -7,9 +7,15 @@ using System.Threading.Tasks;
 
 namespace dot_battle_signal_bus.scripts.Investigation
 {
+    /// <summary>
+    /// resource that contains information about a witness, including their name, portrait, and known clues.
+    /// </summary>
+    /// 
     [GlobalClass]
     public partial class WitnessData : Resource
     {
+        [ExportCategory("resource that contains information about a witness, including their name, portrait, and known clues.")]
+
         [Export]
         public string WitnessId { get; set; }
 

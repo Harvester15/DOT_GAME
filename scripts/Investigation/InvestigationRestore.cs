@@ -13,7 +13,7 @@ namespace dot_battle_signal_bus.scripts.Investigation
         public static Vector2 Apply(
             InvestigationSaveData data,
             Logbook logbook,
-            TopicParser parser,
+            InvestigationParser parser,
             IReadOnlyDictionary<string, ClueEntry> authoredClues, // ClueId -> resource
             IEnumerable<WitnessState> witnesses,
             List<string> playedEvents)

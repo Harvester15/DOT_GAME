@@ -1,4 +1,7 @@
-﻿using Godot;
+﻿using dot_battle_signal_bus.scripts.Systems;
+using Godot;
+using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace dot_battle_signal_bus.scripts.Investigation
@@ -16,10 +19,11 @@ namespace dot_battle_signal_bus.scripts.Investigation
         private LineEdit _input;
         private ItemList _suggestions;
 
-        private TopicParser _parser;
+        //private TopicParser _parser;
+        private InvestigationParser _parser;
         private string _highlighted = string.Empty;
 
-        public void Init(TopicParser parser) => _parser = parser;
+        public void Init(InvestigationParser parser) => _parser = parser;
 
 
         public override void _Ready()
@@ -38,12 +42,13 @@ namespace dot_battle_signal_bus.scripts.Investigation
             _input.TextSubmitted += OnSubmit;
 
             if (_parser == null)
-                Init(new TopicParser());
+                Init(StoryManager.Instance.Parser);
 
             _input.TextChanged += OnTextChanged;
 
 
-            _suggestions= GetNode<ItemList>("../../../ItemList");
+            _statementLabel.MetaClicked += OnMetaClicked;
+            _suggestions = GetNode<ItemList>("../../../ItemList");
 
             // Click a suggestion to accept it.
             if (_suggestions != null)
@@ -57,11 +62,22 @@ namespace dot_battle_signal_bus.scripts.Investigation
 
         }
 
+        private void OnMetaClicked(Variant meta)
+        {
+            _parser.RegisterTag(new ClueEntry
+            {
+                ClueId = meta.ToString(),
+                DisplayText = meta.ToString(),
+                Topics = new[] { meta.ToString() },
+                Kind = ClueKind.Coord
+            });
+            SignalBus.Instance.EmitSignal(SignalBus.SignalName.ClueMarked, meta);
+        }
 
         private void OnTextChanged(string text)
         {
-            // Only autocomplete when the player is typing a '#tag'.
-            int hashIndex = text.LastIndexOf('#');
+            // Only autocomplete when the player is typing a '#tag' or '@location'.
+            int hashIndex = text.LastIndexOf('#') != -1 ? text.LastIndexOf('#') : text.LastIndexOf('@');
             if (_suggestions == null || hashIndex < 0)
             {
                 HideSuggestions();
@@ -71,11 +87,18 @@ namespace dot_battle_signal_bus.scripts.Investigation
             // The partial text right after the '#'.
             string fragment = text.Substring(hashIndex + 1).ToLowerInvariant();
 
+
             _suggestions.Clear();
-            foreach (var tag in _parser.TagSuggestions())
+            var suggestions = _parser.Suggestions(text);
+            foreach (var tag in suggestions)
             {
                 if (fragment.Length == 0 || tag.ToLowerInvariant().Contains(fragment))
-                    _suggestions.AddItem("#" + tag);
+                {
+                    if (tag.StartsWith("#") )
+                        _suggestions.AddItem(tag);
+                    else  if (tag.StartsWith("@"))
+                        _suggestions.AddItem(tag);
+                }
             }
 
             _suggestions.Visible = _suggestions.ItemCount > 0;
@@ -89,6 +112,9 @@ namespace dot_battle_signal_bus.scripts.Investigation
 
             // Replace the partial '#fragment' in the input with the full tag.
             int hashIndex = _input.Text.LastIndexOf('#');
+            int atIndex = _input.Text.LastIndexOf('@');
+            hashIndex = hashIndex != -1 ? hashIndex : atIndex;
+
             if (hashIndex >= 0)
                 _input.Text = _input.Text.Substring(0, hashIndex) + chosen + " ";
 
@@ -108,7 +134,7 @@ namespace dot_battle_signal_bus.scripts.Investigation
 
         private void OnSubmit(string text)
         {
-            string topicId = text;
+            string topicId = text.Replace("#", "").Trim().ToLowerInvariant();
 
             SignalBus.Instance.EmitSignal(SignalBus.SignalName.TopicAsked, topicId);
             _input.Clear();
@@ -131,16 +157,17 @@ namespace dot_battle_signal_bus.scripts.Investigation
             {
                 if (_highlighted != "")
                 {
-                    GD.Print($"Selected text: {_statementLabel.GetSelectedText()} beind saved to notebook");
+                    GD.Print($"Selected text: {_statementLabel.GetSelectedText()} being saved to notebook");
                     _parser.RegisterTag(new ClueEntry
                     {
                         ClueId = _highlighted,
                         DisplayText = _highlighted,
-                        Topics = new[] { _highlighted }
+                        Topics = new[] { _highlighted },
+                        Kind = ClueKind.Statement
                     });
                     _highlighted = "";
                     _noteBook.Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, 0);
-                    SignalBus.Instance.EmitSignal(SignalBus.SignalName.ClueMarked, _highlighted);
+                   // SignalBus.Instance.EmitSignal(SignalBus.SignalName.InvestigationAdded, _highlighted);
                 }
                 else
                 {

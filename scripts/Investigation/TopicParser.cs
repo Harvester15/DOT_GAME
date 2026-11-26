@@ -26,7 +26,7 @@ namespace dot_battle_signal_bus.scripts.Investigation
         public void RegisterTag(ClueEntry clue)
         {
             _tagToClueId[Normalize(clue.ClueId)] = clue.ClueId;
-            Learn(clue.Topics);
+            Learn(clue.Topics); 
         }
 
         /// <summary>All '#' suggestions for the autocomplete dropdown.</summary>

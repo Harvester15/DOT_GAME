@@ -4,6 +4,7 @@ using dot_battle_signal_bus.scripts.Combat.Logic;
 using dot_battle_signal_bus.scripts.Investigation;
 using Godot;
 using Godot.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace dot_battle_signal_bus.scripts
@@ -97,6 +98,19 @@ namespace dot_battle_signal_bus.scripts
         [Signal] public delegate void DisplayWitnessEventHandler(WitnessData witnessData);
 
         [Signal] public delegate void PortalTravelRequestedEventHandler(string coordClueId, Vector2 coord);
+
+        //investigation UI
+        [Signal] public delegate void InvestigationAddedEventHandler(string token);
+
+        [Signal] public delegate void InvestigationAlreadyKnownEventHandler(string token);
+
+        [Signal] public delegate void InvestigationCorrectedEventHandler(string entered, string resolved);
+
+        [Signal] public delegate void InvestigationAddedToNoteBookEventHandler(string token,string displayText);
+
+        [Signal] public delegate void NotebookEntrySelectedEventHandler(string token);
+
+        [Signal] public delegate void ArchivistResearchCompletedEventHandler(PendingResearch research);
 
         // To register the singleton in Godot's autoload:
         public override void _Ready()

@@ -17,7 +17,7 @@ namespace dot_battle_signal_bus.scripts.Investigation
         [Export] public Godot.Collections.Array<ClueEntry> AuthoredClues = new();
 
         public Logbook Logbook { get; private set; }
-        public TopicParser Parser { get; private set; }
+        public InvestigationParser Parser { get; private set; }
         public DialogueRunner Runner { get; private set; }
         public DeductionEngine Deduction { get; private set; }
         public ConfrontationResolver Confrontation { get; private set; }
@@ -31,7 +31,7 @@ namespace dot_battle_signal_bus.scripts.Investigation
         public override void _Ready()
         {
             Logbook = new Logbook();
-            Parser = new TopicParser();
+            Parser = StoryManager.Instance.Parser;
             Runner = new DialogueRunner(Logbook, Parser);
             Deduction = new DeductionEngine(Logbook);
             Portals = new PortalTravel(Logbook);

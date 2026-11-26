@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using dot_battle_signal_bus.scripts.Investigation;
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace dot_battle_signal_bus.scripts.UI
         public override void _Ready()
         {
             Visible = false;
+            SignalBus.Instance.DisplayWitness += ShowWitness;
+        }
+
+        private void ShowWitness(WitnessData witnessData)
+        {
+            Toggle();
         }
 
         public override void _Input(InputEvent @event)

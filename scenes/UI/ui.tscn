@@ -36,7 +36,7 @@
 [ext_resource type="Texture2D" uid="uid://djhqlkmkgu6e2" path="res://resources/Story/MVP/attack_cursor-removebg-preview.png" id="32_bqdv2"]
 [ext_resource type="Texture2D" uid="uid://b5rleq3k2tvdw" path="res://resources/Story/MVP/Heal_cusor-removebg-preview.png" id="33_fdto5"]
 [ext_resource type="Texture2D" uid="uid://bbghdwimf3ly1" path="res://resources/Story/MVP/magic_cursor-removebg-preview.png" id="34_bo4xh"]
-[ext_resource type="PackedScene" uid="uid://c1esk4yvits71" path="res://scenes/UI/archive_of_echoes.tscn" id="37_2xad8"]
+[ext_resource type="PackedScene" uid="uid://c1esk4yvits71" path="res://scenes/UI/archive_of_echoes_old.tscn" id="37_2xad8"]
 [ext_resource type="PackedScene" uid="uid://vmfb4olx5jdc" path="res://scenes/UI/witnesses.tscn" id="39_32kus"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjgjl"]

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WitnessData" format=3 uid="uid://c330188e57t8o"]
+
+[ext_resource type="Script" uid="uid://dslwqpy4saqaf" path="res://scripts/Investigation/WitnessData.cs" id="1_nmiop"]
+[ext_resource type="Texture2D" uid="uid://bqwigenp16gsm" path="res://resources/Story/MVP/people/Brother_Waqt_Za_atar.jpg" id="1_orv43"]
+
+[resource]
+script = ExtResource("1_nmiop")
+WitnessId = "zaatar"
+DisplayName = "Waqt Za'atar"
+Portrait = ExtResource("1_orv43")
+KnownClues = null
+metadata/_custom_type_script = "uid://dslwqpy4saqaf"

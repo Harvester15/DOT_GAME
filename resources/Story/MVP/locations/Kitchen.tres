@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LocationData" format=3 uid="uid://bgb38seeuqe74"]
+
+[ext_resource type="Script" uid="uid://4uxy748t7suu" path="res://scripts/Investigation/LocationData.cs" id="1_4fwdw"]
+[ext_resource type="Texture2D" uid="uid://dcqpyvxeae0qi" path="res://resources/Story/MVP/locations/art/Monastery_Kitchen.jpg" id="1_jpofa"]
+[ext_resource type="Resource" uid="uid://c20e4xa82e8uv" path="res://resources/Story/MVP/people/res/qocauvin.tres" id="2_iqlnm"]
+
+[resource]
+script = ExtResource("1_4fwdw")
+Id = "kitchen"
+Name = "Kitchen"
+Background = ExtResource("1_jpofa")
+Witness = ExtResource("2_iqlnm")
+metadata/_custom_type_script = "uid://4uxy748t7suu"

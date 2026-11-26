@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WitnessData" format=3 uid="uid://c20e4xa82e8uv"]
+
+[ext_resource type="Script" uid="uid://dslwqpy4saqaf" path="res://scripts/Investigation/WitnessData.cs" id="1_quu6v"]
+[ext_resource type="Texture2D" uid="uid://cx45yxlf442" path="res://resources/Story/MVP/people/Chef_Coqauvin.jpg" id="1_wskk0"]
+
+[resource]
+script = ExtResource("1_quu6v")
+WitnessId = "chef"
+DisplayName = "Qocauvin"
+Portrait = ExtResource("1_wskk0")
+IntroStatement = "Oh...oh..what to do.
+No time, no time...
+\"Find Timian.\"
+\"The herbalist attends the [url=@herb_garden][color=cyan][u]herb garden.[/u][/color][/url]\"
+\"Or [url=@taieem_residence][color=cyan][u]Dr. Taieem's residence.[/u][/color][/url]\"
+\"Or at least he used to.\"
+"
+KnownClues = null
+metadata/_custom_type_script = "uid://dslwqpy4saqaf"

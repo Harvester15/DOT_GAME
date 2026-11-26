@@ -14,23 +14,52 @@ namespace dot_battle_signal_bus.scripts.Investigation
 
         public override void _Ready()
         {
-            SignalBus.Instance.ClueMarked += OnClicked;
+            SignalBus.Instance.InvestigationAdded +=
+                OnAdded;
+
+            SignalBus.Instance.InvestigationAlreadyKnown +=
+                OnAlreadyKnown;
+
+            SignalBus.Instance.InvestigationCorrected +=
+                OnCorrected;
         }
 
-
-        public void OnClicked(string clueId)
+        private void OnAdded(string token)
         {
-            this.Text = "";
-            this.Text = $"{clueId} saved to notebook";
-            // Safety check to kill any existing tween before starting a new one
+            Flash($"Added: {token}");
+        }
+
+        private void OnAlreadyKnown(string token)
+        {
+            Flash($"Already known: {token}");
+        }
+
+        private void OnCorrected(
+            string entered,
+            string resolved)
+        {
+            Flash(
+                $"Using {resolved} instead of {entered}");
+        }
+
+        private void Flash(string text)
+        {
+            Text = text;
+
             _flashTween?.Kill();
+
+            Modulate =
+                new Color(1, 1, 1, 1);
+
             _flashTween = CreateTween();
 
-            // Fade back in to fully visible over 0.5 seconds
-            _flashTween.TweenProperty(this, "modulate:a", 1.0f, 0.5);
-            // Fade out to transparent over 0.5 seconds
-            _flashTween.TweenProperty(this, "modulate:a", 0.0f, 0.5);
+            _flashTween.TweenInterval(1.0);
 
+            _flashTween.TweenProperty(
+                this,
+                "modulate:a",
+                0.0f,
+                1.0f);
         }
     }
 }

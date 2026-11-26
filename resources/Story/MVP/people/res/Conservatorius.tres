@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WitnessData" format=3 uid="uid://d3w856yonj3ud"]
+
+[ext_resource type="Script" uid="uid://b88px5jp38hyy" path="res://scripts/Investigation/ClueEntry.cs" id="1_1v4uq"]
+[ext_resource type="Script" uid="uid://dslwqpy4saqaf" path="res://scripts/Investigation/WitnessData.cs" id="1_e4hru"]
+[ext_resource type="Texture2D" uid="uid://dw5jt4niynta7" path="res://resources/Story/MVP/locations/art/lucid-origin_Echo_Archive_Spirit_mysterious_magical_archivist_spirit_composed_of_glowing_memo-0.jpg" id="1_ogpl6"]
+
+[sub_resource type="Resource" id="Resource_1v4uq"]
+script = ExtResource("1_1v4uq")
+metadata/_custom_type_script = "uid://b88px5jp38hyy"
+
+[resource]
+script = ExtResource("1_e4hru")
+WitnessId = "conservatorius"
+DisplayName = "Conservatorius "
+Portrait = ExtResource("1_ogpl6")
+KnownClues = Array[Object]([SubResource("Resource_1v4uq")])
+metadata/_custom_type_script = "uid://dslwqpy4saqaf"

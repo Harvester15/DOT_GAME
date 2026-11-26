@@ -9,9 +9,9 @@ namespace dot_battle_signal_bus.scripts.Investigation
     public partial class DialogueRunner : Node
     {
         private readonly Logbook _logbook;
-        private readonly TopicParser _parser;
+        private readonly InvestigationParser _parser;
 
-        public DialogueRunner(Logbook logbook, TopicParser parser)
+        public DialogueRunner(Logbook logbook, InvestigationParser parser)
         {
             _logbook = logbook;
             _parser = parser;

@@ -25,7 +25,13 @@ namespace dot_battle_signal_bus.scripts.UI
 
         private ConversationService _conversationService = new();
 
+        [Export]
+        private NotebookWindow _notebookWindow;
 
+        private void OnNotebookButtonPressed()
+        {
+            _notebookWindow.PopupCentered();
+        }
 
         public override void _Ready()
         {
@@ -61,6 +67,7 @@ namespace dot_battle_signal_bus.scripts.UI
 
         private void DisplayDialogue(string text)
         {
+            _statementLabel.BbcodeEnabled = true;
             _statementLabel.Text = text;
         }
 

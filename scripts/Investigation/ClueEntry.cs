@@ -27,5 +27,11 @@ namespace dot_battle_signal_bus.scripts.Investigation
 
         // Runtime only (not authored): player's keep state.
         public bool Marked;
+        [Export] public bool RequiresResearch;
+        [Export]  public string ImmediateResponse;
+
+        [Export] public string ResearchResponse;
+
+        public string Notes;
     }
 }

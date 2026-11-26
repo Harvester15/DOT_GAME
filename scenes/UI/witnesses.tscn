@@ -4,8 +4,10 @@
 [ext_resource type="Script" uid="uid://bkhemse0xwarr" path="res://scripts/Investigation/WitnessButton.cs" id="1_qedtm"]
 [ext_resource type="Script" uid="uid://b88px5jp38hyy" path="res://scripts/Investigation/ClueEntry.cs" id="2_jjif3"]
 [ext_resource type="Texture2D" uid="uid://pycc6cerh4kf" path="res://resources/Story/MVP/Archive Background.jpg" id="2_u7pnh"]
+[ext_resource type="Texture2D" uid="uid://dcqpyvxeae0qi" path="res://resources/Story/MVP/locations/art/Monastery_Kitchen.jpg" id="3_8k2p1"]
 [ext_resource type="Texture2D" uid="uid://8j07620e6gvd" path="res://resources/Story/MVP/scientist_potrait.jpg" id="3_jjif3"]
 [ext_resource type="Script" uid="uid://dslwqpy4saqaf" path="res://scripts/Investigation/WitnessData.cs" id="4_fsjhq"]
+[ext_resource type="Texture2D" uid="uid://cx45yxlf442" path="res://resources/Story/MVP/people/Chef_Coqauvin.jpg" id="5_0voec"]
 [ext_resource type="Texture2D" uid="uid://d26ia5xh52h3a" path="res://resources/Story/MVP/paly_portrait.jpg" id="5_fsjhq"]
 
 [sub_resource type="Resource" id="Resource_u7pnh"]
@@ -14,7 +16,26 @@ metadata/_custom_type_script = "uid://b88px5jp38hyy"
 
 [sub_resource type="Resource" id="Resource_qedtm"]
 script = ExtResource("4_fsjhq")
+WitnessId = "chef"
+DisplayName = "Qocauvin"
+Portrait = ExtResource("5_0voec")
+Background = ExtResource("3_8k2p1")
+IntroStatement = "Oh...oh..what to do.
+No time, no time...
+\"Find Timian.\"
+\"The herbalist attends the [url=@herb_garden][color=cyan][u]herb garden.[/u][/color][/url]\"
+\"Or [url=@taieem_residence][color=cyan][u]Dr. Taieem's residence.[/u][/color][/url]\"
+\"Or at least he used to.\"
+"
 KnownClues = Array[Object]([SubResource("Resource_u7pnh")])
+metadata/_custom_type_script = "uid://dslwqpy4saqaf"
+
+[sub_resource type="Resource" id="Resource_bfga5"]
+script = ExtResource("4_fsjhq")
+WitnessId = "Old Paladin"
+DisplayName = "Margurion"
+Portrait = ExtResource("5_fsjhq")
+KnownClues = null
 metadata/_custom_type_script = "uid://dslwqpy4saqaf"
 
 [sub_resource type="Resource" id="Resource_jjif3"]
@@ -23,7 +44,8 @@ ClueId = "sundering"
 Kind = 1
 DisplayText = "??
 How do you know about the 'sundering' ?
-go see Aldric he usually is to be found at the Library [10.10] as this hour"
+go see Aldric he usually is to be found at the [url=@Library][color=cyan][u]Library[/u][/color][/url] as this hour"
+SourceWitness = "Old Mage"
 Topics = PackedStringArray("")
 metadata/_custom_type_script = "uid://b88px5jp38hyy"
 
@@ -38,7 +60,6 @@ KnownClues = Array[Object]([SubResource("Resource_jjif3")])
 metadata/_custom_type_script = "uid://dslwqpy4saqaf"
 
 [node name="Witnesses" type="Control" unique_id=1043555631]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1151.0
@@ -46,21 +67,29 @@ offset_bottom = 649.0
 script = ExtResource("1_jjif3")
 
 [node name="TextureButton" type="TextureButton" parent="." unique_id=1343971683]
+custom_minimum_size = Vector2(220, 220)
 layout_mode = 0
-offset_right = 522.0
-offset_bottom = 205.0
+offset_left = 251.0
+offset_top = 1.0
+offset_right = 471.0
+offset_bottom = 221.0
+texture_normal = ExtResource("5_0voec")
+ignore_texture_size = true
+stretch_mode = 5
 script = ExtResource("1_qedtm")
 WitnessData = SubResource("Resource_qedtm")
 
 [node name="TextureButton2" type="TextureButton" parent="." unique_id=1874320291]
 layout_mode = 0
-offset_left = 302.0
-offset_right = 549.0
+offset_left = 529.0
+offset_top = 6.0
+offset_right = 749.0
 offset_bottom = 226.0
 texture_normal = ExtResource("5_fsjhq")
 ignore_texture_size = true
 stretch_mode = 4
 script = ExtResource("1_qedtm")
+WitnessData = SubResource("Resource_bfga5")
 
 [node name="TextureButton3" type="TextureButton" parent="." unique_id=2143542637]
 custom_minimum_size = Vector2(220, 220)

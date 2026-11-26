@@ -27,6 +27,7 @@ namespace dot_battle_signal_bus.scripts.Systems
         [Export] public string UnitDataFolder = "res://resources/Units/";
         [Export] public string ItemFolder = "res://scenes/Items/";
 
+
         public override void _Ready()
         {
             if (_instance == null) _instance = this;

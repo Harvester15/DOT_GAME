@@ -18,13 +18,14 @@ namespace dot_battle_signal_bus.scripts.UI
         private HommCombatSystem _system;
 
         // Assign these in the editor (Button or TextureButton both work).
-        private BaseButton _defendBtn => GetNode<BaseButton>("DefendBtn");
-        private BaseButton _waitBtn => GetNode<BaseButton>("WaitBtn");
-        private BaseButton _castBtn => GetNode<BaseButton>("CastBtn");
+        private BaseButton _defendBtn => GetNode<BaseButton>("HBoxContainer/DefendBtn");
+        private BaseButton _waitBtn => GetNode<BaseButton>("HBoxContainer/WaitBtn");
+        private BaseButton _castBtn => GetNode<BaseButton>("HBoxContainer/CastBtn");
 
         public override void _Ready()
         {
-            _system = GetNode<HommCombatSystem>(SystemPath);
+            //TODO fix this
+            // = GetNode<HommCombatSystem>(SystemPath);
 
             _defendBtn.Pressed += OnDefend;
             _waitBtn.Pressed += OnWait;

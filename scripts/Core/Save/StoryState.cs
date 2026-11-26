@@ -15,6 +15,9 @@ namespace dot_battle_signal_bus.scripts.Core.Save
         public Godot.Collections.Array Witnesses = new();  // encountered witness ids
         public Godot.Collections.Array Notes = new();  // player/journal notes
 
+        public Godot.Collections.Array NotebookEntries
+    = new();
+
         public Godot.Collections.Dictionary ToDictionary() => new()
         {
             { "flags", Flags },

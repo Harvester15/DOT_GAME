@@ -1,107 +1,205 @@
 ﻿using dot_battle_signal_bus.scripts.Core.Save;
+using dot_battle_signal_bus.scripts.Investigation;
 using Godot;
+using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using static Godot.WebSocketPeer;
 
 namespace dot_battle_signal_bus.scripts.Systems
 {
-        /// <summary>
-        /// Owns all persistent narrative state (flags, variables, evidence, witnesses, notes)
-        /// and the story-progression logic that reacts to it. Scene-independent autoload.
-        /// </summary>
-        public partial class StoryManager : Node
+    /// <summary>
+    /// Owns all persistent narrative state (flags, variables, evidence, witnesses, notes)
+    /// and the story-progression logic that reacts to it. Scene-independent autoload.
+    /// </summary>
+    public partial class StoryManager : Node
+    {
+        private static StoryManager _instance;
+        public static StoryManager Instance => _instance;
+
+        [Signal] public delegate void EvidenceAddedEventHandler(string evidenceId);
+        [Signal] public delegate void WitnessUnlockedEventHandler(string witnessId);
+        [Signal] public delegate void FlagChangedEventHandler(string flag, bool value);
+
+        private readonly StoryState _state = new();
+
+        public Godot.Collections.Dictionary<string, NotebookEntry> NotebookEntries = new();
+        public InvestigationParser Parser { get; } = new();
+
+        public Godot.Collections.Dictionary<string, LocationData> Locations = new();
+
+        public Godot.Collections.Dictionary<string, LocationState> LocationStates = new();
+        public List<PendingResearch> PendingResearches;
+        public override void _Ready()
         {
-            private static StoryManager _instance;
-            public static StoryManager Instance => _instance;
+            if (_instance == null) _instance = this;
+            else QueueFree();
+        }
 
-            [Signal] public delegate void EvidenceAddedEventHandler(string evidenceId);
-            [Signal] public delegate void WitnessUnlockedEventHandler(string witnessId);
-            [Signal] public delegate void FlagChangedEventHandler(string flag, bool value);
 
-            private readonly StoryState _state = new();
 
-            public override void _Ready()
+        // ---------------- Flags & variables ----------------
+
+        public void SetFlag(string flag, bool value = true)
+        {
+            _state.Flags[flag] = value;
+            EmitSignal(SignalName.FlagChanged, flag, value);
+            CheckEvents();
+        }
+
+        public bool GetFlag(string flag) =>
+            _state.Flags.TryGetValue(flag, out var v) && (bool)v;
+
+        public void SetVariable(string key, Variant value) => _state.Variables[key] = value;
+
+        public Variant GetVariable(string key) =>
+            _state.Variables.TryGetValue(key, out var v) ? v : default;
+
+        // ---------------- Evidence & witnesses ----------------
+
+        public void AddEvidence(string evidenceId)
+        {
+            if (_state.Evidence.Contains(evidenceId))
+                return;
+
+            _state.Evidence.Add(evidenceId);
+            EmitSignal(SignalName.EvidenceAdded, evidenceId);
+            GD.Print($"Evidence collected: {evidenceId}");
+
+            // New evidence may satisfy an unlock condition.
+            CheckEvents();
+        }
+
+        public bool HasEvidence(string evidenceId) => _state.Evidence.Contains(evidenceId);
+
+        public void AddWitness(string witnessId)
+        {
+            if (_state.Witnesses.Contains(witnessId))
+                return;
+
+            _state.Witnesses.Add(witnessId);
+            EmitSignal(SignalName.WitnessUnlocked, witnessId);
+            GD.Print($"Witness unlocked: {witnessId}");
+        }
+
+        public void AddNote(string note) => _state.Notes.Add(note);
+
+        // ---------------- Progression ----------------
+
+        /// <summary>
+        /// Central place that evaluates whether collected evidence/flags unlock
+        /// new story beats. Called whenever relevant state changes.
+        /// </summary>
+        public void CheckEvents()
+        {
+            // Example rule: both clues present -> unlock the butler as a witness.
+            if (HasEvidence("bloody_knife") && HasEvidence("torn_letter"))
+                AddWitness("the_butler");
+
+            // Add further data-driven rules here (or load them from a resource).
+        }
+
+        // ---------------- Research ----------------
+        // once multiple concurrent researches, researcher assignments, costs / resources
+        //upgrades, research categories.prioritization then create achivistresearchmanager
+        public void AdvanceResearch()
+        {
+            foreach (var research in PendingResearches)
             {
-                if (_instance == null) _instance = this;
-                else QueueFree();
+                research.TurnsRemaining--;
+
+                if (research.TurnsRemaining == 0)
+                {
+                    SignalBus.Instance.EmitSignal(
+    SignalBus.SignalName.ArchivistResearchCompleted,
+    research);
+                }
             }
 
-            // ---------------- Flags & variables ----------------
 
-            public void SetFlag(string flag, bool value = true)
+        }
+
+        // ---------------- Persistence hooks (used by SaveManager) ----------------
+
+        /// <summary>Exposes the raw state for serialization. SaveManager owns disk I/O, not this.</summary>
+        // is it still needed with the other capturestate
+        //public StoryState CaptureState() => _state;
+
+        public StoryState CaptureState()
+        {
+            var state = new StoryState();
+
+            foreach (var entry in NotebookEntries.Values)
             {
-                _state.Flags[flag] = value;
-                EmitSignal(SignalName.FlagChanged, flag, value);
-                CheckEvents();
+                state.NotebookEntries.Add(
+                    new Godot.Collections.Dictionary
+                    {
+                { "id", entry.Id },
+                { "related", entry.RelatedText },
+                { "source", entry.SourceText },
+                { "notes", entry.Notes }
+                    });
             }
 
-            public bool GetFlag(string flag) =>
-                _state.Flags.TryGetValue(flag, out var v) && (bool)v;
+            return state;
+        }
 
-            public void SetVariable(string key, Variant value) => _state.Variables[key] = value;
+        public void RestoreState(StoryState loaded)
+        {
+            _state.Flags = loaded.Flags;
+            _state.Variables = loaded.Variables;
+            _state.Evidence = loaded.Evidence;
+            _state.Witnesses = loaded.Witnesses;
+            _state.Notes = loaded.Notes;
 
-            public Variant GetVariable(string key) =>
-                _state.Variables.TryGetValue(key, out var v) ? v : default;
-
-            // ---------------- Evidence & witnesses ----------------
-
-            public void AddEvidence(string evidenceId)
+            foreach (var entryData
+       in loaded.NotebookEntries)
             {
-                if (_state.Evidence.Contains(evidenceId))
-                    return;
+                var dict =
+                    entryData.AsGodotDictionary();
 
-                _state.Evidence.Add(evidenceId);
-                EmitSignal(SignalName.EvidenceAdded, evidenceId);
-                GD.Print($"Evidence collected: {evidenceId}");
+                var id =
+                    (string)dict["id"];
 
-                // New evidence may satisfy an unlock condition.
-                CheckEvents();
-            }
+                if (!NotebookEntries.TryGetValue(
+                        id,
+                        out var entry))
+                {
+                    continue;
+                }
 
-            public bool HasEvidence(string evidenceId) => _state.Evidence.Contains(evidenceId);
+                entry.RelatedText =
+                    (string)dict["related"];
 
-            public void AddWitness(string witnessId)
-            {
-                if (_state.Witnesses.Contains(witnessId))
-                    return;
+                entry.SourceText =
+                    (string)dict["source"];
 
-                _state.Witnesses.Add(witnessId);
-                EmitSignal(SignalName.WitnessUnlocked, witnessId);
-                GD.Print($"Witness unlocked: {witnessId}");
-            }
-
-            public void AddNote(string note) => _state.Notes.Add(note);
-
-            // ---------------- Progression ----------------
-
-            /// <summary>
-            /// Central place that evaluates whether collected evidence/flags unlock
-            /// new story beats. Called whenever relevant state changes.
-            /// </summary>
-            public void CheckEvents()
-            {
-                // Example rule: both clues present -> unlock the butler as a witness.
-                if (HasEvidence("bloody_knife") && HasEvidence("torn_letter"))
-                    AddWitness("the_butler");
-
-                // Add further data-driven rules here (or load them from a resource).
-            }
-
-            // ---------------- Persistence hooks (used by SaveManager) ----------------
-
-            /// <summary>Exposes the raw state for serialization. SaveManager owns disk I/O, not this.</summary>
-            public StoryState CaptureState() => _state;
-
-            public void RestoreState(StoryState loaded)
-            {
-                _state.Flags = loaded.Flags;
-                _state.Variables = loaded.Variables;
-                _state.Evidence = loaded.Evidence;
-                _state.Witnesses = loaded.Witnesses;
-                _state.Notes = loaded.Notes;
+                entry.Notes =
+                    (string)dict["notes"];
             }
         }
+
+        public void RegisterClue(ClueEntry clue)
+        {
+            ClueEntry clueEntry;
+            Parser.RegisterTag(clue);
+
+            if (!NotebookEntries.ContainsKey(clue.ClueId))
+            {
+                NotebookEntries[clue.ClueId.Trim().ToLowerInvariant()] =
+                    new NotebookEntry
+                    {
+                        Id = clue.ClueId,
+                        Title = clue.DisplayText,
+                        Description = clue.Kind.ToString()
+                    };
+            }
+        }
+
+
     }
+}

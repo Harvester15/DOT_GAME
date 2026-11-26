@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="scripts\Actors\Buildings\" />
+    <Folder Include="scripts\UI\battle\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\DIALOGUES.md" />
